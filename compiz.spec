@@ -1,12 +1,12 @@
 %define name compiz
-%define version 0.5.0
+%define version 0.5.1
 %define rel 1
-%define cvs_version 0
+%define git 20070627
 
-%if  %{cvs_version}
-%define srcname %{name}-%{version}-%{cvs_version}
+%if  %{git}
+%define srcname %{name}-%{version}-%{git}
 %define distname %{name}
-%define release %mkrel 0.%{cvs_version}.%{rel}
+%define release %mkrel 0.%{git}.%{rel}
 %else
 %define srcname %{name}-%{version}
 %define distname %{name}-%{version}
@@ -106,16 +106,16 @@ Development files for compiz
 
 %prep
 %setup -q -n %{distname}
-%patch0 -p1 -R
-%patch1 -p1 -b .tfp_server_ext
+#%patch0 -p1 -R
+#%patch1 -p1 -b .tfp_server_ext
 %patch3 -p1 -b .net_wm_cm
-%patch5 -p1 -b .top
+#%patch5 -p1 -b .top
 %patch8 -p1 -b .minimize
 %patch9 -p1 -b .white
 %patch10 -p1 -b .fix_kde_windows_decoration_mem_leak
 
 %build
-%if %{cvs_version}
+%if %{git}
   # This is a CVS snapshot, so we need to generate makefiles.
   sh autogen.sh -V
 %else
@@ -138,11 +138,13 @@ install -m755 %{SOURCE2} %{buildroot}%{_bindir}/%{name}-window-decorator
 install -D -m644 %{SOURCE1} %{buildroot}%{_datadir}/compositing-wm/%{name}.defaults
 %find_lang %{name}
 
+%define schemas compiz-annotate compiz-blur compiz-clone compiz-core compiz-cube compiz-dbus compiz-decoration compiz-fade compiz-fs compiz-gconf compiz-glib compiz-ini compiz-inotify compiz-minimize compiz-move compiz-place compiz-plane compiz-png compiz-regex compiz-resize compiz-rotate compiz-scale compiz-screenshot compiz-svg compiz-switcher compiz-video compiz-water compiz-wobbly compiz-zoom
+
 %post
-%post_install_gconf_schemas %{name}
+%post_install_gconf_schemas %{schemas}
 
 %preun
-%preun_uninstall_gconf_schemas %{name}
+%preun_uninstall_gconf_schemas %{schemas}
 
 %post decorator-gtk
 %post_install_gconf_schemas gwd
@@ -155,7 +157,6 @@ rm -rf %{buildroot}
 
 %files -f %{name}.lang
 %defattr(-,root,root)
-%{_sysconfdir}/gconf/schemas/%{name}.schemas
 %{_bindir}/%{name}
 %{_bindir}/%{name}-window-decorator
 %{_libdir}/libdecoration.so.*
@@ -164,8 +165,40 @@ rm -rf %{buildroot}
 %{_libdir}/%{name}/*.la
 %{_libdir}/%{name}/*.a
 %{_libdir}/window-manager-settings/lib%{name}.*
+%{_sysconfdir}/gconf/schemas/%{name}-annotate.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-blur.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-clone.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-core.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-cube.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-dbus.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-decoration.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-fade.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-fs.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-gconf.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-glib.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-ini.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-inotify.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-minimize.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-move.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-place.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-plane.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-png.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-regex.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-resize.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-rotate.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-scale.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-screenshot.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-svg.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-switcher.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-video.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-water.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-wobbly.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-zoom.schemas
+
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/*.png
+%{_datadir}/%{name}/*.xml
+%{_datadir}/%{name}/*.xslt
 %{_datadir}/gnome/wm-properties/%{name}.desktop
 %{_datadir}/compositing-wm/%{name}.defaults
 
@@ -173,6 +206,8 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %{_bindir}/gtk-window-decorator
 %{_sysconfdir}/gconf/schemas/gwd.schemas
+%{_datadir}/gnome-control-center/keybindings/50-%{name}-key.xml
+%{_datadir}/gnome-control-center/keybindings/50-%{name}-desktop-key.xml
 
 %files decorator-kde
 %defattr(-,root,root)
@@ -181,11 +216,14 @@ rm -rf %{buildroot}
 %files devel
 %defattr(-,root,root)
 %{_includedir}/%{name}/%{name}.h
+%{_includedir}/%{name}/cube.h
 %{_includedir}/%{name}/decoration.h
+%{_includedir}/%{name}/scale.h
 %{_libdir}/libdecoration.a
 %{_libdir}/libdecoration.la
 %{_libdir}/libdecoration.so
 %{_libdir}/pkgconfig/%{name}.pc
+%{_libdir}/pkgconfig/%{name}-cube.pc
+%{_libdir}/pkgconfig/%{name}-gconf.pc
+%{_libdir}/pkgconfig/%{name}-scale.pc
 %{_libdir}/pkgconfig/libdecoration.pc
-
-
