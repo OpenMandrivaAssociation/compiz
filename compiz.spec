@@ -62,29 +62,39 @@ Requires(preun): GConf2
 Requires: compositing-wm-common
 Provides: compositing-wm
 Requires: compiz-decorator
+Obsoletes: beryl-core
+Obsoletes: %mklibname beryl-core 0
 
 %description
 OpenGL composite manager for Xgl and AIGLX.
+
+#----------------------------------------------------------------------------
 
 %package decorator-gtk
 Summary: GTK window decorator for compiz
 Group: System/X11
 Provides: compiz-decorator
 Conflicts: compiz < 0.3.6-7mdv2007.1
+Obsoletes: heliodor
 
 %description decorator-gtk
 This package provides a GTK window decorator for the compiz OpenGL
 compositing manager.
+
+#----------------------------------------------------------------------------
 
 %package decorator-kde
 Summary: KDE window decorator for compiz
 Group: System/X11
 Provides: compiz-decorator
 Conflicts: compiz < 0.3.6-4mdv2007.1
+Obsoletes: aquamarine
 
 %description decorator-kde
 This package provides a KDE window decorator for the compiz OpenGL
 compositing manager.
+
+#----------------------------------------------------------------------------
 
 %package devel
 Summary: Development files for compiz
@@ -101,8 +111,12 @@ Requires: libsm-devel
 Requires: startup-notification-devel
 Requires: GL-devel
 
+Obsoletes: %mklibname -d beryl-core 0
+
 %description devel
 Development files for compiz
+
+#----------------------------------------------------------------------------
 
 %prep
 %setup -q -n %{distname}
@@ -154,6 +168,8 @@ install -D -m644 %{SOURCE1} %{buildroot}%{_datadir}/compositing-wm/%{name}.defau
 
 %clean
 rm -rf %{buildroot}
+
+#----------------------------------------------------------------------------
 
 %files -f %{name}.lang
 %defattr(-,root,root)
