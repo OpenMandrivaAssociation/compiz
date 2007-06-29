@@ -22,7 +22,7 @@ URL: http://www.go-compiz.org/
 Source: http://xorg.freedesktop.org/archive/individual/app/%{srcname}.tar.bz2 
 Source1: compiz.defaults
 Source2: compiz-window-decorator
-Patch0: compiz-0.3.6-indirect-detection.patch
+Patch0: compiz-0.5.1-indirect-detection.patch
 # Patches for AIGLX
 # Thanks Kristian HÃ¸gsberg
 # Patch1 updated by Johannes (Hanno) Böck to automatically detect AIGLX
@@ -120,7 +120,7 @@ Development files for compiz
 
 %prep
 %setup -q -n %{distname}
-#%patch0 -p1 -R
+%patch0 -p1
 #%patch1 -p1 -b .tfp_server_ext
 %patch3 -p1 -b .net_wm_cm
 #%patch5 -p1 -b .top
@@ -141,8 +141,7 @@ perl -pi -e "s|(QTDIR/)lib|\1%{_lib}|" configure
 %configure2_5x \
 		--enable-kde \
 		--enable-gnome \
-		--with-default-plugins="png,decoration,wobbly,fade,minimize,cube,rotate,zoom,scale,move,resize,place,switcher,water,screenshot,dbus,annotate,clone" \
-		--enable-libsvg-cairo
+		--enable-librsvg
 %make
 
 %install
