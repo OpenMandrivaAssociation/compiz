@@ -22,12 +22,11 @@ URL: http://www.go-compiz.org/
 Source: http://xorg.freedesktop.org/archive/individual/app/%{srcname}.tar.bz2 
 Source1: compiz.defaults
 Source2: compiz-window-decorator
-Patch0: compiz-0.5.1-indirect-detection.patch
 # Patches for AIGLX
 # Thanks Kristian HÃ¸gsberg
 # Patch1 updated by Johannes (Hanno) Böck to automatically detect AIGLX
 # http://svn.hboeck.de/xgl-overlay/x11-wm/compiz/files/compiz-tfp
-Patch1: 0001-Also-check-for-tfp-in-server-extensions.txt
+Patch1: 0001-Also-check-for-tfp-in-server-extensions-rediff.txt
 Patch3: 0003-Set-_NET_WM_CM_S-d-selection-instead-of-older-WM_S-d.txt
 # Patch from mandriva
 Patch5: compiz-mandriva-top.patch
@@ -120,10 +119,9 @@ Development files for compiz
 
 %prep
 %setup -q -n %{distname}
-%patch0 -p1
-#%patch1 -p1 -b .tfp_server_ext
+%patch1 -p1 -b .tfp_server_ext
 %patch3 -p1 -b .net_wm_cm
-#%patch5 -p1 -b .top
+%patch5 -p1 -b .top
 %patch8 -p1 -b .minimize
 %patch9 -p1 -b .white
 %patch10 -p1 -b .fix_kde_windows_decoration_mem_leak
