@@ -178,36 +178,9 @@ rm -rf %{buildroot}
 %{_libdir}/%{name}/*.la
 %{_libdir}/%{name}/*.a
 %{_libdir}/window-manager-settings/lib%{name}.*
-%{_sysconfdir}/gconf/schemas/%{name}-annotate.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-blur.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-clone.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-core.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-cube.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-dbus.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-decoration.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-fade.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-fs.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-gconf.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-glib.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-ini.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-inotify.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-minimize.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-move.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-place.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-plane.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-png.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-regex.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-resize.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-rotate.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-scale.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-screenshot.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-svg.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-switcher.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-video.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-water.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-wobbly.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-zoom.schemas
-
+%(for schema in %schemas; do
+   echo "%{_sysconfdir}/gconf/schemas/$schema.schemas"
+  done)
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/*.png
 %{_datadir}/%{name}/*.xml
