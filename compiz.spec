@@ -56,6 +56,7 @@ BuildRequires: automake
 BuildRequires: libdbus-qt-1-devel
 BuildRequires: kdebase-devel
 BuildRequires: fuse-devel
+BuildRequires: libxslt-devel
 Requires(post): GConf2
 Requires(preun): GConf2
 Requires: compositing-wm-common
