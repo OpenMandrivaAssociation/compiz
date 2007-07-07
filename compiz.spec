@@ -1,7 +1,12 @@
 %define name compiz
 %define version 0.5.1
-%define rel 1
+%define rel 2
 %define git 20070707
+
+%define major 0
+%define libname %mklibname %{name} %major
+%define libname_devel %mklibname -d %{name}
+
 
 %if  %{git}
 %define srcname %{name}-%{version}-%{git}
@@ -24,7 +29,7 @@ Source1: compiz.defaults
 Source2: compiz-window-decorator
 # Patches for AIGLX
 # Thanks Kristian HÃ¸gsberg
-# Patch1 updated by Johannes (Hanno) Böck to automatically detect AIGLX
+# Patch1 updated by Johannes (Hanno) Bï¿½ck to automatically detect AIGLX
 # http://svn.hboeck.de/xgl-overlay/x11-wm/compiz/files/compiz-tfp
 Patch1: 0001-Also-check-for-tfp-in-server-extensions-rediff.txt
 Patch3: 0003-Set-_NET_WM_CM_S-d-selection-instead-of-older-WM_S-d.txt
@@ -60,11 +65,11 @@ BuildRequires: libxslt-devel
 BuildRequires: libxslt-proc
 Requires(post): GConf2
 Requires(preun): GConf2
+Requires: %libname = %{version}-%{release}
 Requires: compositing-wm-common
 Provides: compositing-wm
 Requires: compiz-decorator
 Obsoletes: beryl-core
-Obsoletes: %mklibname beryl-core 0
 
 %description
 OpenGL composite manager for Xgl and AIGLX.
@@ -97,10 +102,23 @@ compositing manager.
 
 #----------------------------------------------------------------------------
 
-%package devel
+%package -n %libname
+Summary: Shared libraries for compiz
+Group: System/X11
+
+Obsoletes: %mklibname beryl-core 0
+
+%description -n %libname
+Shared libraries for compiz
+
+#----------------------------------------------------------------------------
+
+%package -n %libname_devel
 Summary: Development files for compiz
 Group: Development/X11
-Requires: %{name} = %{version}
+Provides: %{name}-devel = %{version}-%{release}
+Obsoletes: %{name}-devel
+Requires: %libname = %{version}-%{release}
 Requires: png-devel
 Requires: libxcomposite-devel
 Requires: libxdamage-devel
@@ -113,10 +131,13 @@ Requires: startup-notification-devel
 Requires: GL-devel
 Requires: libxslt-devel
 Requires: libxslt-proc
+Requires: glib2-devel
+Requires: gettext-devel
+Requires: intltool
 
 Obsoletes: %mklibname -d beryl-core 0
 
-%description devel
+%description -n %libname_devel
 Development files for compiz
 
 #----------------------------------------------------------------------------
@@ -176,7 +197,6 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %{_bindir}/%{name}
 %{_bindir}/%{name}-window-decorator
-%{_libdir}/libdecoration.so.*
 %dir %{_libdir}/%{name}
 %{_libdir}/%{name}/*.so
 %{_libdir}/%{name}/*.la
@@ -203,7 +223,11 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %{_bindir}/kde-window-decorator
 
-%files devel
+%files -n %libname
+%defattr(-,root,root)
+%{_libdir}/libdecoration.so.*
+
+%files -n %libname_devel
 %defattr(-,root,root)
 %{_includedir}/%{name}/%{name}.h
 %{_includedir}/%{name}/cube.h
