@@ -132,8 +132,6 @@ Requires: GL-devel
 Requires: libxslt-devel
 Requires: libxslt-proc
 Requires: glib2-devel
-Requires: gettext-devel
-Requires: intltool
 
 Obsoletes: %mklibname -d beryl-core 0
 
