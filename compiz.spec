@@ -57,6 +57,7 @@ BuildRequires: libdbus-qt-1-devel
 BuildRequires: kdebase-devel
 BuildRequires: fuse-devel
 BuildRequires: libxslt-devel
+BuildRequires: libxslt-proc
 Requires(post): GConf2
 Requires(preun): GConf2
 Requires: compositing-wm-common
