@@ -111,6 +111,8 @@ Requires: libice-devel
 Requires: libsm-devel
 Requires: startup-notification-devel
 Requires: GL-devel
+Requires: libxslt-devel
+Requires: libxslt-proc
 
 Obsoletes: %mklibname -d beryl-core 0
 
