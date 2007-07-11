@@ -1,6 +1,6 @@
 %define name compiz
 %define version 0.5.1
-%define rel 3
+%define rel 4
 %define git 20070707
 
 %define major 0
@@ -105,7 +105,7 @@ compositing manager.
 %package -n %libname
 Summary: Shared libraries for compiz
 Group: System/X11
-
+Conflicts: %{name} < 0.5.1
 Obsoletes: %mklibname beryl-core 0
 
 %description -n %libname
