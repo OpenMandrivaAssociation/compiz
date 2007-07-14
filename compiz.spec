@@ -1,7 +1,7 @@
 %define name compiz
 %define version 0.5.1
-%define rel 4
-%define git 20070707
+%define rel 1
+%define git 20070712
 
 %define major 0
 %define libname %mklibname %{name} %major
@@ -9,7 +9,7 @@
 
 
 %if  %{git}
-%define srcname %{name}-%{version}-%{git}
+%define srcname %{name}-%{git}
 %define distname %{name}
 %define release %mkrel 0.%{git}.%{rel}
 %else
@@ -65,7 +65,7 @@ BuildRequires: libxslt-devel
 BuildRequires: libxslt-proc
 Requires(post): GConf2
 Requires(preun): GConf2
-Requires: %libname = %{version}-%{release}
+Requires: %{libname} = %{version}-%{release}
 Requires: compositing-wm-common
 Provides: compositing-wm
 Requires: compiz-decorator
@@ -80,7 +80,8 @@ OpenGL composite manager for Xgl and AIGLX.
 Summary: GTK window decorator for compiz
 Group: System/X11
 Provides: compiz-decorator
-Conflicts: compiz < 0.3.6-7mdv2007.1
+Conflicts: %{name} < 0.3.6-4mdv2007.1
+Requires:  %{name} = %{version}-%{release}
 Obsoletes: heliodor
 
 %description decorator-gtk
@@ -93,7 +94,8 @@ compositing manager.
 Summary: KDE window decorator for compiz
 Group: System/X11
 Provides: compiz-decorator
-Conflicts: compiz < 0.3.6-4mdv2007.1
+Conflicts: %{name} < 0.3.6-4mdv2007.1
+Requires:  %{name} = %{version}-%{release}
 Obsoletes: aquamarine
 
 %description decorator-kde
@@ -116,9 +118,9 @@ Shared libraries for compiz
 %package -n %libname_devel
 Summary: Development files for compiz
 Group: Development/X11
-Provides: %{name}-devel = %{version}-%{release}
+Provides:  %{name}-devel = %{version}-%{release}
 Obsoletes: %{name}-devel
-Requires: %libname = %{version}-%{release}
+Requires: %{libname} = %{version}-%{release}
 Requires: png-devel
 Requires: libxcomposite-devel
 Requires: libxdamage-devel
