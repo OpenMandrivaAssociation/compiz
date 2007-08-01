@@ -1,7 +1,7 @@
 %define name compiz
 %define version 0.5.1
 %define rel 1
-%define git 20070725
+%define git 20070801
 
 %define major 0
 %define libname %mklibname %{name} %major
