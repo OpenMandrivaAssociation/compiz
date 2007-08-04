@@ -1,7 +1,7 @@
 %define name compiz
-%define version 0.5.1
+%define version 0.5.2
 %define rel 1
-%define git 20070801
+%define git 0
 
 %define major 0
 %define libname %mklibname %{name} %major
@@ -157,16 +157,9 @@ Development files for compiz
 %if %{git}
   # This is a CVS snapshot, so we need to generate makefiles.
   sh autogen.sh -V
-%else
-  aclocal
-  automake
-  autoconf
 %endif
-perl -pi -e "s|(QTDIR/)lib|\1%{_lib}|" configure
-%configure2_5x \
-		--enable-kde \
-		--enable-gnome \
-		--enable-librsvg
+#perl -pi -e "s|(QTDIR/)lib|\1%{_lib}|" configure
+%configure2_5x 
 %make
 
 %install
