@@ -1,6 +1,6 @@
 %define name compiz
 %define version 0.5.2
-%define rel 2
+%define rel 3
 %define git 0
 
 %define major 0
@@ -48,6 +48,7 @@ BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: libx11-devel >= 1.0.0
 BuildRequires: x11-util-macros >= 1.0.1
 BuildRequires: x11-proto-devel
+BuildRequires: librsvg-devel
 BuildRequires: libsvg-cairo-devel
 BuildRequires: libpng-devel
 BuildRequires: GL-devel
