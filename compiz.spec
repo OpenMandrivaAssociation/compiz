@@ -158,12 +158,13 @@ Development files for compiz
 %if %{git}
   # This is a CVS snapshot, so we need to generate makefiles.
   sh autogen.sh -V
-%else
+%elif %{mdkversion} < 200800
+  # (colin) This seems to be needed on 2007.1 but breaks things on 2008+
   aclocal
   automake
   autoconf
 %endif
-#perl -pi -e "s|(QTDIR/)lib|\1%{_lib}|" configure
+perl -pi -e "s|(QTDIR/)lib|\1%{_lib}|" configure
 %configure2_5x 
 %make
 
@@ -216,8 +217,10 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %{_bindir}/gtk-window-decorator
 %{_sysconfdir}/gconf/schemas/gwd.schemas
+%if %{mdkversion} > 200710
 %{_datadir}/gnome-control-center/keybindings/50-%{name}-key.xml
 %{_datadir}/gnome-control-center/keybindings/50-%{name}-desktop-key.xml
+%endif
 
 %files decorator-kde
 %defattr(-,root,root)
