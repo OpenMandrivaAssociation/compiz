@@ -158,7 +158,8 @@ Development files for compiz
 %if %{git}
   # This is a CVS snapshot, so we need to generate makefiles.
   sh autogen.sh -V
-%elif %{mdkversion} < 200800
+%endif
+%if %{mdkversion} < 200800
   # (colin) This seems to be needed on 2007.1 but breaks things on 2008+
   aclocal
   automake
