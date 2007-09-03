@@ -32,7 +32,6 @@ Source2: compiz-window-decorator
 # Patch1 updated by Johannes (Hanno) B�ck to automatically detect AIGLX
 # http://svn.hboeck.de/xgl-overlay/x11-wm/compiz/files/compiz-tfp
 Patch1: 0001-Also-check-for-tfp-in-server-extensions-rediff.txt
-Patch3: 0003-Set-_NET_WM_CM_S-d-selection-instead-of-older-WM_S-d.txt
 # Patch from mandriva
 Patch4: compiz-default-plugins.patch
 Patch5: compiz-mandriva-top.patch
@@ -147,7 +146,6 @@ Development files for compiz
 %prep
 %setup -q -n %{distname}
 %patch1 -p1 -b .tfp_server_ext
-%patch3 -p1 -b .net_wm_cm
 %patch4 -p1 -b .defplug
 %patch5 -p1 -b .top
 %patch8 -p1 -b .minimize
