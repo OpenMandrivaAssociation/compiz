@@ -1,6 +1,6 @@
 %define name compiz
 %define version 0.5.2
-%define rel 4
+%define rel 5
 %define git 0
 
 %define major 0
@@ -32,11 +32,10 @@ Source2: compiz-window-decorator
 # Patch1 updated by Johannes (Hanno) B�ck to automatically detect AIGLX
 # http://svn.hboeck.de/xgl-overlay/x11-wm/compiz/files/compiz-tfp
 Patch1: 0001-Also-check-for-tfp-in-server-extensions-rediff.txt
-# Patch from mandriva
-Patch4: compiz-default-plugins.patch
-Patch5: compiz-mandriva-top.patch
-Patch8: minimize-unminimize.patch
-Patch10:	compiz-0.3.6-kde-mem-leak.patch
+Patch2:	compiz-0.3.6-kde-mem-leak.patch
+# Patches for Mandriva defaults
+Patch3: compiz-default-plugins.patch
+Patch4: compiz-mandriva-top.patch
 
 License: GPL
 BuildRoot: %{_tmppath}/%{name}-root
@@ -143,10 +142,9 @@ Development files for compiz
 %prep
 %setup -q -n %{distname}
 %patch1 -p1 -b .tfp_server_ext
-%patch4 -p1 -b .defplug
-%patch5 -p1 -b .top
-%patch8 -p1 -b .minimize
-%patch10 -p1 -b .fix_kde_windows_decoration_mem_leak
+%patch2 -p1 -b .fix_kde_windows_decoration_mem_leak
+%patch3 -p1 -b .defplug
+%patch4 -p1 -b .top
 
 %build
 %if %{git}
