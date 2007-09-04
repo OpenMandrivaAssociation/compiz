@@ -36,9 +36,6 @@ Patch1: 0001-Also-check-for-tfp-in-server-extensions-rediff.txt
 Patch4: compiz-default-plugins.patch
 Patch5: compiz-mandriva-top.patch
 Patch8: minimize-unminimize.patch
-# From gandalfn
-Patch9: 90-fix-no-border-window-shadow.patch
-
 Patch10:	compiz-0.3.6-kde-mem-leak.patch
 
 License: GPL
@@ -149,7 +146,6 @@ Development files for compiz
 %patch4 -p1 -b .defplug
 %patch5 -p1 -b .top
 %patch8 -p1 -b .minimize
-%patch9 -p1 -b .white
 %patch10 -p1 -b .fix_kde_windows_decoration_mem_leak
 
 %build
