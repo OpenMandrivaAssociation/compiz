@@ -153,9 +153,7 @@ Development files for compiz
 %endif
 %if %{mdkversion} < 200800
   # (colin) This seems to be needed on 2007.1 but breaks things on 2008+
-  aclocal
-  automake
-  autoconf
+  autoreconf
 %endif
 perl -pi -e "s|(QTDIR/)lib|\1%{_lib}|" configure
 %configure2_5x 
