@@ -176,6 +176,13 @@ install -D -m644 %{SOURCE1} %{buildroot}%{_datadir}/compositing-wm/%{name}.defau
 %preun
 %preun_uninstall_gconf_schemas %{schemas}
 
+%triggerpostun -- beryl-core
+
+if [ -w %{_sysconfdir}/sysconfig/compositing-wm ]; then
+  sed -i 's/COMPOSITING_WM=beryl/COMPOSITING_WM=compiz-fusion/' \
+   %{_sysconfdir}/sysconfig/compositing-wm
+fi
+
 %post decorator-gtk
 %post_install_gconf_schemas gwd
 
