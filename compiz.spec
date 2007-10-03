@@ -1,6 +1,6 @@
 %define name compiz
 %define version 0.5.2
-%define rel 7
+%define rel 8
 %define git 0
 
 %define major 0
@@ -37,6 +37,8 @@ Patch2:	compiz-0.3.6-kde-mem-leak.patch
 Patch3: compiz-default-plugins.patch
 Patch4: compiz-mandriva-top.patch
 Patch5: compiz-kde-decorator-fix.patch
+Patch6: compiz-decoration-command.patch
+Patch7: compiz-window-decorator.patch
 
 License: GPL
 BuildRoot: %{_tmppath}/%{name}-root
@@ -147,6 +149,8 @@ Development files for compiz
 %patch3 -p1 -b .defplug
 %patch4 -p1 -b .top
 %patch5 -p1 -b .kde_decorator_offset
+%patch6 -p1 -b .decorator_command
+%patch7 -p1 -b .compiz_decorator
 
 %build
 %if %{git}
