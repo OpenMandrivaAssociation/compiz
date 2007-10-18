@@ -1,6 +1,6 @@
 %define name compiz
-%define version 0.5.2
-%define rel 10
+%define version 0.6.2
+%define rel 0.1
 %define git 0
 
 %define major 0
@@ -24,7 +24,7 @@ Release: %release
 Summary: OpenGL composite manager for Xgl and AIGLX
 Group: System/X11
 URL: http://www.go-compiz.org/
-Source: http://xorg.freedesktop.org/archive/individual/app/%{srcname}.tar.bz2 
+Source: http://xorg.freedesktop.org/archive/individual/app/%{srcname}.tar.gz 
 Source1: compiz.defaults
 Source2: compiz-window-decorator
 # Patches for AIGLX
@@ -36,7 +36,6 @@ Patch2:	compiz-0.3.6-kde-mem-leak.patch
 # Patches for Mandriva defaults
 Patch3: compiz-default-plugins.patch
 Patch4: compiz-mandriva-top.patch
-Patch5: compiz-kde-decorator-fix.patch
 Patch6: compiz-decoration-command.patch
 Patch7: compiz-window-decorator.patch
 
@@ -148,7 +147,6 @@ Development files for compiz
 %patch2 -p1 -b .fix_kde_windows_decoration_mem_leak
 %patch3 -p1 -b .defplug
 %patch4 -p1 -b .top
-%patch5 -p1 -b .kde_decorator_offset
 %patch6 -p1 -b .decorator_command
 %patch7 -p1 -b .compiz_decorator
 
