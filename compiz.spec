@@ -73,7 +73,7 @@ Requires: compiz-decorator
 Obsoletes: beryl-core
 
 %description
-OpenGL composite manager for Xgl and AIGLX.
+Compiz is an OpenGL composite manager for Xgl and AIGLX.
 
 #----------------------------------------------------------------------------
 
@@ -112,7 +112,7 @@ Conflicts: %{name} < 0.5.1
 Obsoletes: %mklibname beryl-core 0
 
 %description -n %libname
-Shared libraries for compiz
+This package provides shared libraries for compiz.
 
 #----------------------------------------------------------------------------
 
@@ -139,7 +139,7 @@ Requires: glib2-devel
 Obsoletes: %mklibname -d beryl-core 0
 
 %description -n %libname_devel
-Development files for compiz
+This package provides development files for compiz.
 
 #----------------------------------------------------------------------------
 
