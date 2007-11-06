@@ -1,6 +1,6 @@
 %define name compiz
 %define version 0.6.2
-%define rel 2
+%define rel 2.1
 %define git 0
 
 %define major 0
@@ -39,6 +39,7 @@ Patch4: compiz-mandriva-top.patch
 Patch6: compiz-decoration-command.patch
 Patch7: compiz-window-decorator.patch
 Patch8: compiz-fix-kde-screensaver.patch
+Patch9: CVE-2007-3920-screensaver-password-bypass.patch
 
 License: GPL
 BuildRoot: %{_tmppath}/%{name}-root
@@ -151,6 +152,8 @@ Development files for compiz
 %patch6 -p1 -b .decorator_command
 %patch7 -p1 -b .compiz_decorator
 %patch8 -p1 -b .kde_screensaver
+%patch9 -p1 -b .cve_pw_bypass
+
 
 %build
 %if %{git}
