@@ -42,6 +42,7 @@ Patch8: compiz-fix-kde-screensaver.patch
 Patch9: CVE-2007-3920-screensaver-password-bypass.patch
 
 License: GPL
+BuildRoot: %{_tmppath}/%{name}-root
 
 BuildRequires: libx11-devel >= 1.0.0
 BuildRequires: x11-util-macros >= 1.0.1
