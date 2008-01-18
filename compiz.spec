@@ -66,7 +66,7 @@ BuildRequires: librsvg-devel			>= 2.18.2
 BuildRequires: libcairo-devel			>= 1.4.10
 BuildRequires: libsvg-cairo-devel		>= 0.1.6
 BuildRequires: libdbus-qt-devel			>= 0.70
-BuildRequires: libfuse-devel			>= 0:2.7.2
+BuildRequires: libfuse-devel			>= 2.7.2
 
 Requires(post): GConf2
 Requires(preun): GConf2
