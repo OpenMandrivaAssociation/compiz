@@ -1,15 +1,30 @@
-Name: compiz
+%define name compiz
+%define version 0.6.2
+%define rel 5
+%define git 0
 
 %define major 0
 %define libname %mklibname %{name} %major
 %define libname_devel %mklibname -d %{name}
 
-Version: 0.6.2
-Release: %mkrel 5
+
+%if  %{git}
+%define srcname %{name}-%{git}
+%define distname %{name}
+%define release %mkrel 0.%{git}.%{rel}
+%else
+%define srcname %{name}-%{version}
+%define distname %{name}-%{version}
+%define release %mkrel %{rel}
+%endif
+
+Name: %name
+Version: %version
+Release: %release
 Summary: OpenGL composite manager for Xgl and AIGLX
 Group: System/X11
 URL: http://www.go-compiz.org/
-Source: http://xorg.freedesktop.org/archive/individual/app/%{name}-%{version}.tar.gz 
+Source: http://xorg.freedesktop.org/archive/individual/app/%{srcname}.tar.gz 
 Source1: compiz.defaults
 Source2: compiz-window-decorator
 # Patches for AIGLX
@@ -148,7 +163,7 @@ This package provides development files for compiz.
 #----------------------------------------------------------------------------
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q -n %{distname}
 %patch1 -p1 -b .tfp_server_ext
 %patch2 -p1 -b .fix_kde_windows_decoration_mem_leak
 %patch3 -p1 -b .defplug
@@ -160,6 +175,10 @@ This package provides development files for compiz.
 
 
 %build
+%if %{git}
+  # This is a CVS snapshot, so we need to generate makefiles.
+  sh autogen.sh -V
+%endif
 %if %{mdkversion} < 200800
   # (colin) This seems to be needed on 2007.1 but breaks things on 2008+
   autoreconf
