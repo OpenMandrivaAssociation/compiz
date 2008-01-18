@@ -65,7 +65,7 @@ BuildRequires: libxslt-proc			>= 1.1.22
 BuildRequires: librsvg-devel			>= 2.18.2
 BuildRequires: libcairo-devel			>= 1.4.10
 BuildRequires: libsvg-cairo-devel		>= 0.1.6
-BuildRequires: libdbus-qt-devel			>= 0.70
+BuildRequires: libdbus-qt-1-devel		>= 0.70
 BuildRequires: fuse-devel			>= 2.7.2
 
 Requires(post): GConf2
