@@ -1,30 +1,15 @@
-%define name compiz
-%define version 0.6.2
-%define rel 4
-%define git 0
+Name: compiz
 
 %define major 0
 %define libname %mklibname %{name} %major
 %define libname_devel %mklibname -d %{name}
 
-
-%if  %{git}
-%define srcname %{name}-%{git}
-%define distname %{name}
-%define release %mkrel 0.%{git}.%{rel}
-%else
-%define srcname %{name}-%{version}
-%define distname %{name}-%{version}
-%define release %mkrel %{rel}
-%endif
-
-Name: %name
-Version: %version
-Release: %release
+Version: 0.6.2
+Release: %mkrel 5
 Summary: OpenGL composite manager for Xgl and AIGLX
 Group: System/X11
 URL: http://www.go-compiz.org/
-Source: http://xorg.freedesktop.org/archive/individual/app/%{srcname}.tar.gz 
+Source: http://xorg.freedesktop.org/archive/individual/app/%{name}-%{version}.tar.gz 
 Source1: compiz.defaults
 Source2: compiz-window-decorator
 # Patches for AIGLX
@@ -44,26 +29,45 @@ Patch9: CVE-2007-3920-screensaver-password-bypass.patch
 License: GPL
 BuildRoot: %{_tmppath}/%{name}-root
 
-BuildRequires: libx11-devel >= 1.0.0
-BuildRequires: x11-util-macros >= 1.0.1
-BuildRequires: x11-proto-devel
-BuildRequires: librsvg-devel
-BuildRequires: libsvg-cairo-devel
-BuildRequires: libpng-devel
-BuildRequires: GL-devel
-BuildRequires: libwnck-devel
-BuildRequires: metacity-devel
-BuildRequires: libgnome-window-settings-devel
-BuildRequires: libgnome-desktop-2-devel
-BuildRequires: libxcomposite-devel
-BuildRequires: libxdamage-devel
-BuildRequires: intltool
-BuildRequires: automake
-BuildRequires: libdbus-qt-1-devel
-BuildRequires: kdebase-devel
-BuildRequires: fuse-devel
-BuildRequires: libxslt-devel
-BuildRequires: libxslt-proc
+BuildRequires: x11-util-macros			>= 1.1.5
+BuildRequires: libx11-devel			>= 1.1.3
+BuildRequires: libxext-devel			>= 1.0.3
+BuildRequires: libxtst-devel			>= 1.0.3
+BuildRequires: libxcursor-devel			>= 1.1.9
+BuildRequires: libxrender-devel			>= 0.9.4
+BuildRequires: libxcomposite-devel		>= 0.4.0
+BuildRequires: libxdamage-devel			>= 1.1.1
+BuildRequires: libxinerama-devel		>= 1.0.2
+BuildRequires: libxrandr-devel			>= 1.2.2
+BuildRequires: libxfixes-devel			>= 4.0.3
+BuildRequires: freetype2-devel			>= 2.3.5
+BuildRequires: xft2-devel			>= 2.1.12
+BuildRequires: fontconfig-devel			>= 2.5.0
+
+BuildRequires: mesagl-devel			>= 7.0.2
+BuildRequires: mesaglu-devel			>= 7.0.2
+
+BuildRequires: libpng-devel			>= 2:1.2.24
+BuildRequires: zlib-devel
+
+BuildRequires: dbus-glib-devel			>= 0.74
+BuildRequires: libGConf2-devel			>= 2.21.1
+BuildRequires: libgnome-window-settings-devel	>= 2.21.4
+BuildRequires: libwnck-devel			>= 2.21.2.1
+BuildRequires: metacity-devel			>= 2.21.5
+BuildRequires: pango-devel			>= 1.19.2
+BuildRequires: gnome-desktop-devel		>= 2.21.4
+BuildRequires: startup-notification-devel	>= 0.9
+BuildRequires: kdebase-devel			>= 1:3.5.8
+BuildRequires: bonoboui-devel			>= 2.20.0
+BuildRequires: libxslt-devel			>= 1.1.22
+BuildRequires: libxslt-proc			>= 1.1.22
+BuildRequires: librsvg-devel			>= 2.18.2
+BuildRequires: libcairo-devel			>= 1.4.10
+BuildRequires: libsvg-cairo-devel		>= 0.1.6
+BuildRequires: libdbus-qt-devel			>= 0.70
+BuildRequires: libfuse-devel			>= 0:2.7.2
+
 Requires(post): GConf2
 Requires(preun): GConf2
 Requires: %{libname} = %{version}-%{release}
@@ -144,7 +148,7 @@ This package provides development files for compiz.
 #----------------------------------------------------------------------------
 
 %prep
-%setup -q -n %{distname}
+%setup -q -n %{name}-%{version}
 %patch1 -p1 -b .tfp_server_ext
 %patch2 -p1 -b .fix_kde_windows_decoration_mem_leak
 %patch3 -p1 -b .defplug
@@ -156,10 +160,6 @@ This package provides development files for compiz.
 
 
 %build
-%if %{git}
-  # This is a CVS snapshot, so we need to generate makefiles.
-  sh autogen.sh -V
-%endif
 %if %{mdkversion} < 200800
   # (colin) This seems to be needed on 2007.1 but breaks things on 2008+
   autoreconf
