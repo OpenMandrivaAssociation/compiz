@@ -44,44 +44,44 @@ Patch9: CVE-2007-3920-screensaver-password-bypass.patch
 License: GPL
 BuildRoot: %{_tmppath}/%{name}-root
 
-BuildRequires: x11-util-macros			>= 1.1.5
-BuildRequires: libx11-devel			>= 1.1.3
-BuildRequires: libxext-devel			>= 1.0.3
-BuildRequires: libxtst-devel			>= 1.0.3
-BuildRequires: libxcursor-devel			>= 1.1.9
-BuildRequires: libxrender-devel			>= 0.9.4
-BuildRequires: libxcomposite-devel		>= 0.4.0
-BuildRequires: libxdamage-devel			>= 1.1.1
-BuildRequires: libxinerama-devel		>= 1.0.2
-BuildRequires: libxrandr-devel			>= 1.2.2
-BuildRequires: libxfixes-devel			>= 4.0.3
-BuildRequires: freetype2-devel			>= 2.3.5
-BuildRequires: xft2-devel			>= 2.1.12
-BuildRequires: fontconfig-devel			>= 2.5.0
+BuildRequires: x11-util-macros
+BuildRequires: libx11-devel
+BuildRequires: libxext-devel
+BuildRequires: libxtst-devel
+BuildRequires: libxcursor-devel
+BuildRequires: libxrender-devel
+BuildRequires: libxcomposite-devel
+BuildRequires: libxdamage-devel
+BuildRequires: libxinerama-devel
+BuildRequires: libxrandr-devel
+BuildRequires: libxfixes-devel
+BuildRequires: freetype2-devel
+BuildRequires: xft2-devel
+BuildRequires: fontconfig-devel
 
-BuildRequires: mesagl-devel			>= 7.0.2
-BuildRequires: mesaglu-devel			>= 7.0.2
+BuildRequires: mesagl-devel
+BuildRequires: mesaglu-devel
 
-BuildRequires: libpng-devel			>= 2:1.2.24
+BuildRequires: libpng-devel
 BuildRequires: zlib-devel
 
-BuildRequires: dbus-glib-devel			>= 0.74
-BuildRequires: libGConf2-devel			>= 2.21.1
-BuildRequires: libgnome-window-settings-devel	>= 2.21.4
-BuildRequires: libwnck-devel			>= 2.21.2.1
-BuildRequires: metacity-devel			>= 2.21.5
-BuildRequires: pango-devel			>= 1.19.2
-BuildRequires: gnome-desktop-devel		>= 2.21.4
-BuildRequires: startup-notification-devel	>= 0.9
-BuildRequires: kdebase-devel			>= 1:3.5.8
-BuildRequires: bonoboui-devel			>= 2.20.0
-BuildRequires: libxslt-devel			>= 1.1.22
-BuildRequires: libxslt-proc			>= 1.1.22
-BuildRequires: librsvg-devel			>= 2.18.2
-BuildRequires: libcairo-devel			>= 1.4.10
-BuildRequires: libsvg-cairo-devel		>= 0.1.6
-BuildRequires: libdbus-qt-1-devel		>= 0.70
-BuildRequires: fuse-devel			>= 2.7.2
+BuildRequires: dbus-glib-devel
+BuildRequires: libGConf2-devel
+BuildRequires: libgnome-window-settings-devel
+BuildRequires: libwnck-devel
+BuildRequires: metacity-devel
+BuildRequires: pango-devel
+BuildRequires: gnome-desktop-devel
+BuildRequires: startup-notification-devel
+BuildRequires: kdebase-devel
+BuildRequires: bonoboui-devel
+BuildRequires: libxslt-devel
+BuildRequires: libxslt-proc
+BuildRequires: librsvg-devel
+BuildRequires: libcairo-devel
+BuildRequires: libsvg-cairo-devel
+BuildRequires: libdbus-qt-1-devel
+BuildRequires: fuse-devel
 
 Requires(post): GConf2
 Requires(preun): GConf2
