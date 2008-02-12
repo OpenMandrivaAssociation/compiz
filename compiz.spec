@@ -1,5 +1,7 @@
 %define name compiz
-%define version 0.7.0
+# (cg) Waiting a few days for XCB to settle. Please don't submit yet.
+# This version hack is there to stop anyone doing so by accident ;)
+%define version 0.0.0
 %define rel 1
 %define git 0
 
