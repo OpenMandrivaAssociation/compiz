@@ -1,6 +1,6 @@
 %define name compiz
-%define version 0.6.2
-%define rel 5
+%define version 0.7.0
+%define rel 1
 %define git 0
 
 %define major 0
@@ -24,7 +24,7 @@ Release: %release
 Summary: OpenGL composite manager for Xgl and AIGLX
 Group: System/X11
 URL: http://www.go-compiz.org/
-Source: http://xorg.freedesktop.org/archive/individual/app/%{srcname}.tar.gz 
+Source: http://xorg.freedesktop.org/archive/individual/app/%{srcname}.tar.gz
 Source1: compiz.defaults
 Source2: compiz-window-decorator
 # Patches for AIGLX
@@ -184,7 +184,7 @@ This package provides development files for compiz.
   autoreconf
 %endif
 perl -pi -e "s|(QTDIR/)lib|\1%{_lib}|" configure
-%configure2_5x 
+%configure2_5x --disable-kde4`
 %make
 
 %install
@@ -194,7 +194,7 @@ install -m755 %{SOURCE2} %{buildroot}%{_bindir}/%{name}-window-decorator
 install -D -m644 %{SOURCE1} %{buildroot}%{_datadir}/compositing-wm/%{name}.defaults
 %find_lang %{name}
 
-%define schemas compiz-annotate compiz-blur compiz-clone compiz-core compiz-cube compiz-dbus compiz-decoration compiz-fade compiz-fs compiz-gconf compiz-glib compiz-ini compiz-inotify compiz-minimize compiz-move compiz-place compiz-plane compiz-png compiz-regex compiz-resize compiz-rotate compiz-scale compiz-screenshot compiz-svg compiz-switcher compiz-video compiz-water compiz-wobbly compiz-zoom
+%define schemas compiz-annotate compiz-blur compiz-clone compiz-core compiz-cube compiz-dbus compiz-decoration compiz-fade compiz-fs compiz-gconf compiz-glib compiz-ini compiz-inotify compiz-kconfig compiz-minimize compiz-move compiz-place compiz-plane compiz-png compiz-regex compiz-resize compiz-rotate compiz-scale compiz-screenshot compiz-svg compiz-switcher compiz-video compiz-water compiz-wobbly compiz-zoom
 
 %post
 %post_install_gconf_schemas %{schemas}
@@ -231,7 +231,9 @@ rm -rf %{buildroot}
 %{_libdir}/window-manager-settings/lib%{name}.*
 %(for schema in %schemas; do
    echo "%{_sysconfdir}/gconf/schemas/$schema.schemas"
+   echo "%{_datadir}/config.kcfg/$schema.kcfg"
   done)
+%{_datadir}/config/%{name}rc
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/*.png
 %{_datadir}/%{name}/*.xml
@@ -254,19 +256,14 @@ rm -rf %{buildroot}
 
 %files -n %libname
 %defattr(-,root,root)
-%{_libdir}/libdecoration.so.*
+%{_libdir}/libdecoration.so.%{major}*
 
 %files -n %libname_devel
 %defattr(-,root,root)
-%{_includedir}/%{name}/%{name}.h
-%{_includedir}/%{name}/cube.h
+%{_includedir}/%{name}/%{name}*.h
 %{_includedir}/%{name}/decoration.h
-%{_includedir}/%{name}/scale.h
 %{_libdir}/libdecoration.a
 %{_libdir}/libdecoration.la
 %{_libdir}/libdecoration.so
-%{_libdir}/pkgconfig/%{name}.pc
-%{_libdir}/pkgconfig/%{name}-cube.pc
-%{_libdir}/pkgconfig/%{name}-gconf.pc
-%{_libdir}/pkgconfig/%{name}-scale.pc
+%{_libdir}/pkgconfig/%{name}*.pc
 %{_libdir}/pkgconfig/libdecoration.pc
