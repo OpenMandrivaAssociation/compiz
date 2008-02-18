@@ -1,7 +1,5 @@
 %define name compiz
-# (cg) Waiting a few days for XCB to settle. Please don't submit yet.
-# This version hack is there to stop anyone doing so by accident ;)
-%define version 0.0.0
+%define version 0.7.0
 %define rel 1
 %define git 0
 
@@ -42,6 +40,17 @@ Patch6: compiz-decoration-command.patch
 Patch7: compiz-window-decorator.patch
 Patch8: compiz-fix-kde-screensaver.patch
 Patch9: CVE-2007-3920-screensaver-password-bypass.patch
+
+# Cherry picked patches from master:
+Patch1001: 0001-Added-wrappable-callback-functions-for-session-manag.patch
+Patch1002: 0002-Don-t-allow-minimization-of-skip-taskbar-dialogs.patch
+Patch1003: 0003-Do-not-try-to-produce-broken-introspection-informati.patch
+Patch1004: 0004-Do-no-register-core-path-twice.patch
+Patch1005: 0005-Export-session-client-id-to-sessionSaveYourself.patch
+Patch1006: 0006-Don-t-overwrite-new-client-id-with-the-one-passed-vi.patch
+Patch1007: 0007-Don-t-showdesktop-grabbed-windows.patch
+Patch1008: 0008-only-allow-rotate-to-faces-that-exist.patch
+Patch1009: 0009-Fix-saving-session-client-id-to-session-manager.patch
 
 License: GPL
 BuildRoot: %{_tmppath}/%{name}-root
@@ -166,6 +175,17 @@ This package provides development files for compiz.
 
 %prep
 %setup -q -n %{distname}
+# Cherry picked patches
+%patch1001 -p1
+%patch1002 -p1
+%patch1003 -p1
+%patch1004 -p1
+%patch1005 -p1
+%patch1006 -p1
+%patch1007 -p1
+%patch1008 -p1
+%patch1009 -p1
+
 %patch1 -p1 -b .tfp_server_ext
 %patch2 -p1 -b .fix_kde_windows_decoration_mem_leak
 %patch3 -p1 -b .defplug
@@ -186,7 +206,7 @@ This package provides development files for compiz.
   autoreconf
 %endif
 perl -pi -e "s|(QTDIR/)lib|\1%{_lib}|" configure
-%configure2_5x --disable-kde4`
+%configure2_5x --disable-kde4
 %make
 
 %install
