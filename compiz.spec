@@ -1,6 +1,6 @@
 %define name compiz
 %define version 0.7.0
-%define rel 1
+%define rel 2
 %define git 0
 
 %define major 0
@@ -135,6 +135,17 @@ compositing manager.
 
 #----------------------------------------------------------------------------
 
+%package config-kconfig
+Summary: KDE config backend compiz
+Group: System/X11
+Requires:  %{name} = %{version}-%{release}
+
+%description config-kconfig
+This package provides a KDE config backend for the compiz OpenGL
+compositing manager.
+
+#----------------------------------------------------------------------------
+
 %package -n %libname
 Summary: Shared libraries for compiz
 Group: System/X11
@@ -216,7 +227,7 @@ install -m755 %{SOURCE2} %{buildroot}%{_bindir}/%{name}-window-decorator
 install -D -m644 %{SOURCE1} %{buildroot}%{_datadir}/compositing-wm/%{name}.defaults
 %find_lang %{name}
 
-%define schemas compiz-annotate compiz-blur compiz-clone compiz-core compiz-cube compiz-dbus compiz-decoration compiz-fade compiz-fs compiz-gconf compiz-glib compiz-ini compiz-inotify compiz-kconfig compiz-minimize compiz-move compiz-place compiz-plane compiz-png compiz-regex compiz-resize compiz-rotate compiz-scale compiz-screenshot compiz-svg compiz-switcher compiz-video compiz-water compiz-wobbly compiz-zoom
+%define schemas compiz-annotate compiz-blur compiz-clone compiz-core compiz-cube compiz-dbus compiz-decoration compiz-fade compiz-fs compiz-gconf compiz-glib compiz-ini compiz-inotify compiz-minimize compiz-move compiz-place compiz-plane compiz-png compiz-regex compiz-resize compiz-rotate compiz-scale compiz-screenshot compiz-svg compiz-switcher compiz-video compiz-water compiz-wobbly compiz-zoom
 
 %post
 %post_install_gconf_schemas %{schemas}
@@ -224,18 +235,25 @@ install -D -m644 %{SOURCE1} %{buildroot}%{_datadir}/compositing-wm/%{name}.defau
 %preun
 %preun_uninstall_gconf_schemas %{schemas}
 
-%triggerpostun -- beryl-core
+%post config-kconfig
+%post_install_gconf_schemas compiz-kconfig
 
-if [ -w %{_sysconfdir}/sysconfig/compositing-wm ]; then
-  sed -i 's/COMPOSITING_WM=beryl/COMPOSITING_WM=compiz-fusion/' \
-   %{_sysconfdir}/sysconfig/compositing-wm
-fi
+%preun config-kconfig
+%preun_uninstall_gconf_schemas compiz-kconfig
 
 %post decorator-gtk
 %post_install_gconf_schemas gwd
 
 %preun decorator-gtk
 %preun_uninstall_gconf_schemas gwd
+
+
+%triggerpostun -- beryl-core
+
+if [ -w %{_sysconfdir}/sysconfig/compositing-wm ]; then
+  sed -i 's/COMPOSITING_WM=beryl/COMPOSITING_WM=compiz-fusion/' \
+   %{_sysconfdir}/sysconfig/compositing-wm
+fi
 
 %clean
 rm -rf %{buildroot}
@@ -275,6 +293,11 @@ rm -rf %{buildroot}
 %files decorator-kde
 %defattr(-,root,root)
 %{_bindir}/kde-window-decorator
+
+%files config-kconfig
+%defattr(-,root,root)
+%{_sysconfdir}/gconf/schemas/compiz-kconfig.schemas
+%{_datadir}/config.kcfg/compiz-kconfig.kcfg
 
 %files -n %libname
 %defattr(-,root,root)
