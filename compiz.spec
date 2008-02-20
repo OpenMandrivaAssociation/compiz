@@ -1,6 +1,6 @@
 %define name compiz
 %define version 0.7.0
-%define rel 2
+%define rel 3
 %define git 0
 
 %define major 0
@@ -227,7 +227,10 @@ install -m755 %{SOURCE2} %{buildroot}%{_bindir}/%{name}-window-decorator
 install -D -m644 %{SOURCE1} %{buildroot}%{_datadir}/compositing-wm/%{name}.defaults
 %find_lang %{name}
 
-%define schemas compiz-annotate compiz-blur compiz-clone compiz-core compiz-cube compiz-dbus compiz-decoration compiz-fade compiz-fs compiz-gconf compiz-glib compiz-ini compiz-inotify compiz-minimize compiz-move compiz-place compiz-plane compiz-png compiz-regex compiz-resize compiz-rotate compiz-scale compiz-screenshot compiz-svg compiz-switcher compiz-video compiz-water compiz-wobbly compiz-zoom
+# Define the plugins
+# NB not all plugins are listed here as some ar packaged separately.
+%define plugins annotate blur clone cube dbus decoration fade fs gconf glib ini inotify minimize move place plane png regex resize rotate scale screenshot svg switcher video water wobbly zoom
+%define schemas compiz-core %(for plugin in %{plugins}; do echo -n " compiz-$plugin"; done)
 
 %post
 %post_install_gconf_schemas %{schemas}
@@ -265,11 +268,13 @@ rm -rf %{buildroot}
 %{_bindir}/%{name}
 %{_bindir}/%{name}-window-decorator
 %dir %{_libdir}/%{name}
-%{_libdir}/%{name}/*.so
-%{_libdir}/%{name}/*.la
-%{_libdir}/%{name}/*.a
+%(for plugin in %{plugins}; do
+   echo "%{_libdir}/%{name}/lib$plugin.so"
+   echo "%{_libdir}/%{name}/lib$plugin.la"
+   echo "%{_libdir}/%{name}/lib$plugin.a"
+  done)
 %{_libdir}/window-manager-settings/lib%{name}.*
-%(for schema in %schemas; do
+%(for schema in %{schemas}; do
    echo "%{_sysconfdir}/gconf/schemas/$schema.schemas"
    echo "%{_datadir}/config.kcfg/$schema.kcfg"
   done)
@@ -296,6 +301,9 @@ rm -rf %{buildroot}
 
 %files config-kconfig
 %defattr(-,root,root)
+%{_libdir}/%{name}/libkconfig.so
+%{_libdir}/%{name}/libkconfig.la
+%{_libdir}/%{name}/libkconfig.a
 %{_sysconfdir}/gconf/schemas/compiz-kconfig.schemas
 %{_datadir}/config.kcfg/compiz-kconfig.kcfg
 
