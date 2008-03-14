@@ -1,6 +1,6 @@
 %define name compiz
 %define version 0.7.2
-%define rel 2
+%define rel 3
 %define git 0
 
 %define major 0
@@ -78,6 +78,8 @@ BuildRequires: libcairo-devel
 BuildRequires: libsvg-cairo-devel
 BuildRequires: libdbus-qt-1-devel
 BuildRequires: fuse-devel
+# needed by autoreconf:
+BuildRequires: intltool
 
 Requires(post): GConf2
 Requires(preun): GConf2
@@ -185,10 +187,11 @@ This package provides development files for compiz.
 %if %{git}
   # This is a CVS snapshot, so we need to generate makefiles.
   sh autogen.sh -V
-%endif
-%if %{mdkversion} < 200800
-  # (colin) This seems to be needed on 2007.1 but breaks things on 2008+
+%else
+  # (Anssi 03/2008) Needed to get rid of RPATH=/usr/lib64 on lib64:
   autoreconf
+  # build fails without this:
+  intltoolize --force
 %endif
 perl -pi -e "s|(QTDIR/)lib|\1%{_lib}|" configure
 %configure2_5x --disable-kde4
