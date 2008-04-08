@@ -1,6 +1,6 @@
 %define name compiz
-%define version 0.7.2
-%define rel 3
+%define version 0.7.4
+%define rel 1
 %define git 0
 
 %define major 0
@@ -34,8 +34,7 @@ Patch3: compiz-mandriva-top.patch
 Patch4: compiz-decoration-command.patch
 Patch5: compiz-window-decorator.patch
 Patch6: compiz-fix-kde-screensaver.patch
-Patch7: CVE-2007-3920-screensaver-password-bypass.patch
-Patch8: 0001-Also-check-for-tfp-in-server-extensions-rediff.txt
+Patch7: 0001-Also-check-for-tfp-in-server-extensions-rediff.txt
 
 License: GPL
 BuildRoot: %{_tmppath}/%{name}-root
@@ -180,8 +179,7 @@ This package provides development files for compiz.
 %patch4 -p1 -b .decorator_command
 %patch5 -p1 -b .compiz_decorator
 %patch6 -p1 -b .kde_screensaver
-%patch7 -p1 -b .cve_pw_bypass
-%patch8 -p1 -b .server-extensions
+%patch7 -p1 -b .server-extensions
 
 %build
 %if %{git}
