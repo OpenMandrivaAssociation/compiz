@@ -36,6 +36,9 @@ Patch5: compiz-window-decorator.patch
 Patch6: compiz-fix-kde-screensaver.patch
 Patch7: 0001-Also-check-for-tfp-in-server-extensions-rediff.txt
 
+# Upstream cherry picks
+Patch101: 0001-Calculate-rotation-progress-up-to-a-finer-level-and.patch
+
 License: GPL
 BuildRoot: %{_tmppath}/%{name}-root
 
@@ -172,6 +175,9 @@ This package provides development files for compiz.
 
 %prep
 %setup -q -n %{distname}
+
+# Upstream cherry picks
+%patch101 -p1
 
 %patch1 -p1 -b .fix_kde_windows_decoration_mem_leak
 %patch2 -p1 -b .defplug
