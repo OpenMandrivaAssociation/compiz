@@ -1,6 +1,6 @@
 %define name compiz
 %define version 0.7.4
-%define rel 1
+%define rel 2
 %define git 0
 
 %define major 0
@@ -38,6 +38,7 @@ Patch7: 0001-Also-check-for-tfp-in-server-extensions-rediff.txt
 
 # Upstream cherry picks
 Patch101: 0001-Calculate-rotation-progress-up-to-a-finer-level-and.patch
+Patch102: 0002-Revert-Try-to-start-decorator-in-initScreen-because.patch
 
 License: GPL
 BuildRoot: %{_tmppath}/%{name}-root
@@ -178,6 +179,7 @@ This package provides development files for compiz.
 
 # Upstream cherry picks
 %patch101 -p1
+%patch102 -p1
 
 %patch1 -p1 -b .fix_kde_windows_decoration_mem_leak
 %patch2 -p1 -b .defplug
