@@ -1,6 +1,6 @@
 %define name compiz
 %define version 0.7.4
-%define rel 2
+%define rel 3
 %define git 0
 
 %define major 0
@@ -72,7 +72,8 @@ BuildRequires: metacity-devel
 BuildRequires: pango-devel
 BuildRequires: gnome-desktop-devel
 BuildRequires: startup-notification-devel
-BuildRequires: kdebase-devel
+Buildrequires: kde3-macros
+BuildRequires: kdebase3-devel
 BuildRequires: bonoboui-devel
 BuildRequires: libxslt-devel
 BuildRequires: libxslt-proc
@@ -259,9 +260,7 @@ rm -rf %{buildroot}
 %{_libdir}/window-manager-settings/lib%{name}.*
 %(for schema in %{schemas}; do
    echo "%{_sysconfdir}/gconf/schemas/$schema.schemas"
-   echo "%{_datadir}/config.kcfg/$schema.kcfg"
   done)
-%{_datadir}/config/%{name}rc
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/*.png
 %{_datadir}/%{name}/*.xml
@@ -281,6 +280,7 @@ rm -rf %{buildroot}
 %files decorator-kde
 %defattr(-,root,root)
 %{_bindir}/kde-window-decorator
+%{_kde3_configdir}/*
 
 %files config-kconfig
 %defattr(-,root,root)
@@ -288,7 +288,7 @@ rm -rf %{buildroot}
 %{_libdir}/%{name}/libkconfig.la
 %{_libdir}/%{name}/libkconfig.a
 %{_sysconfdir}/gconf/schemas/compiz-kconfig.schemas
-%{_datadir}/config.kcfg/compiz-kconfig.kcfg
+%{_kde3_datadir}/config.kcfg
 
 %files -n %libname
 %defattr(-,root,root)
