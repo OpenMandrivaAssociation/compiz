@@ -1,7 +1,8 @@
 %define name compiz
-%define version 0.7.4
-%define rel 3
-%define git 0
+%define version 0.7.5
+%define rel 1
+%define git 20080522
+%define _disable_ld_no_undefined 1
 
 %define major 0
 %define libname %mklibname %{name} %major
@@ -37,8 +38,7 @@ Patch6: compiz-fix-kde-screensaver.patch
 Patch7: 0001-Also-check-for-tfp-in-server-extensions-rediff.txt
 
 # Upstream cherry picks
-Patch101: 0001-Calculate-rotation-progress-up-to-a-finer-level-and.patch
-Patch102: 0002-Revert-Try-to-start-decorator-in-initScreen-because.patch
+Patch101: 0001-Revert-Try-to-start-decorator-in-initScreen-because.patch
 
 License: GPL
 BuildRoot: %{_tmppath}/%{name}-root
@@ -72,8 +72,9 @@ BuildRequires: metacity-devel
 BuildRequires: pango-devel
 BuildRequires: gnome-desktop-devel
 BuildRequires: startup-notification-devel
-Buildrequires: kde3-macros
+BuildRequires: kde3-macros
 BuildRequires: kdebase3-devel
+BuildRequires: kdebase4-devel
 BuildRequires: bonoboui-devel
 BuildRequires: libxslt-devel
 BuildRequires: libxslt-proc
@@ -122,6 +123,18 @@ Obsoletes: aquamarine
 
 %description decorator-kde
 This package provides a KDE window decorator for the compiz OpenGL
+compositing manager.
+
+#----------------------------------------------------------------------------
+
+%package decorator-kde4
+Summary: KDE4 window decorator for compiz
+Group: System/X11
+Provides: compiz-decorator
+Requires:  %{name} = %{version}-%{release}
+
+%description decorator-kde4
+This package provides a KDE4 window decorator for the compiz OpenGL
 compositing manager.
 
 #----------------------------------------------------------------------------
@@ -180,7 +193,6 @@ This package provides development files for compiz.
 
 # Upstream cherry picks
 %patch101 -p1
-%patch102 -p1
 
 %patch1 -p1 -b .fix_kde_windows_decoration_mem_leak
 %patch2 -p1 -b .defplug
@@ -200,8 +212,8 @@ This package provides development files for compiz.
   # build fails without this:
   intltoolize --force
 %endif
-perl -pi -e "s|(QTDIR/)lib|\1%{_lib}|" configure
-%configure2_5x --disable-kde4
+
+%configure2_5x
 %make
 
 %install
@@ -213,7 +225,7 @@ install -D -m644 %{SOURCE1} %{buildroot}%{_datadir}/compositing-wm/%{name}.defau
 
 # Define the plugins
 # NB not all plugins are listed here as some ar packaged separately.
-%define plugins annotate blur clone cube dbus decoration fade fs gconf glib ini inotify minimize move place plane png regex resize rotate scale screenshot svg switcher video water wobbly zoom
+%define plugins annotate blur clone cube dbus decoration fade fs gconf glib ini inotify minimize move place png regex resize rotate scale screenshot svg switcher video water wobbly zoom
 %define schemas compiz-core %(for plugin in %{plugins}; do echo -n " compiz-$plugin"; done)
 
 %post
@@ -281,6 +293,10 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %{_bindir}/kde-window-decorator
 %{_kde3_configdir}/*
+
+%files decorator-kde4
+%defattr(-,root,root)
+%{_bindir}/kde4-window-decorator
 
 %files config-kconfig
 %defattr(-,root,root)
