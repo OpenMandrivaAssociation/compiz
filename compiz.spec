@@ -75,6 +75,7 @@ BuildRequires: startup-notification-devel
 BuildRequires: kde3-macros
 BuildRequires: kdebase3-devel
 BuildRequires: kdebase4-devel
+BuildRequires: kdebase4-workspace-devel
 BuildRequires: bonoboui-devel
 BuildRequires: libxslt-devel
 BuildRequires: libxslt-proc
