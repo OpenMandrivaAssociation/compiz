@@ -1,7 +1,8 @@
 %define name compiz
-%define version 0.7.5
-%define rel 2
-%define git 20080522
+%define version 0.7.6
+%define rel 1
+%define git 0
+%define _disable_ld_no_undefined 1
 
 %define major 0
 %define libname %mklibname %{name} %major
@@ -18,13 +19,25 @@
 %define release %mkrel %{rel}
 %endif
 
+%if %{mdkversion} > 200810
+%define build_kde3 0
+%else
+%define build_kde3 1
+%endif
+
+%if %{mdkversion} > 200810
+%define build_kde4 1
+%else
+%define build_kde4 0
+%endif
+
 Name: %name
 Version: %version
 Release: %release
 Summary: OpenGL composite manager for Xgl and AIGLX
 Group: System/X11
 URL: http://www.go-compiz.org/
-Source: http://xorg.freedesktop.org/archive/individual/app/%{srcname}.tar.gz
+Source: http://xorg.freedesktop.org/archive/individual/app/%{srcname}.tar.bz2
 Source1: compiz.defaults
 Source2: compiz-window-decorator
 Patch1:	compiz-0.3.6-kde-mem-leak.patch
@@ -71,10 +84,14 @@ BuildRequires: metacity-devel
 BuildRequires: pango-devel
 BuildRequires: gnome-desktop-devel
 BuildRequires: startup-notification-devel
+%if %{build_kde3}
 BuildRequires: kde3-macros
 BuildRequires: kdebase3-devel
+%endif
+%if %{build_kde4}
 BuildRequires: kdebase4-devel
 BuildRequires: kdebase4-workspace-devel
+%endif
 BuildRequires: bonoboui-devel
 BuildRequires: libxslt-devel
 BuildRequires: libxslt-proc
@@ -113,6 +130,7 @@ compositing manager.
 
 #----------------------------------------------------------------------------
 
+%if %{build_kde3}
 %package decorator-kde
 Summary: KDE window decorator for compiz
 Group: System/X11
@@ -124,9 +142,11 @@ Obsoletes: aquamarine
 %description decorator-kde
 This package provides a KDE window decorator for the compiz OpenGL
 compositing manager.
+%endif
 
 #----------------------------------------------------------------------------
 
+%if %{build_kde4}
 %package decorator-kde4
 Summary: KDE4 window decorator for compiz
 Group: System/X11
@@ -136,9 +156,11 @@ Requires:  %{name} = %{version}-%{release}
 %description decorator-kde4
 This package provides a KDE4 window decorator for the compiz OpenGL
 compositing manager.
+%endif
 
 #----------------------------------------------------------------------------
 
+%if %{build_kde3}
 %package config-kconfig
 Summary: KDE config backend compiz
 Group: System/X11
@@ -147,6 +169,7 @@ Requires:  %{name} = %{version}-%{release}
 %description config-kconfig
 This package provides a KDE config backend for the compiz OpenGL
 compositing manager.
+%endif
 
 #----------------------------------------------------------------------------
 
@@ -213,7 +236,14 @@ This package provides development files for compiz.
   intltoolize --force
 %endif
 
-%configure2_5x
+%configure2_5x \
+%if !%{build_kde3}
+  --disable-kde \
+%endif
+%if !%{build_kde4}
+  --disable-kde4 \
+%endif
+
 %make
 
 %install
@@ -222,6 +252,11 @@ rm -rf %{buildroot}
 install -m755 %{SOURCE2} %{buildroot}%{_bindir}/%{name}-window-decorator
 install -D -m644 %{SOURCE1} %{buildroot}%{_datadir}/compositing-wm/%{name}.defaults
 %find_lang %{name}
+
+%if !%{build_kde3}
+rm -f %{buildroot}%{_sysconfdir}/gconf/schemas/compiz-kconfig.schemas
+%endif
+
 
 # Define the plugins
 # NB not all plugins are listed here as some ar packaged separately.
@@ -234,11 +269,13 @@ install -D -m644 %{SOURCE1} %{buildroot}%{_datadir}/compositing-wm/%{name}.defau
 %preun
 %preun_uninstall_gconf_schemas %{schemas}
 
+%if %{build_kde3}
 %post config-kconfig
 %post_install_gconf_schemas compiz-kconfig
 
 %preun config-kconfig
 %preun_uninstall_gconf_schemas compiz-kconfig
+%endif
 
 %post decorator-gtk
 %post_install_gconf_schemas gwd
@@ -289,15 +326,20 @@ rm -rf %{buildroot}
 %{_datadir}/gnome-control-center/keybindings/50-%{name}-desktop-key.xml
 %endif
 
+%if %{build_kde3}
 %files decorator-kde
 %defattr(-,root,root)
 %{_bindir}/kde-window-decorator
 %{_kde3_configdir}/*
+%endif
 
+%if %{build_kde4}
 %files decorator-kde4
 %defattr(-,root,root)
 %{_bindir}/kde4-window-decorator
+%endif
 
+%if %{build_kde3}
 %files config-kconfig
 %defattr(-,root,root)
 %{_libdir}/%{name}/libkconfig.so
@@ -305,6 +347,7 @@ rm -rf %{buildroot}
 %{_libdir}/%{name}/libkconfig.a
 %{_sysconfdir}/gconf/schemas/compiz-kconfig.schemas
 %{_kde3_datadir}/config.kcfg
+%endif
 
 %files -n %libname
 %defattr(-,root,root)
