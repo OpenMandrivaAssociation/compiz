@@ -25,8 +25,8 @@
 %else
  %define build_kde4 0
  %define build_kde3 1
- %define _kde3_configdir %{_configdir}
  %define _kde3_datadir %{_datadir}
+ %define _kde3_configdir %{_kde3_datadir}/config
 %endif
 
 Name: %name
