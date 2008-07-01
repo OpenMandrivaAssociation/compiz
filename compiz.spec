@@ -85,7 +85,9 @@ BuildRequires: pango-devel
 BuildRequires: gnome-desktop-devel
 BuildRequires: startup-notification-devel
 %if %{build_kde3}
+%if %{mdkversion} > 200810
 BuildRequires: kde3-macros
+%endif
 BuildRequires: kdebase3-devel
 %endif
 %if %{build_kde4}
