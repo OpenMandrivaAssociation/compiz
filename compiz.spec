@@ -20,15 +20,13 @@
 %endif
 
 %if %{mdkversion} > 200810
-%define build_kde3 0
+ %define build_kde4 1
+ %define build_kde3 0
 %else
-%define build_kde3 1
-%endif
-
-%if %{mdkversion} > 200810
-%define build_kde4 1
-%else
-%define build_kde4 0
+ %define build_kde4 0
+ %define build_kde3 1
+ %define _kde3_configdir %{_configdir}
+ %define _kde3_datadir %{_datadir}
 %endif
 
 Name: %name
