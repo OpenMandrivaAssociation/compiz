@@ -79,6 +79,7 @@ BuildRequires: libwnck-devel
 BuildRequires: metacity-devel
 BuildRequires: pango-devel
 BuildRequires: gnome-desktop-devel
+BuildRequires: libgnome-menu-devel
 BuildRequires: startup-notification-devel
 %if %{mdkversion} > 200810
 BuildRequires: kde3-macros
