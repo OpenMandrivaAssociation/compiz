@@ -1,8 +1,7 @@
 %define name compiz
-%define version 0.7.6
+%define version 0.7.7
 %define rel 1
-%define git 0
-%define _disable_ld_no_undefined 1
+%define git 20080713
 
 %define major 0
 %define libname %mklibname %{name} %major
@@ -21,10 +20,8 @@
 
 %if %{mdkversion} > 200810
  %define build_kde4 1
- %define build_kde3 0
 %else
  %define build_kde4 0
- %define build_kde3 1
  %define _kde3_datadir %{_datadir}
  %define _kde3_configdir %{_kde3_datadir}/config
 %endif
@@ -46,6 +43,7 @@ Patch4: compiz-decoration-command.patch
 Patch5: compiz-window-decorator.patch
 Patch6: compiz-fix-kde-screensaver.patch
 Patch7: 0001-Also-check-for-tfp-in-server-extensions-rediff.txt
+Patch8: compiz-kde3-lib-dir-order.patch
 
 # Upstream cherry picks
 Patch101: 0001-Revert-Try-to-start-decorator-in-initScreen-because.patch
@@ -82,12 +80,10 @@ BuildRequires: metacity-devel
 BuildRequires: pango-devel
 BuildRequires: gnome-desktop-devel
 BuildRequires: startup-notification-devel
-%if %{build_kde3}
 %if %{mdkversion} > 200810
 BuildRequires: kde3-macros
 %endif
 BuildRequires: kdebase3-devel
-%endif
 %if %{build_kde4}
 BuildRequires: kdebase4-devel
 BuildRequires: kdebase4-workspace-devel
@@ -130,7 +126,6 @@ compositing manager.
 
 #----------------------------------------------------------------------------
 
-%if %{build_kde3}
 %package decorator-kde
 Summary: KDE window decorator for compiz
 Group: System/X11
@@ -142,7 +137,6 @@ Obsoletes: aquamarine
 %description decorator-kde
 This package provides a KDE window decorator for the compiz OpenGL
 compositing manager.
-%endif
 
 #----------------------------------------------------------------------------
 
@@ -160,7 +154,6 @@ compositing manager.
 
 #----------------------------------------------------------------------------
 
-%if %{build_kde3}
 %package config-kconfig
 Summary: KDE config backend compiz
 Group: System/X11
@@ -169,7 +162,6 @@ Requires:  %{name} = %{version}-%{release}
 %description config-kconfig
 This package provides a KDE config backend for the compiz OpenGL
 compositing manager.
-%endif
 
 #----------------------------------------------------------------------------
 
@@ -224,6 +216,7 @@ This package provides development files for compiz.
 %patch5 -p1 -b .compiz_decorator
 %patch6 -p1 -b .kde_screensaver
 %patch7 -p1 -b .server-extensions
+%patch8 -p1 -b .kde3libdir
 
 %build
 %if %{git}
@@ -237,9 +230,6 @@ This package provides development files for compiz.
 %endif
 
 %configure2_5x \
-%if !%{build_kde3}
-  --disable-kde \
-%endif
 %if !%{build_kde4}
   --disable-kde4 \
 %endif
@@ -253,10 +243,6 @@ install -m755 %{SOURCE2} %{buildroot}%{_bindir}/%{name}-window-decorator
 install -D -m644 %{SOURCE1} %{buildroot}%{_datadir}/compositing-wm/%{name}.defaults
 %find_lang %{name}
 
-%if !%{build_kde3}
-rm -f %{buildroot}%{_sysconfdir}/gconf/schemas/compiz-kconfig.schemas
-%endif
-
 
 # Define the plugins
 # NB not all plugins are listed here as some ar packaged separately.
@@ -269,13 +255,11 @@ rm -f %{buildroot}%{_sysconfdir}/gconf/schemas/compiz-kconfig.schemas
 %preun
 %preun_uninstall_gconf_schemas %{schemas}
 
-%if %{build_kde3}
 %post config-kconfig
 %post_install_gconf_schemas compiz-kconfig
 
 %preun config-kconfig
 %preun_uninstall_gconf_schemas compiz-kconfig
-%endif
 
 %post decorator-gtk
 %post_install_gconf_schemas gwd
@@ -326,12 +310,10 @@ rm -rf %{buildroot}
 %{_datadir}/gnome-control-center/keybindings/50-%{name}-desktop-key.xml
 %endif
 
-%if %{build_kde3}
 %files decorator-kde
 %defattr(-,root,root)
 %{_bindir}/kde-window-decorator
 %{_kde3_configdir}/*
-%endif
 
 %if %{build_kde4}
 %files decorator-kde4
@@ -339,7 +321,6 @@ rm -rf %{buildroot}
 %{_bindir}/kde4-window-decorator
 %endif
 
-%if %{build_kde3}
 %files config-kconfig
 %defattr(-,root,root)
 %{_libdir}/%{name}/libkconfig.so
@@ -347,7 +328,6 @@ rm -rf %{buildroot}
 %{_libdir}/%{name}/libkconfig.a
 %{_sysconfdir}/gconf/schemas/compiz-kconfig.schemas
 %{_kde3_datadir}/config.kcfg
-%endif
 
 %files -n %libname
 %defattr(-,root,root)
