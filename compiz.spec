@@ -1,6 +1,6 @@
 %define name compiz
 %define version 0.7.7
-%define rel 1
+%define rel 2
 %define git 20080713
 
 %define major 0
@@ -44,6 +44,8 @@ Patch5: compiz-window-decorator.patch
 Patch6: compiz-fix-kde-screensaver.patch
 Patch7: 0001-Also-check-for-tfp-in-server-extensions-rediff.txt
 Patch8: compiz-kde3-lib-dir-order.patch
+# (fc) fix gnome .desktop file for compiz (needed with latest gnome-session)
+Patch9: compiz-fix-gnome-desktop-file.patch
 
 # Upstream cherry picks
 Patch101: 0001-Revert-Try-to-start-decorator-in-initScreen-because.patch
@@ -220,6 +222,9 @@ This package provides development files for compiz.
 %patch6 -p1 -b .kde_screensaver
 %patch7 -p1 -b .server-extensions
 %patch8 -p1 -b .kde3libdir
+%if %{mdkversion} >= 200900
+%patch9 -p1 -b .fix-gnome-desktop-file
+%endif
 
 %build
 %if %{git}
@@ -301,7 +306,11 @@ rm -rf %{buildroot}
 %{_datadir}/%{name}/*.png
 %{_datadir}/%{name}/*.xml
 %{_datadir}/%{name}/*.xslt
+%if %{mdkversion} >= 200900
+%{_datadir}/applications/%{name}.desktop
+%else
 %{_datadir}/gnome/wm-properties/%{name}.desktop
+%endif
 %{_datadir}/compositing-wm/%{name}.defaults
 
 %files decorator-gtk
