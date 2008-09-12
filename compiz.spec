@@ -1,7 +1,7 @@
 %define name compiz
-%define version 0.7.7
-%define rel 3
-%define git 20080713
+%define version 0.7.8
+%define rel 1
+%define git 20080912
 
 %define major 0
 %define libname %mklibname %{name} %major
@@ -254,7 +254,7 @@ install -D -m644 %{SOURCE1} %{buildroot}%{_datadir}/compositing-wm/%{name}.defau
 
 # Define the plugins
 # NB not all plugins are listed here as some ar packaged separately.
-%define plugins annotate blur clone cube dbus decoration fade fs gconf glib ini inotify minimize move place png regex resize rotate scale screenshot svg switcher video water wobbly zoom
+%define plugins annotate blur clone cube dbus decoration fade fs gconf glib ini inotify minimize move obs place png regex resize rotate scale screenshot svg switcher video water wobbly zoom
 %define schemas compiz-core %(for plugin in %{plugins}; do echo -n " compiz-$plugin"; done)
 
 %post
