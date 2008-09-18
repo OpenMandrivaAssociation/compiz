@@ -1,7 +1,7 @@
 %define name compiz
 %define version 0.7.8
 %define rel 1
-%define git 20080912
+%define git 0
 
 %define major 0
 %define libname %mklibname %{name} %major
@@ -32,23 +32,19 @@ Release: %release
 Summary: OpenGL composite manager for Xgl and AIGLX
 Group: System/X11
 URL: http://www.go-compiz.org/
-Source: http://xorg.freedesktop.org/archive/individual/app/%{srcname}.tar.bz2
+Source: http://xorg.freedesktop.org/archive/individual/app/%{srcname}.tar.gz
 Source1: compiz.defaults
 Source2: compiz-window-decorator
 Patch1:	compiz-0.3.6-kde-mem-leak.patch
 # Patches for Mandriva defaults
 Patch2: compiz-default-plugins.patch
 Patch3: compiz-mandriva-top.patch
-Patch4: compiz-decoration-command.patch
 Patch5: compiz-window-decorator.patch
 Patch6: compiz-fix-kde-screensaver.patch
 Patch7: 0001-Also-check-for-tfp-in-server-extensions-rediff.txt
 Patch8: compiz-kde3-lib-dir-order.patch
 # (fc) fix gnome .desktop file for compiz (needed with latest gnome-session)
 Patch9: compiz-fix-gnome-desktop-file.patch
-
-# Upstream cherry picks
-Patch101: 0001-Revert-Try-to-start-decorator-in-initScreen-because.patch
 
 License: GPL
 BuildRoot: %{_tmppath}/%{name}-root
@@ -211,13 +207,9 @@ This package provides development files for compiz.
 %prep
 %setup -q -n %{distname}
 
-# Upstream cherry picks
-%patch101 -p1
-
 %patch1 -p1 -b .fix_kde_windows_decoration_mem_leak
 %patch2 -p1 -b .defplug
 %patch3 -p1 -b .top
-%patch4 -p1 -b .decorator_command
 %patch5 -p1 -b .compiz_decorator
 %patch6 -p1 -b .kde_screensaver
 %patch7 -p1 -b .server-extensions
