@@ -285,6 +285,8 @@ This package provides development files for compiz.
   intltoolize --force
 %endif
 
+# (cg) the QTDIR stuff is needed for kde3/qt3 (to find moc) :s
+export QTDIR=/usr/lib/qt3
 %configure2_5x \
 %if !%{build_kde4}
   --disable-kde4 \
