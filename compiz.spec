@@ -35,6 +35,7 @@ URL: http://www.go-compiz.org/
 Source: http://xorg.freedesktop.org/archive/individual/app/%{srcname}.tar.gz
 Source1: compiz.defaults
 Source2: compiz-window-decorator
+Source3: kstylerc.xinit
 
 # (cg) Using git to manage patches
 # To recreate the structure
@@ -171,6 +172,7 @@ Summary: KDE window decorator for compiz
 Group: System/X11
 Provides: compiz-decorator
 Conflicts: %{name} < 0.3.6-4mdv2007.1
+Conflicts: compositing-wm-common <= compositing-wm-common-2009.0-3mdv2009.0
 Requires:  %{name} = %{version}-%{release}
 Obsoletes: aquamarine
 
@@ -299,6 +301,7 @@ rm -rf %{buildroot}
 %makeinstall_std
 install -m755 %{SOURCE2} %{buildroot}%{_bindir}/%{name}-window-decorator
 install -D -m644 %{SOURCE1} %{buildroot}%{_datadir}/compositing-wm/%{name}.defaults
+install -D -m 0755 %SOURCE4 %{buildroot}%{_sysconfdir}/X11/xinit.d/41kstylerc
 %find_lang %{name}
 
 
@@ -376,6 +379,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %{_bindir}/kde-window-decorator
 %{_kde3_configdir}/*
+%{_sysconfdir}/X11/xinit.d/41kstylerc
 
 %if %{build_kde4}
 %files decorator-kde4
