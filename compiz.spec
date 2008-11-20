@@ -85,6 +85,9 @@ Patch504: 0504-Do-not-put-window-decorations-on-KDE-screensaver.patch
 Patch505: 0505-Also-check-for-tfp-in-server-extensions.patch
 Patch506: 0506-Fix-KDE3-linking-by-changing-the-directory-order.patch
 Patch507: 0507-Fix-gnome-.desktop-file-for-compiz-needed-with-late.patch
+%if %{mdkversion} >= 200910
+Patch508: compiz-0.7.8-framesvg.patch
+%endif
 
 License: GPL
 BuildRoot: %{_tmppath}/%{name}-root
@@ -126,8 +129,12 @@ BuildRequires: kde3-macros
 %endif
 BuildRequires: kdebase3-devel
 %if %{build_kde4}
+%if %{mdkversion} >= 200910
+BuildRequires: kdelibs4-devel
+%else
 BuildRequires: kdebase4-devel
 BuildRequires: kdebase4-workspace-devel
+%endif
 %endif
 BuildRequires: bonoboui-devel
 BuildRequires: libxslt-devel
@@ -274,6 +281,9 @@ This package provides development files for compiz.
 %patch506 -p1
 %if %{mdkversion} >= 200900
 %patch507 -p1
+%endif
+%if %{mdkversion} >= 200910
+%patch508 -p1
 %endif
 
 %build
