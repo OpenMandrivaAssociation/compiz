@@ -129,11 +129,10 @@ BuildRequires: kde3-macros
 %endif
 BuildRequires: kdebase3-devel
 %if %{build_kde4}
-%if %{mdkversion} >= 200910
-BuildRequires: kdelibs4-devel
-%else
 BuildRequires: kdebase4-devel
 BuildRequires: kdebase4-workspace-devel
+%if %{mdkversion} >= 200910
+BuildRequires: kdelibs4-devel
 %endif
 %endif
 BuildRequires: bonoboui-devel
