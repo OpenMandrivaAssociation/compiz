@@ -134,7 +134,6 @@ BuildRequires: libxslt-proc
 BuildRequires: librsvg-devel
 BuildRequires: libcairo-devel
 BuildRequires: libsvg-cairo-devel
-BuildRequires: libdbus-qt-1-devel
 BuildRequires: fuse-devel
 # needed by autoreconf:
 BuildRequires: intltool
