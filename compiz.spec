@@ -1,19 +1,20 @@
 %define name compiz
-%define version 0.7.8
-%define rel 4
-%define git 0
+%define version 0.8.0
+%define rel 1
+%define git 20080208
 
 %define major 0
 %define libname %mklibname %{name} %major
 %define libname_devel %mklibname -d %{name}
 
+%define applypatches() (for patch in %patches; do cat $patch | patch -p1; done)
 
 %if  %{git}
-%define srcname %{name}-%{git}
+%define srcname %{name}-%{git}.tar.lzma
 %define distname %{name}
 %define release %mkrel 0.%{git}.%{rel}
 %else
-%define srcname %{name}-%{version}
+%define srcname %{name}-%{version}.tar.gz
 %define distname %{name}-%{version}
 %define release %mkrel %{rel}
 %endif
@@ -32,7 +33,7 @@ Release: %release
 Summary: OpenGL composite manager for Xgl and AIGLX
 Group: System/X11
 URL: http://www.go-compiz.org/
-Source: http://xorg.freedesktop.org/archive/individual/app/%{srcname}.tar.gz
+Source: http://xorg.freedesktop.org/archive/individual/app/%{srcname}
 Source1: compiz.defaults
 Source2: compiz-window-decorator
 Source3: kstylerc.xinit
@@ -40,54 +41,33 @@ Source3: kstylerc.xinit
 # (cg) Using git to manage patches
 # To recreate the structure
 # git clone git://git.freedesktop.org/git/xorg/app/compiz
-# git checkout compiz-0.7.8
-# git checkout -b mdv-0.7.8-cherry-picks
+# git checkout compiz-0.8.0
+# git checkout -b mdv-0.8.0-cherry-picks
 # git am 00*.patch
-# git checkout -b mdv-0.7.8-patches
+# git checkout -b mdv-0.8.0-patches
 # git am 05*.patch
 
 # To apply new custom patches
-# git checkout mdv-0.7.8-patches
+# git checkout mdv-0.8.0-patches
 # (do stuff)
 
 # To apply new cherry-picks
-# git checkout mdv-0.7.8-cherry-picks
+# git checkout mdv-0.8.0-cherry-picks
 # git cherry-pick <blah>
-# git checkout mdv-0.7.8-patches
-# git rebase mdv-0.7.8-cherry-picks
+# git checkout mdv-0.8.0-patches
+# git rebase mdv-0.8.0-cherry-picks
 
 # Cherry Pick Patches
-# git format-patch compiz-0.7.8..mdv-0.7.8-cherry-picks
-Patch1:   0001-Fix-a-number-of-potential-memleaks-in-XGetWindowProp.patch
-Patch2:   0002-Update-switcher-window-internal-state-on-map.patch
-Patch3:   0003-Fix-potential-memleak.patch
-Patch4:   0004--Fix-reading-of-floats-in-metadata-for-some-locales.patch
-Patch5:   0005--Don-t-damage-window-region-on-minimize-shade-endin.patch
-Patch6:   0006-Make-sure-geometry-rectangle-is-kept-inside-the-scre.patch
-Patch7:   0007-Make-viewportForGeometry-not-take-the-current-viewpo.patch
-Patch8:   0008-Make-sure-window-decorations-aren-t-hidden-under-pan.patch
-Patch9:   0009-Ensure-windows-fit-in-the-work-area-when-placing-the.patch
-Patch10:  0010-Ignore-_NET_WM_STATE_HIDDEN-property-changes-as-sugg.patch
-Patch11:  0011-Change-state-property-only-on-managed-windows.patch
-Patch12:  0012-Use-changeWindowState-function.patch
-Patch13:  0013-Make-sure-window-state-property-is-correct-when-mapp.patch
-Patch14:  0014-Also-treat-utility-menu-and-toolbar-windows-as-grou.patch
-Patch15:  0015-Handle-desktops-a-bit-better.patch
-Patch16:  0016-We-want-to-prevent-focus-for-windows-that-are-not-on.patch
+# git format-patch compiz-0.8.0..mdv-0.8.0-cherry-picks
 
 # Mandriva Patches
-# git format-patch --start-number 500 mdv-0.7.8-cherry-picks..mdv-0.7.8-patches
+# git format-patch --start-number 500 mdv-0.8.0-cherry-picks..mdv-0.8.0-patches
 Patch500: 0500-Fix-memory-leak-in-KDE3-window-decorator.patch
-Patch501: 0501-Add-some-useful-plugins-to-the-default-set-when-no-c.patch
-Patch502: 0502-Add-Mandriva-graphic-to-the-top-of-the-cube.patch
-Patch503: 0503-Use-our-compiz-window-decorator-script-as-the-defaul.patch
-Patch504: 0504-Do-not-put-window-decorations-on-KDE-screensaver.patch
-Patch505: 0505-Also-check-for-tfp-in-server-extensions.patch
-Patch506: 0506-Fix-KDE3-linking-by-changing-the-directory-order.patch
-Patch507: 0507-Fix-gnome-.desktop-file-for-compiz-needed-with-late.patch
-%if %{mdkversion} >= 200910
-Patch508: compiz-0.7.8-framesvg.patch
-%endif
+Patch501: 0501-Add-Mandriva-graphic-to-the-top-of-the-cube.patch
+Patch502: 0502-Use-our-compiz-window-decorator-script-as-the-defaul.patch
+Patch503: 0503-Do-not-put-window-decorations-on-KDE-screensaver.patch
+Patch504: 0504-Also-check-for-tfp-in-server-extensions.patch
+Patch505: 0505-Fix-KDE3-linking-by-changing-the-directory-order.patch
 
 License: GPL
 BuildRoot: %{_tmppath}/%{name}-root
@@ -254,36 +234,8 @@ This package provides development files for compiz.
 %prep
 %setup -q -n %{distname}
 
-%patch1   -p1
-%patch2   -p1
-%patch3   -p1
-%patch4   -p1
-%patch5   -p1
-%patch6   -p1
-%patch7   -p1
-%patch8   -p1
-%patch9   -p1
-%patch10  -p1
-%patch11  -p1
-%patch12  -p1
-%patch13  -p1
-%patch14  -p1
-%patch15  -p1
-%patch16  -p1
+%applypatches
 
-%patch500 -p1
-%patch501 -p1
-%patch502 -p1
-%patch503 -p1
-%patch504 -p1
-%patch505 -p1
-%patch506 -p1
-%if %{mdkversion} >= 200900
-%patch507 -p1
-%endif
-%if %{mdkversion} >= 200910
-%patch508 -p1
-%endif
 
 %build
 %if %{git}
@@ -316,7 +268,7 @@ install -D -m 0755 %{SOURCE3} %{buildroot}%{_sysconfdir}/X11/xinit.d/41kstylerc
 
 # Define the plugins
 # NB not all plugins are listed here as some ar packaged separately.
-%define plugins annotate blur clone cube dbus decoration fade fs gconf glib ini inotify minimize move obs place png regex resize rotate scale screenshot svg switcher video water wobbly zoom
+%define plugins annotate blur clone commands cube dbus decoration fade fs gconf glib gnomecompat ini inotify minimize move obs place png regex resize rotate scale screenshot svg switcher video water wobbly zoom
 %define schemas compiz-core %(for plugin in %{plugins}; do echo -n " compiz-$plugin"; done)
 
 %post
@@ -368,11 +320,8 @@ rm -rf %{buildroot}
 %{_datadir}/%{name}/*.png
 %{_datadir}/%{name}/*.xml
 %{_datadir}/%{name}/*.xslt
-%if %{mdkversion} >= 200900
 %{_datadir}/applications/%{name}.desktop
-%else
-%{_datadir}/gnome/wm-properties/%{name}.desktop
-%endif
+%{_datadir}/gnome/wm-properties/%{name}-wm.desktop
 %{_datadir}/compositing-wm/%{name}.defaults
 
 %files decorator-gtk
