@@ -27,6 +27,14 @@
  %define _kde3_configdir %{_kde3_datadir}/config
 %endif
 
+%if %{mdkversion} > 200900
+ %define build_kde3 0
+%else
+ %define build_kde3 1
+%endif
+
+
+
 Name: %name
 Version: %version
 Release: %release
@@ -104,10 +112,14 @@ BuildRequires: libgnome-menu-devel
 BuildRequires: gnome-panel-devel
 BuildRequires: libglade2-devel
 BuildRequires: startup-notification-devel
+
+%if %{build_kde3}
+BuildRequires: kdebase3-devel
 %if %{mdkversion} > 200810
 BuildRequires: kde3-macros
 %endif
-BuildRequires: kdebase3-devel
+%endif
+
 %if %{build_kde4}
 BuildRequires: kdebase4-devel
 BuildRequires: kdebase4-workspace-devel
@@ -115,6 +127,7 @@ BuildRequires: kdebase4-workspace-devel
 BuildRequires: kdelibs4-devel
 %endif
 %endif
+
 BuildRequires: bonoboui-devel
 BuildRequires: libxslt-devel
 BuildRequires: libxslt-proc
@@ -153,6 +166,7 @@ compositing manager.
 
 #----------------------------------------------------------------------------
 
+%if %{build_kde3}
 %package decorator-kde
 Summary: KDE window decorator for compiz
 Group: System/X11
@@ -165,6 +179,7 @@ Obsoletes: aquamarine
 %description decorator-kde
 This package provides a KDE window decorator for the compiz OpenGL
 compositing manager.
+%endif
 
 #----------------------------------------------------------------------------
 
@@ -182,6 +197,7 @@ compositing manager.
 
 #----------------------------------------------------------------------------
 
+%if %{build_kde3}
 %package config-kconfig
 Summary: KDE config backend compiz
 Group: System/X11
@@ -190,6 +206,7 @@ Requires:  %{name} = %{version}-%{release}
 %description config-kconfig
 This package provides a KDE config backend for the compiz OpenGL
 compositing manager.
+%endif
 
 #----------------------------------------------------------------------------
 
@@ -251,6 +268,9 @@ This package provides development files for compiz.
 # (cg) the QTDIR stuff is needed for kde3/qt3 (to find moc) :s
 export QTDIR=/usr/lib/qt3
 %configure2_5x \
+%if !%{build_kde3}
+  --disable-kde \
+%endif
 %if !%{build_kde4}
   --disable-kde4 \
 %endif
@@ -262,7 +282,11 @@ rm -rf %{buildroot}
 %makeinstall_std
 install -m755 %{SOURCE2} %{buildroot}%{_bindir}/%{name}-window-decorator
 install -D -m644 %{SOURCE1} %{buildroot}%{_datadir}/compositing-wm/%{name}.defaults
+%if %{build_kde3}
 install -D -m 0755 %{SOURCE3} %{buildroot}%{_sysconfdir}/X11/xinit.d/41kstylerc
+%else
+rm -f %{buildroot}%{_sysconfdir}/gconf/schemas/compiz-kconfig.schemas
+%endif
 %find_lang %{name}
 
 
@@ -277,11 +301,13 @@ install -D -m 0755 %{SOURCE3} %{buildroot}%{_sysconfdir}/X11/xinit.d/41kstylerc
 %preun
 %preun_uninstall_gconf_schemas %{schemas}
 
+%if %{build_kde3}
 %post config-kconfig
 %post_install_gconf_schemas compiz-kconfig
 
 %preun config-kconfig
 %preun_uninstall_gconf_schemas compiz-kconfig
+%endif
 
 %post decorator-gtk
 %post_install_gconf_schemas gwd
@@ -333,11 +359,14 @@ rm -rf %{buildroot}
 %{_datadir}/gnome-control-center/keybindings/50-%{name}-desktop-key.xml
 %endif
 
+
+%if %{build_kde3}
 %files decorator-kde
 %defattr(-,root,root)
 %{_bindir}/kde-window-decorator
 %{_kde3_configdir}/*
 %{_sysconfdir}/X11/xinit.d/41kstylerc
+%endif
 
 %if %{build_kde4}
 %files decorator-kde4
@@ -345,6 +374,7 @@ rm -rf %{buildroot}
 %{_bindir}/kde4-window-decorator
 %endif
 
+%if %{build_kde3}
 %files config-kconfig
 %defattr(-,root,root)
 %{_libdir}/%{name}/libkconfig.so
@@ -352,6 +382,7 @@ rm -rf %{buildroot}
 %{_libdir}/%{name}/libkconfig.a
 %{_sysconfdir}/gconf/schemas/compiz-kconfig.schemas
 %{_kde3_datadir}/config.kcfg
+%endif
 
 %files -n %libname
 %defattr(-,root,root)
