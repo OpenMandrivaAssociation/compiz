@@ -76,6 +76,7 @@ Patch502: 0502-Use-our-compiz-window-decorator-script-as-the-defaul.patch
 Patch503: 0503-Do-not-put-window-decorations-on-KDE-screensaver.patch
 Patch504: 0504-Also-check-for-tfp-in-server-extensions.patch
 Patch505: 0505-Fix-KDE3-linking-by-changing-the-directory-order.patch
+Patch506: 0506-compiz-0.7.8-gwd-pixmap-fix.patch
 
 License: GPL
 BuildRoot: %{_tmppath}/%{name}-root
