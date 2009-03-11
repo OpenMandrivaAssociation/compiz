@@ -1,7 +1,7 @@
 %define name compiz
-%define version 0.8.0
-%define rel 2
-%define git 20080208
+%define version 0.8.2
+%define rel 1
+%define git 0
 
 %define major 0
 %define libname %mklibname %{name} %major
@@ -9,12 +9,12 @@
 
 %define applypatches() (for patch in %patches; do cat $patch | patch -p1; done)
 
-%if  %{git}
+%if %{git}
 %define srcname %{name}-%{git}.tar.lzma
 %define distname %{name}
 %define release %mkrel 0.%{git}.%{rel}
 %else
-%define srcname %{name}-%{version}.tar.gz
+%define srcname %{name}-%{version}.tar.bz2
 %define distname %{name}-%{version}
 %define release %mkrel %{rel}
 %endif
@@ -40,8 +40,8 @@ Version: %version
 Release: %release
 Summary: OpenGL composite manager for Xgl and AIGLX
 Group: System/X11
-URL: http://www.go-compiz.org/
-Source: http://xorg.freedesktop.org/archive/individual/app/%{srcname}
+URL: http://www.compiz.org/
+Source: http://cgit.compiz-fusion.org/compiz/core/snapshot/%{srcname}
 Source1: compiz.defaults
 Source2: compiz-window-decorator
 Source3: kstylerc.xinit
@@ -76,9 +76,8 @@ Patch502: 0502-Use-our-compiz-window-decorator-script-as-the-defaul.patch
 Patch503: 0503-Do-not-put-window-decorations-on-KDE-screensaver.patch
 Patch504: 0504-Also-check-for-tfp-in-server-extensions.patch
 Patch505: 0505-Fix-KDE3-linking-by-changing-the-directory-order.patch
-Patch506: 0506-compiz-0.7.8-gwd-pixmap-fix.patch
 
-License: GPL
+License: GPLv2+ and LGPLv2+ and MIT
 BuildRoot: %{_tmppath}/%{name}-root
 
 BuildRequires: x11-util-macros
@@ -260,7 +259,7 @@ This package provides development files for compiz.
   sh autogen.sh -V
 %else
   # (Anssi 03/2008) Needed to get rid of RPATH=/usr/lib64 on lib64:
-  autoreconf
+  autoreconf -i
   # build fails without this:
   intltoolize --force
 %endif
@@ -288,6 +287,9 @@ install -D -m 0755 %{SOURCE3} %{buildroot}%{_sysconfdir}/X11/xinit.d/41kstylerc
 rm -f %{buildroot}%{_sysconfdir}/gconf/schemas/compiz-kconfig.schemas
 %endif
 %find_lang %{name}
+
+#remove unpackaged files
+rm -f %{buildroot}%{_libdir}/compiz/*.a
 
 
 # Define the plugins
