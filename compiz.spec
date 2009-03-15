@@ -289,7 +289,7 @@ rm -f %{buildroot}%{_sysconfdir}/gconf/schemas/compiz-kconfig.schemas
 %find_lang %{name}
 
 #remove unpackaged files
-rm -f %{buildroot}%{_libdir}/compiz/*.a
+#rm -f %{buildroot}%{_libdir}/compiz/*.a
 
 
 # Define the plugins
