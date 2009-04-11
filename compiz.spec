@@ -1,6 +1,6 @@
 %define name compiz
 %define version 0.8.2
-%define rel 1
+%define rel 2
 %define git 0
 
 %define major 0
@@ -273,6 +273,7 @@ export QTDIR=/usr/lib/qt3
 %if !%{build_kde4}
   --disable-kde4 \
 %endif
+  --with-default-plugins=core,png,decoration,wobbly,fade,minimize,cube,rotate,zoom,scale,move,resize,place,switcher,screenshot,dbus
 
 %make
 
