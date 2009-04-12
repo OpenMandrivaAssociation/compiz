@@ -112,6 +112,7 @@ BuildRequires: libgnome-menu-devel
 BuildRequires: gnome-panel-devel
 BuildRequires: libglade2-devel
 BuildRequires: startup-notification-devel
+BuildRequires: libcanberra-devel
 
 %if %{build_kde3}
 BuildRequires: kdebase3-devel
