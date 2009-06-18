@@ -7,8 +7,6 @@
 %define libname %mklibname %{name} %major
 %define libname_devel %mklibname -d %{name}
 
-%define applypatches() (for patch in %patches; do cat $patch | patch -p1; done)
-
 %if %{git}
 %define srcname %{name}-%{git}.tar.lzma
 %define distname %{name}
@@ -252,7 +250,7 @@ This package provides development files for compiz.
 %prep
 %setup -q -n %{distname}
 
-%applypatches
+%apply_patches
 
 
 %build
