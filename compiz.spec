@@ -1,7 +1,7 @@
 %define name compiz
-%define version 0.8.2
-%define rel 3
-%define git 0
+%define version 0.8.3
+%define rel 1
+%define git 20090909
 
 %define major 0
 %define libname %mklibname %{name} %major
@@ -9,7 +9,7 @@
 
 %if %{git}
 %define srcname %{name}-%{git}.tar.lzma
-%define distname %{name}
+%define distname %{name}-%{git}
 %define release %mkrel 0.%{git}.%{rel}
 %else
 %define srcname %{name}-%{version}.tar.bz2
@@ -74,7 +74,6 @@ Patch502: 0502-Use-our-compiz-window-decorator-script-as-the-defaul.patch
 Patch503: 0503-Do-not-put-window-decorations-on-KDE-screensaver.patch
 Patch504: 0504-Also-check-for-tfp-in-server-extensions.patch
 Patch505: 0505-Fix-KDE3-linking-by-changing-the-directory-order.patch
-Patch506: 0506-glx-Use-glXDestroyPixmap-rather-than-glXDestroyGLXPi.patch
 
 License: GPLv2+ and LGPLv2+ and MIT
 BuildRoot: %{_tmppath}/%{name}-root
