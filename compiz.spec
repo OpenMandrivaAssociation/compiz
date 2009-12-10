@@ -1,6 +1,6 @@
 %define name compiz
 %define version 0.8.4
-%define rel 1
+%define rel 2
 %define git 0
 
 %define major 0
@@ -18,7 +18,11 @@
 %endif
 
 %if %{mdkversion} > 200810
+%if %{mdkversion} > 200910
+ %define build_kde4 0
+%else
  %define build_kde4 1
+%endif
 %else
  %define build_kde4 0
  %define _kde3_datadir %{_datadir}
