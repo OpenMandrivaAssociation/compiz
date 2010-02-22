@@ -1,6 +1,6 @@
 %define name compiz
 %define version 0.8.4
-%define rel 2
+%define rel 3
 %define git 0
 
 %define major 0
@@ -18,11 +18,7 @@
 %endif
 
 %if %{mdkversion} > 200810
-%if %{mdkversion} > 200910
- %define build_kde4 0
-%else
  %define build_kde4 1
-%endif
 %else
  %define build_kde4 0
  %define _kde3_datadir %{_datadir}
@@ -78,6 +74,7 @@ Patch502: 0502-Use-our-compiz-window-decorator-script-as-the-defaul.patch
 Patch503: 0503-Do-not-put-window-decorations-on-KDE-screensaver.patch
 Patch504: 0504-Also-check-for-tfp-in-server-extensions.patch
 Patch505: 0505-Fix-KDE3-linking-by-changing-the-directory-order.patch
+Patch506: 0506-Fix-KDE4-build.patch
 
 License: GPLv2+ and LGPLv2+ and MIT
 BuildRoot: %{_tmppath}/%{name}-root
