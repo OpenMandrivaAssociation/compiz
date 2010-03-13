@@ -1,6 +1,6 @@
 %define name compiz
 %define version 0.8.4
-%define rel 3
+%define rel 4
 %define git 0
 
 %define major 0
@@ -64,7 +64,46 @@ Source3: kstylerc.xinit
 # git rebase mdv-0.8.0-cherry-picks
 
 # Cherry Pick Patches
-# git format-patch compiz-0.8.0..mdv-0.8.0-cherry-picks
+# git format-patch compiz-0.8.4..compiz-0.8
+Patch0100: 0100-Post-release-version-increment.patch
+Patch0101: 0101-Fix-crash-in-multi-screen-setups.patch
+Patch0102: 0102-Fix-Gnome-keybinding-list.patch
+Patch0103: 0103-Make-short-descriptions-of-bindings-a-_little_-more-.patch
+Patch0104: 0104-Clean-up-focus-functions.patch
+Patch0105: 0105-Fix-some-focus-issues.patch
+Patch0106: 0106-Fix-gravity-handling.patch
+Patch0107: 0107-Minor-consistency-fix.patch
+Patch0108: 0108-Only-keep-windows-on-screen-that-were-fully-on-scree.patch
+Patch0109: 0109-Correctly-reflect-that-the-switcher-window-is-manage.patch
+Patch0110: 0110-Fix-icon-property-reading-if-the-icon-pixmap-has-a-d.patch
+Patch0111: 0111-Don-t-pull-in-unstable-API-it-s-not-needed-any-longe.patch
+Patch0112: 0112-Revert-Don-t-pull-in-unstable-API-it-s-not-needed-an.patch
+Patch0113: 0113-Fix-crash.patch
+Patch0114: 0114-Better-resize-constraint-and-snap-for-combined-work-.patch
+Patch0115: 0115-Minor-whitespace-fixes-and-optimizations.patch
+Patch0116: 0116-Do-the-resize-output-snap-only-when-outside.patch
+Patch0117: 0117-Complete-the-work-area-optimization.patch
+Patch0118: 0118-wobbly-Fix-y-constraint-on-throwing.patch
+Patch0119: 0119-wobbly-Fix-warning.patch
+Patch0120: 0120-wobbly-Constrain-throwing-at-the-bottom-as-well.patch
+Patch0121: 0121-Fix-window-region-calculation-for-windows-that-have-.patch
+Patch0122: 0122-Fix-crash-on-opening-windows.patch
+Patch0123: 0123-Fix-handling-of-windows-that-have-a-server-border-se.patch
+Patch0124: 0124-Also-handle-windows-that-have-a-server-border-set-pr.patch
+Patch0125: 0125-Fix-typo.patch
+Patch0126: 0126-Properly-send-ClientMessage-event-after-aquiring-com.patch
+Patch0127: 0127-Only-accept-ConfigureRequest-_NET_MOVERESIZE_WINDOW-.patch
+Patch0128: 0128-Kde-4.4-support.patch
+Patch0129: 0129-Better-detection-of-tooltip-windows-KDE-backport.patch
+Patch0130: 0130-Fake-enlightment-desktop-property-to-make-qt-ignore-.patch
+Patch0131: 0131-Fix-window-position-validation-for-windows-that-chan.patch
+Patch0132: 0132-Link-all-required-libraries-explicitly.patch
+Patch0133: 0133-Cleanup-key-binding-list-from-redundant-and-unneeded.patch
+Patch0134: 0134-Also-place-windows-that-are-marked-unmovable.patch
+Patch0135: 0135-Fix-png-plugin-to-work-with-libpng-1.4.patch
+Patch0136: 0136-Keep-pixmaps-of-unmapped-windows-around-if-they-are-.patch
+Patch0137: 0137-Make-sure-w-width-and-w-height-always-reflect-the-si.patch
+Patch0138: 0138-gtk-decorator-Replace-deprecated-GTK_WIDGET_VISIBLE-.patch
 
 # Mandriva Patches
 # git format-patch --start-number 500 mdv-0.8.0-cherry-picks..mdv-0.8.0-patches
@@ -74,7 +113,6 @@ Patch502: 0502-Use-our-compiz-window-decorator-script-as-the-defaul.patch
 Patch503: 0503-Do-not-put-window-decorations-on-KDE-screensaver.patch
 Patch504: 0504-Also-check-for-tfp-in-server-extensions.patch
 Patch505: 0505-Fix-KDE3-linking-by-changing-the-directory-order.patch
-Patch506: 0506-Fix-KDE4-build.patch
 
 License: GPLv2+ and LGPLv2+ and MIT
 BuildRoot: %{_tmppath}/%{name}-root
