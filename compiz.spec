@@ -17,21 +17,6 @@
 %define release %mkrel %{rel}
 %endif
 
-%if %{mdkversion} > 200810
- %define build_kde4 1
-%else
- %define build_kde4 0
- %define _kde3_datadir %{_datadir}
- %define _kde3_configdir %{_kde3_datadir}/config
-%endif
-
-%if %{mdkversion} > 200900
- %define build_kde3 0
-%else
- %define build_kde3 1
-%endif
-
-
 
 Name: %name
 Version: %version
@@ -152,20 +137,9 @@ BuildRequires: startup-notification-devel
 BuildRequires: libcanberra-devel
 BuildRequires: libgtop2.0-devel
 
-%if %{build_kde3}
-BuildRequires: kdebase3-devel
-%if %{mdkversion} > 200810
-BuildRequires: kde3-macros
-%endif
-%endif
-
-%if %{build_kde4}
 BuildRequires: kdebase4-devel
 BuildRequires: kdebase4-workspace-devel
-%if %{mdkversion} >= 200910
 BuildRequires: kdelibs4-devel
-%endif
-%endif
 
 BuildRequires: bonoboui-devel
 BuildRequires: libxslt-devel
@@ -204,24 +178,6 @@ compositing manager.
 
 #----------------------------------------------------------------------------
 
-%if %{build_kde3}
-%package decorator-kde
-Summary: KDE window decorator for compiz
-Group: System/X11
-Provides: compiz-decorator
-Conflicts: %{name} < 0.3.6-4mdv2007.1
-Conflicts: compositing-wm-common <= compositing-wm-common-2009.0-3mdv2009.0
-Requires:  %{name} = %{version}-%{release}
-Obsoletes: aquamarine
-
-%description decorator-kde
-This package provides a KDE window decorator for the compiz OpenGL
-compositing manager.
-%endif
-
-#----------------------------------------------------------------------------
-
-%if %{build_kde4}
 %package decorator-kde4
 Summary: KDE4 window decorator for compiz
 Group: System/X11
@@ -231,20 +187,6 @@ Requires:  %{name} = %{version}-%{release}
 %description decorator-kde4
 This package provides a KDE4 window decorator for the compiz OpenGL
 compositing manager.
-%endif
-
-#----------------------------------------------------------------------------
-
-%if %{build_kde3}
-%package config-kconfig
-Summary: KDE config backend compiz
-Group: System/X11
-Requires:  %{name} = %{version}-%{release}
-
-%description config-kconfig
-This package provides a KDE config backend for the compiz OpenGL
-compositing manager.
-%endif
 
 #----------------------------------------------------------------------------
 
@@ -306,12 +248,7 @@ This package provides development files for compiz.
 # (cg) the QTDIR stuff is needed for kde3/qt3 (to find moc) :s
 export QTDIR=/usr/lib/qt3
 %configure2_5x \
-%if !%{build_kde3}
   --disable-kde \
-%endif
-%if !%{build_kde4}
-  --disable-kde4 \
-%endif
   --with-default-plugins=core,png,decoration,wobbly,fade,minimize,cube,rotate,zoom,scale,move,resize,place,switcher,screenshot,dbus
 
 %make
@@ -321,11 +258,8 @@ rm -rf %{buildroot}
 %makeinstall_std
 install -m755 %{SOURCE2} %{buildroot}%{_bindir}/%{name}-window-decorator
 install -D -m644 %{SOURCE1} %{buildroot}%{_datadir}/compositing-wm/%{name}.defaults
-%if %{build_kde3}
-install -D -m 0755 %{SOURCE3} %{buildroot}%{_sysconfdir}/X11/xinit.d/41kstylerc
-%else
+# Old, unneeded schemas
 rm -f %{buildroot}%{_sysconfdir}/gconf/schemas/compiz-kconfig.schemas
-%endif
 %find_lang %{name}
 
 #remove unpackaged files
@@ -342,14 +276,6 @@ rm -f %{buildroot}%{_sysconfdir}/gconf/schemas/compiz-kconfig.schemas
 
 %preun
 %preun_uninstall_gconf_schemas %{schemas}
-
-%if %{build_kde3}
-%post config-kconfig
-%post_install_gconf_schemas compiz-kconfig
-
-%preun config-kconfig
-%preun_uninstall_gconf_schemas compiz-kconfig
-%endif
 
 %post decorator-gtk
 %post_install_gconf_schemas gwd
@@ -402,29 +328,9 @@ rm -rf %{buildroot}
 %endif
 
 
-%if %{build_kde3}
-%files decorator-kde
-%defattr(-,root,root)
-%{_bindir}/kde-window-decorator
-%{_kde3_configdir}/*
-%{_sysconfdir}/X11/xinit.d/41kstylerc
-%endif
-
-%if %{build_kde4}
 %files decorator-kde4
 %defattr(-,root,root)
 %{_bindir}/kde4-window-decorator
-%endif
-
-%if %{build_kde3}
-%files config-kconfig
-%defattr(-,root,root)
-%{_libdir}/%{name}/libkconfig.so
-%{_libdir}/%{name}/libkconfig.la
-%{_libdir}/%{name}/libkconfig.a
-%{_sysconfdir}/gconf/schemas/compiz-kconfig.schemas
-%{_kde3_datadir}/config.kcfg
-%endif
 
 %files -n %libname
 %defattr(-,root,root)
