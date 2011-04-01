@@ -1,6 +1,6 @@
 %define name compiz
-%define version 0.8.6
-%define rel 2
+%define version 0.8.8
+%define rel 1
 %define git 0
 
 %define major 0
@@ -37,8 +37,6 @@ Source3: kstylerc.xinit
 # git am 00*.patch
 # git checkout -b mdv-0.8.0-patches
 # git am 05*.patch
-Patch0: gdk_drawable_deprecated.patch
-Patch1: gdk_display_deprecated.patch
 
 # To apply new custom patches
 # git checkout mdv-0.8.0-patches
