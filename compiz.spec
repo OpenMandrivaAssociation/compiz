@@ -1,6 +1,6 @@
 %define name compiz
 %define version 0.8.8
-%define rel 3
+%define rel 4
 %define git 0
 
 %define major 0
