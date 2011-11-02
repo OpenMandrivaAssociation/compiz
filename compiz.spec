@@ -1,5 +1,5 @@
 %define _disable_ld_no_undefined 1
-%define rel 1
+%define rel 2
 %define git 0
 
 %define major 0
