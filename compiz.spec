@@ -199,7 +199,7 @@ This package provides development files for compiz.
 #----------------------------------------------------------------------------
 
 %prep
-%setup -q -n %{distname}
+%setup -qn %{distname}
 %apply_patches
 
 %build
@@ -216,7 +216,7 @@ This package provides development files for compiz.
 	-DCOMPIZ_BUILD_WITH_RPATH=OFF \
 	-DCOMPIZ_DISABLE_SCHEMAS_INSTALL=ON \
 	-DCOMPIZ_INSTALL_GCONF_SCHEMA_DIR=%{_sysconfdir}/gconf/schemas ..
-make -j3
+make -j2
 #%%make
 
 %install
