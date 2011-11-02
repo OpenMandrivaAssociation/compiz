@@ -1,6 +1,5 @@
-%define name compiz
-%define version 0.8.8
-%define rel 4
+%define _disable_ld_no_undefined 1
+%define rel 1
 %define git 0
 
 %define major 0
@@ -8,26 +7,33 @@
 %define libname_devel %mklibname -d %{name}
 
 %if %{git}
-%define srcname %{name}-%{git}.tar.lzma
+%define srcname %{name}-%{git}.tar.xz
 %define distname %{name}-%{git}
-%define release %mkrel 0.%{git}.%{rel}
+%define release 0.%{git}.%{rel}
 %else
 %define srcname %{name}-%{version}.tar.bz2
 %define distname %{name}-%{version}
-%define release %mkrel %{rel}
+%define release %{rel}
 %endif
 
 
-Name: %name
-Version: %version
+Name: compiz
+Version: 0.9.5.92.1
 Release: %release
 Summary: OpenGL composite manager for Xgl and AIGLX
 Group: System/X11
+License: GPLv2+,LGPLv2+,MIT
 URL: http://www.compiz.org/
 Source: http://cgit.compiz-fusion.org/compiz/core/snapshot/%{srcname}
 Source1: compiz.defaults
 Source2: compiz-window-decorator
 Source3: kstylerc.xinit
+
+# fedora sources bumped by x10
+Source11: compiz-gtk
+Source12: compiz-gtk.desktop
+Source13: compiz-gnome.desktop
+Source14: compiz-gnome.session
 
 # (cg) Using git to manage patches
 # To recreate the structure
@@ -50,15 +56,16 @@ Source3: kstylerc.xinit
 
 # Mandriva Patches
 # git format-patch --start-number 500 mdv-0.8.0-cherry-picks..mdv-0.8.0-patches
-Patch500: 0500-Fix-memory-leak-in-KDE3-window-decorator.patch
 Patch501: 0501-Add-Mandriva-graphic-to-the-top-of-the-cube.patch
 Patch502: 0502-Use-our-compiz-window-decorator-script-as-the-defaul.patch
 Patch503: 0503-Do-not-put-window-decorations-on-KDE-screensaver.patch
-Patch504: 0504-Also-check-for-tfp-in-server-extensions.patch
-Patch505: 0505-Fix-KDE3-linking-by-changing-the-directory-order.patch
+# Next to impossible to rediff
+#Patch504: 0504-Also-check-for-tfp-in-server-extensions.patch
 
-License: GPLv2+ and LGPLv2+ and MIT
-BuildRoot: %{_tmppath}/%{name}-root
+# fedora patches
+# Allow installation of GNOME keybindings without GNOME window manager
+# settings stuff (sent upstream)
+Patch122: compiz-0.9.2.1-keybindings.patch
 
 BuildRequires: x11-util-macros
 BuildRequires: libx11-devel
@@ -108,6 +115,11 @@ BuildRequires: libsvg-cairo-devel
 BuildRequires: fuse-devel
 # needed by autoreconf:
 BuildRequires: intltool
+BuildRequires: gettext
+BuildRequires: cmake
+BuildRequires: boost-devel
+BuildRequires: glibmm2.4-devel
+
 
 Requires(post): GConf2
 Requires(preun): GConf2
@@ -188,47 +200,75 @@ This package provides development files for compiz.
 
 %prep
 %setup -q -n %{distname}
-
 %apply_patches
-
 
 %build
 %if %{git}
+# no idea if this is still valid 2011-11-02
   # This is a CVS snapshot, so we need to generate makefiles.
   sh autogen.sh -V
-%else
-  # (Anssi 03/2008) Needed to get rid of RPATH=/usr/lib64 on lib64:
-  autoreconf -i
-  # build fails without this:
-  intltoolize --force
 %endif
 
 # (cg) the QTDIR stuff is needed for kde3/qt3 (to find moc) :s
-export QTDIR=/usr/lib/qt3
-%configure2_5x \
-  --disable-kde \
-  --with-default-plugins=core,png,decoration,wobbly,fade,minimize,cube,rotate,zoom,scale,move,resize,place,switcher,screenshot,dbus
-
-%make
+%cmake -DCOMPIZ_DEFAULT_PLUGINS="%{default_plugins}" \
+    -DCOMPIZ_PACKAGING_ENABLED=ON \
+	-DBUILD_GNOME_KEYBINDINGS=OFF \
+	-DCOMPIZ_BUILD_WITH_RPATH=OFF \
+	-DCOMPIZ_DISABLE_SCHEMAS_INSTALL=ON \
+	-DCOMPIZ_INSTALL_GCONF_SCHEMA_DIR=%{_sysconfdir}/gconf/schemas ..
+make -j3
+#%%make
 
 %install
 rm -rf %{buildroot}
-%makeinstall_std
+%makeinstall_std -C build
+pushd build
+# This should work, but is buggy upstream:
+# make DESTDIR=%{buildroot} findcompiz_install
+# So we do this instead:
+mkdir -p %{buildroot}%{_datadir}/cmake/Modules
+cmake -E copy ../cmake/FindCompiz.cmake %{buildroot}%{_datadir}/cmake/Modules
+popd
+
 install -m755 %{SOURCE2} %{buildroot}%{_bindir}/%{name}-window-decorator
 install -D -m644 %{SOURCE1} %{buildroot}%{_datadir}/compositing-wm/%{name}.defaults
-# Old, unneeded schemas
-rm -f %{buildroot}%{_sysconfdir}/gconf/schemas/compiz-kconfig.schemas
+
 %find_lang %{name}
 
-#remove unpackaged files
-#rm -f %{buildroot}%{_libdir}/compiz/*.a
+#fedora sources
+install %SOURCE11 %{buildroot}/%{_bindir}
 
+# set up an X session
+mkdir -p %{buildroot}%{_datadir}/xsessions
+install %SOURCE13 %{buildroot}/%{_datadir}/xsessions
+mkdir -p %{buildroot}%{_datadir}/gnome-session/sessions
+install %SOURCE14 %{buildroot}/%{_datadir}/gnome-session/sessions
+
+# create compiz keybindings file based on the metacity ones
+# lifted straight from Ubuntu, as long as installation of the upstream
+# ones is broken at least (I've reported this upstream)
+mkdir -p %{buildroot}/%{_datadir}/gnome-control-center/keybindings
+	sed 's/wm_name=\"Metacity\" package=\"metacity\"/wm_name=\"Compiz\" package=\"compiz\"/'  /usr/share/gnome-control-center/keybindings/50-metacity-launchers.xml > %{buildroot}/%{_datadir}/gnome-control-center/keybindings/50-compiz-launchers.xml
+	sed 's/wm_name=\"Metacity\" package=\"metacity\"/wm_name=\"Compiz\" package=\"compiz\"/'  /usr/share/gnome-control-center/keybindings/50-metacity-navigation.xml > %{buildroot}/%{_datadir}/gnome-control-center/keybindings/50-compiz-navigation.xml
+	sed 's/wm_name=\"Metacity\" package=\"metacity\"/wm_name=\"Compiz\" package=\"compiz\"/'  /usr/share/gnome-control-center/keybindings/50-metacity-screenshot.xml > %{buildroot}/%{_datadir}/gnome-control-center/keybindings/50-compiz-screenshot.xml
+	sed 's/wm_name=\"Metacity\" package=\"metacity\"/wm_name=\"Compiz\" package=\"compiz\"/'  /usr/share/gnome-control-center/keybindings/50-metacity-system.xml > %{buildroot}/%{_datadir}/gnome-control-center/keybindings/50-compiz-system.xml
+	sed 's/wm_name=\"Metacity\" package=\"metacity\"/wm_name=\"Compiz\" package=\"compiz\"/'  /usr/share/gnome-control-center/keybindings/50-metacity-windows.xml > %{buildroot}/%{_datadir}/gnome-control-center/keybindings/50-compiz-windows.xml
+	sed -i 's#key=\"/apps/metacity/general/num_workspaces\" comparison=\"gt\"##g' %{buildroot}/%{_datadir}/gnome-control-center/keybindings/50-compiz-navigation.xml
+	sed -i 's#key=\"/apps/metacity/general/num_workspaces\" comparison=\"gt\"##g' %{buildroot}/%{_datadir}/gnome-control-center/keybindings/50-compiz-windows.xml
+
+desktop-file-install --vendor="" \
+	--dir %{buildroot}%{_datadir}/applications \
+	%SOURCE12
+
+find %{buildroot} -name '*.la' -exec rm -f {} ';'
+find %{buildroot} -name '*.a' -exec rm -f {} ';'
 
 # Define the plugins
 # NB not all plugins are listed here as some ar packaged separately.
 %define plugins annotate blur clone commands cube dbus decoration fade fs gconf glib gnomecompat ini inotify minimize move obs place png regex resize rotate scale screenshot svg switcher video water wobbly zoom
 %define schemas compiz-core %(for plugin in %{plugins}; do echo -n " compiz-$plugin"; done)
 
+%if %mdkversion < 200900
 %post
 %post_install_gconf_schemas %{schemas}
 
@@ -240,14 +280,7 @@ rm -f %{buildroot}%{_sysconfdir}/gconf/schemas/compiz-kconfig.schemas
 
 %preun decorator-gtk
 %preun_uninstall_gconf_schemas gwd
-
-
-%triggerpostun -- beryl-core
-
-if [ -w %{_sysconfdir}/sysconfig/compositing-wm ]; then
-  sed -i 's/COMPOSITING_WM=beryl/COMPOSITING_WM=compiz-fusion/' \
-   %{_sysconfdir}/sysconfig/compositing-wm
-fi
+%endif
 
 %clean
 rm -rf %{buildroot}
@@ -259,32 +292,31 @@ rm -rf %{buildroot}
 %{_bindir}/%{name}
 %{_bindir}/%{name}-window-decorator
 %dir %{_libdir}/%{name}
-%(for plugin in %{plugins}; do
-   echo "%{_libdir}/%{name}/lib$plugin.so"
-   echo "%{_libdir}/%{name}/lib$plugin.la"
-   echo "%{_libdir}/%{name}/lib$plugin.a"
-  done)
-%{_libdir}/window-manager-settings/lib%{name}.*
-%(for schema in %{schemas}; do
-   echo "%{_sysconfdir}/gconf/schemas/$schema.schemas"
-  done)
+# why do a for loop if all the files go in the same pkg???
+%{_libdir}/%{name}/lib*.so
+# why do a for loop if all the files go in the same pkg???
+%{_sysconfdir}/gconf/schemas/%{name}-*.schemas
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/*.png
 %{_datadir}/%{name}/*.xml
-%{_datadir}/%{name}/*.xslt
+%dir %{_datadir}/%{name}/xslt
+%dir %{_datadir}/%{name}/cube
+%dir %{_datadir}/%{name}/cube/images
+%{_datadir}/%{name}/xslt/*.xslt
+%{_datadir}/%{name}/cube/images/*.png
 %{_datadir}/applications/%{name}.desktop
-%{_datadir}/gnome/wm-properties/%{name}-wm.desktop
 %{_datadir}/compositing-wm/%{name}.defaults
 
 %files decorator-gtk
 %defattr(-,root,root)
+%{_bindir}/compiz-gtk
 %{_bindir}/gtk-window-decorator
 %{_sysconfdir}/gconf/schemas/gwd.schemas
-%if %{mdkversion} > 200710
-%{_datadir}/gnome-control-center/keybindings/50-%{name}-key.xml
-%{_datadir}/gnome-control-center/keybindings/50-%{name}-desktop-key.xml
-%endif
-
+%{_datadir}/gnome-control-center/keybindings/50-%{name}-*.xml
+%{_datadir}/applications/compiz-gtk.desktop
+# split into gnome pkg ???
+%{_datadir}/xsessions/compiz-gnome.desktop
+%{_datadir}/gnome-session/sessions/compiz-gnome.session
 
 %files decorator-kde4
 %defattr(-,root,root)
@@ -296,10 +328,9 @@ rm -rf %{buildroot}
 
 %files -n %libname_devel
 %defattr(-,root,root)
-%{_includedir}/%{name}/%{name}*.h
-%{_includedir}/%{name}/decoration.h
-%{_libdir}/libdecoration.a
-%{_libdir}/libdecoration.la
+%{_includedir}/%{name}/*
 %{_libdir}/libdecoration.so
 %{_libdir}/pkgconfig/%{name}*.pc
 %{_libdir}/pkgconfig/libdecoration.pc
+%{_datadir}/cmake/Modules/*cmake
+%{_datadir}/%{name}/cmake
