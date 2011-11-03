@@ -277,7 +277,9 @@ rm -rf %{buildroot}
 %dir %{_libdir}/%{name}
 # why do a for loop if all the files go in the same pkg???
 %{_libdir}/%{name}/lib*.so
-%exclude %{_libdir}/%{name}/lib{annotate,gnomecompat,kde}.so
+%exclude %{_libdir}/%{name}/libannotate.so
+%exclude %{_libdir}/%{name}/libgnomecompat.so
+%exclude %{_libdir}/%{name}/libkde.so
 # why do a for loop if all the files go in the same pkg???
 %{_sysconfdir}/gconf/schemas/%{name}-*.schemas
 %dir %{_datadir}/%{name}
@@ -299,7 +301,8 @@ rm -rf %{buildroot}
 # split into gnome pkg ???
 %{_datadir}/xsessions/compiz-gnome.desktop
 %{_datadir}/gnome-session/sessions/compiz-gnome.session
-%{_libdir}/%{name}/lib{annotate,gnomecompat}.so
+%{_libdir}/%{name}/libannotate.so
+%{_libdir}/%{name}/libgnomecompat.so
 
 %files decorator-kde4
 %defattr(-,root,root)
