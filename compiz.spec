@@ -1,5 +1,5 @@
 %define _disable_ld_no_undefined 1
-%define rel 2
+%define rel 3
 %define git 0
 
 %define major 0
@@ -177,22 +177,6 @@ Group: Development/X11
 Provides:  %{name}-devel = %{version}-%{release}
 Obsoletes: %{name}-devel
 Requires: %{libname} = %{version}-%{release}
-Requires: png-devel
-Requires: libxcomposite-devel
-Requires: libxdamage-devel
-Requires: libxfixes-devel
-Requires: libxrandr-devel
-Requires: libxinerama-devel
-Requires: libice-devel
-Requires: libsm-devel
-Requires: startup-notification-devel
-Requires: GL-devel
-Requires: libxslt-devel
-Requires: libxslt-proc
-Requires: glib2-devel
-
-Obsoletes: %mklibname -d beryl-core 0
-
 %description -n %libname_devel
 This package provides development files for compiz.
 
@@ -299,10 +283,8 @@ rm -rf %{buildroot}
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/*.png
 %{_datadir}/%{name}/*.xml
-%dir %{_datadir}/%{name}/xslt
 %dir %{_datadir}/%{name}/cube
 %dir %{_datadir}/%{name}/cube/images
-%{_datadir}/%{name}/xslt/*.xslt
 %{_datadir}/%{name}/cube/images/*.png
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/compositing-wm/%{name}.defaults
@@ -328,9 +310,11 @@ rm -rf %{buildroot}
 
 %files -n %libname_devel
 %defattr(-,root,root)
+%dir %{_datadir}/%{name}/xslt
 %{_includedir}/%{name}/*
 %{_libdir}/libdecoration.so
 %{_libdir}/pkgconfig/%{name}*.pc
 %{_libdir}/pkgconfig/libdecoration.pc
 %{_datadir}/cmake/Modules/*cmake
 %{_datadir}/%{name}/cmake
+%{_datadir}/%{name}/xslt/*.xslt
