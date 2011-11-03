@@ -193,7 +193,6 @@ This package provides development files for compiz.
   sh autogen.sh -V
 %endif
 
-# (cg) the QTDIR stuff is needed for kde3/qt3 (to find moc) :s
 %cmake -DCOMPIZ_DEFAULT_PLUGINS="%{default_plugins}" \
     -DCOMPIZ_PACKAGING_ENABLED=ON \
 	-DBUILD_GNOME_KEYBINDINGS=OFF \
@@ -278,6 +277,7 @@ rm -rf %{buildroot}
 %dir %{_libdir}/%{name}
 # why do a for loop if all the files go in the same pkg???
 %{_libdir}/%{name}/lib*.so
+%exclude %{_libdir}/%{name}/lib{annotate,gnomecompat,kde}.so
 # why do a for loop if all the files go in the same pkg???
 %{_sysconfdir}/gconf/schemas/%{name}-*.schemas
 %dir %{_datadir}/%{name}
@@ -299,10 +299,12 @@ rm -rf %{buildroot}
 # split into gnome pkg ???
 %{_datadir}/xsessions/compiz-gnome.desktop
 %{_datadir}/gnome-session/sessions/compiz-gnome.session
+%{_libdir}/%{name}/lib{annotate,gnomecompat}.so
 
 %files decorator-kde4
 %defattr(-,root,root)
 %{_bindir}/kde4-window-decorator
+%{_libdir}/%{name}/libkde.so
 
 %files -n %libname
 %defattr(-,root,root)
