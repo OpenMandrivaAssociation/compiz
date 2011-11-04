@@ -1,5 +1,5 @@
 %define _disable_ld_no_undefined 1
-%define rel 3
+%define rel 4
 %define git 0
 
 %define major 0
@@ -16,6 +16,7 @@
 %define release %{rel}
 %endif
 
+%global default_plugins core composite opengl copytex compiztoolbox decor scale resize gnomecompat staticswitcher place move mousepoll vpswitch regex snap session wall workarounds ezoom
 
 Name: compiz
 Version: 0.9.5.92.1
@@ -282,9 +283,15 @@ rm -rf %{buildroot}
 %exclude %{_libdir}/%{name}/libkde.so
 # why do a for loop if all the files go in the same pkg???
 %{_sysconfdir}/gconf/schemas/%{name}-*.schemas
+%exclude %{_sysconfdir}/gconf/schemas/%{name}-annotate.schemas
+%exclude %{_sysconfdir}/gconf/schemas/%{name}-gnomecompat.schemas
+%exclude %{_sysconfdir}/gconf/schemas/%{name}-kde.schemas
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/*.png
 %{_datadir}/%{name}/*.xml
+%exclude %{_datadir}/%{name}/annotate.xml
+%exclude %{_datadir}/%{name}/gnomecompat.xml
+%exclude %{_datadir}/%{name}/kde.xml
 %dir %{_datadir}/%{name}/cube
 %dir %{_datadir}/%{name}/cube/images
 %{_datadir}/%{name}/cube/images/*.png
@@ -303,11 +310,17 @@ rm -rf %{buildroot}
 %{_datadir}/gnome-session/sessions/compiz-gnome.session
 %{_libdir}/%{name}/libannotate.so
 %{_libdir}/%{name}/libgnomecompat.so
+%{_datadir}/%{name}/annotate.xml
+%{_datadir}/%{name}/gnomecompat.xml
+%{_sysconfdir}/gconf/schemas/%{name}-annotate.schemas
+%{_sysconfdir}/gconf/schemas/%{name}-gnomecompat.schemas
 
 %files decorator-kde4
 %defattr(-,root,root)
 %{_bindir}/kde4-window-decorator
 %{_libdir}/%{name}/libkde.so
+%{_datadir}/%{name}/kde.xml
+%{_sysconfdir}/gconf/schemas/%{name}-kde.schemas
 
 %files -n %libname
 %defattr(-,root,root)
