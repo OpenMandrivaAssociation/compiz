@@ -129,6 +129,7 @@ Requires: compositing-wm-common
 Provides: compositing-wm
 Requires: compiz-decorator
 Obsoletes: beryl-core
+%rename compiz-bcop
 
 %description
 Compiz is an OpenGL composite manager for Xgl and AIGLX.
