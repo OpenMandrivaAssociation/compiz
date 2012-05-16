@@ -80,7 +80,7 @@ BuildRequires: libxinerama-devel
 BuildRequires: libxrandr-devel
 BuildRequires: libxfixes-devel
 BuildRequires: freetype2-devel
-BuildRequires: xft2-devel
+BuildRequires: libxft-devel
 BuildRequires: fontconfig-devel
 
 BuildRequires: mesagl-devel
