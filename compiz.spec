@@ -16,8 +16,6 @@
 %define release %{rel}
 %endif
 
-%global default_plugins core composite opengl copytex compiztoolbox decor scale resize gnomecompat staticswitcher place move mousepoll vpswitch regex snap session wall workarounds ezoom
-
 Name: compiz
 Version: 0.9.7.8
 Release: %release
@@ -68,57 +66,15 @@ Patch503: 0503-Do-not-put-window-decorations-on-KDE-screensaver.patch
 # settings stuff (sent upstream)
 Patch122: compiz-0.9.2.1-keybindings.patch
 
-BuildRequires: x11-util-macros
-BuildRequires: libx11-devel
-BuildRequires: libxext-devel
-BuildRequires: libxtst-devel
-BuildRequires: libxcursor-devel
-BuildRequires: libxrender-devel
-BuildRequires: libxcomposite-devel
-BuildRequires: libxdamage-devel
-BuildRequires: libxinerama-devel
-BuildRequires: libxrandr-devel
-BuildRequires: libxfixes-devel
-BuildRequires: freetype2-devel
-BuildRequires: libxft-devel
-BuildRequires: fontconfig-devel
-
-BuildRequires: mesagl-devel
-BuildRequires: mesaglu-devel
-
-BuildRequires: libpng-devel
-BuildRequires: zlib-devel
-
-BuildRequires: dbus-glib-devel
-BuildRequires: libGConf2-devel
-BuildRequires: libwnck-devel
-BuildRequires: metacity-devel
-BuildRequires: pango-devel
-BuildRequires: gnome-desktop-devel
-BuildRequires: gnome-menus2-devel
-BuildRequires: libglade2.0-devel
-BuildRequires: startup-notification-devel
-BuildRequires: libcanberra-gtk-devel
-BuildRequires: libgtop2.0-devel
-
-BuildRequires: kdebase4-devel
-BuildRequires: kdebase4-workspace-devel
-BuildRequires: kdelibs4-devel
-
-BuildRequires: libbonoboui-devel
-BuildRequires: libxslt-devel
-BuildRequires: libxslt-proc
-BuildRequires: librsvg-devel
-BuildRequires: cairo-devel
-BuildRequires: libsvg-cairo-devel
-BuildRequires: fuse-devel
 # needed by autoreconf:
 BuildRequires: intltool
 BuildRequires: gettext
 BuildRequires: cmake
 BuildRequires: boost-devel
 BuildRequires: glibmm2.4-devel
-
+BuildRequires: kdebase4-workspace-devel
+BuildRequires: libxslt-devel
+BuildRequires: pkgconfig(librsvg-2.0)
 
 Requires(post): GConf2
 Requires(preun): GConf2
@@ -193,8 +149,7 @@ This package provides development files for compiz.
   sh autogen.sh -V
 %endif
 
-%cmake -DCOMPIZ_DEFAULT_PLUGINS="%{default_plugins}" \
-    -DCOMPIZ_PACKAGING_ENABLED=ON \
+%cmake -DCOMPIZ_PACKAGING_ENABLED=ON \
 	-DBUILD_GNOME_KEYBINDINGS=OFF \
 	-DCOMPIZ_BUILD_WITH_RPATH=OFF \
 	-DCOMPIZ_DISABLE_SCHEMAS_INSTALL=ON \
@@ -250,20 +205,6 @@ find %{buildroot} -name '*.a' -exec rm -f {} ';'
 # NB not all plugins are listed here as some ar packaged separately.
 %define plugins annotate blur clone commands cube dbus decoration fade fs gconf glib gnomecompat ini inotify minimize move obs place png regex resize rotate scale screenshot svg switcher video water wobbly zoom
 %define schemas compiz-core %(for plugin in %{plugins}; do echo -n " compiz-$plugin"; done)
-
-%if %mdkversion < 200900
-%post
-%post_install_gconf_schemas %{schemas}
-
-%preun
-%preun_uninstall_gconf_schemas %{schemas}
-
-%post decorator-gtk
-%post_install_gconf_schemas gwd
-
-%preun decorator-gtk
-%preun_uninstall_gconf_schemas gwd
-%endif
 
 %clean
 rm -rf %{buildroot}
