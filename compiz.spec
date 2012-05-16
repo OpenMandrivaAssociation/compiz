@@ -91,12 +91,11 @@ BuildRequires: zlib-devel
 
 BuildRequires: dbus-glib-devel
 BuildRequires: libGConf2-devel
-BuildRequires: libgnome-window-settings-devel
 BuildRequires: libwnck-devel
 BuildRequires: metacity-devel
 BuildRequires: pango-devel
 BuildRequires: gnome-desktop-devel
-BuildRequires: libgnome-menu-devel
+BuildRequires: gnome-menus2-devel
 BuildRequires: gnome-panel-devel
 BuildRequires: libglade2.0-devel
 BuildRequires: startup-notification-devel
