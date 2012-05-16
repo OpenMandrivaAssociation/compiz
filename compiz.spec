@@ -1,5 +1,5 @@
 %define _disable_ld_no_undefined 1
-%define rel 5
+%define rel 1
 %define git 0
 
 %define major 0
@@ -19,7 +19,7 @@
 %global default_plugins core composite opengl copytex compiztoolbox decor scale resize gnomecompat staticswitcher place move mousepoll vpswitch regex snap session wall workarounds ezoom
 
 Name: compiz
-Version: 0.9.5.92.1
+Version: 0.9.7.8
 Release: %release
 Summary: OpenGL composite manager for Xgl and AIGLX
 Group: System/X11
@@ -96,7 +96,6 @@ BuildRequires: metacity-devel
 BuildRequires: pango-devel
 BuildRequires: gnome-desktop-devel
 BuildRequires: gnome-menus2-devel
-BuildRequires: gnome-panel-devel
 BuildRequires: libglade2.0-devel
 BuildRequires: startup-notification-devel
 BuildRequires: libcanberra-gtk-devel
