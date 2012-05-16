@@ -107,7 +107,7 @@ BuildRequires: kdebase4-devel
 BuildRequires: kdebase4-workspace-devel
 BuildRequires: kdelibs4-devel
 
-BuildRequires: bonoboui-devel
+BuildRequires: libbonoboui-devel
 BuildRequires: libxslt-devel
 BuildRequires: libxslt-proc
 BuildRequires: librsvg-devel
