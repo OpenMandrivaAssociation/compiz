@@ -109,7 +109,7 @@ BuildRequires: libbonoboui-devel
 BuildRequires: libxslt-devel
 BuildRequires: libxslt-proc
 BuildRequires: librsvg-devel
-BuildRequires: libcairo-devel
+BuildRequires: cairo-devel
 BuildRequires: libsvg-cairo-devel
 BuildRequires: fuse-devel
 # needed by autoreconf:
