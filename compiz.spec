@@ -98,7 +98,7 @@ BuildRequires: pango-devel
 BuildRequires: gnome-desktop-devel
 BuildRequires: libgnome-menu-devel
 BuildRequires: gnome-panel-devel
-BuildRequires: libglade2-devel
+BuildRequires: libglade2.0-devel
 BuildRequires: startup-notification-devel
 BuildRequires: libcanberra-gtk-devel
 BuildRequires: libgtop2.0-devel
