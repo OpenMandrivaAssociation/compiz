@@ -61,11 +61,6 @@ Patch503: 0503-Do-not-put-window-decorations-on-KDE-screensaver.patch
 # Next to impossible to rediff
 #Patch504: 0504-Also-check-for-tfp-in-server-extensions.patch
 
-# fedora patches
-# Allow installation of GNOME keybindings without GNOME window manager
-# settings stuff (sent upstream)
-Patch122: compiz-0.9.2.1-keybindings.patch
-
 # needed by autoreconf:
 BuildRequires: intltool
 BuildRequires: gettext
