@@ -145,6 +145,8 @@ This package provides development files for compiz.
   sh autogen.sh -V
 %endif
 
+export CFLAGS+=" -fno-strict-aliasing -Wno-error=deprecated-declarations" CXXFLAGS+=" -fno-strict-aliasing" FFLAGS+=" -fno-strict-aliasing"
+
 %cmake -DCOMPIZ_PACKAGING_ENABLED=ON \
 	-DBUILD_GNOME_KEYBINDINGS=OFF \
 	-DCOMPIZ_BUILD_WITH_RPATH=OFF \
@@ -177,18 +179,6 @@ mkdir -p %{buildroot}%{_datadir}/xsessions
 install %SOURCE13 %{buildroot}/%{_datadir}/xsessions
 mkdir -p %{buildroot}%{_datadir}/gnome-session/sessions
 install %SOURCE14 %{buildroot}/%{_datadir}/gnome-session/sessions
-
-# create compiz keybindings file based on the metacity ones
-# lifted straight from Ubuntu, as long as installation of the upstream
-# ones is broken at least (I've reported this upstream)
-mkdir -p %{buildroot}/%{_datadir}/gnome-control-center/keybindings
-	sed 's/wm_name=\"Metacity\" package=\"metacity\"/wm_name=\"Compiz\" package=\"compiz\"/'  /usr/share/gnome-control-center/keybindings/50-metacity-launchers.xml > %{buildroot}/%{_datadir}/gnome-control-center/keybindings/50-compiz-launchers.xml
-	sed 's/wm_name=\"Metacity\" package=\"metacity\"/wm_name=\"Compiz\" package=\"compiz\"/'  /usr/share/gnome-control-center/keybindings/50-metacity-navigation.xml > %{buildroot}/%{_datadir}/gnome-control-center/keybindings/50-compiz-navigation.xml
-	sed 's/wm_name=\"Metacity\" package=\"metacity\"/wm_name=\"Compiz\" package=\"compiz\"/'  /usr/share/gnome-control-center/keybindings/50-metacity-screenshot.xml > %{buildroot}/%{_datadir}/gnome-control-center/keybindings/50-compiz-screenshot.xml
-	sed 's/wm_name=\"Metacity\" package=\"metacity\"/wm_name=\"Compiz\" package=\"compiz\"/'  /usr/share/gnome-control-center/keybindings/50-metacity-system.xml > %{buildroot}/%{_datadir}/gnome-control-center/keybindings/50-compiz-system.xml
-	sed 's/wm_name=\"Metacity\" package=\"metacity\"/wm_name=\"Compiz\" package=\"compiz\"/'  /usr/share/gnome-control-center/keybindings/50-metacity-windows.xml > %{buildroot}/%{_datadir}/gnome-control-center/keybindings/50-compiz-windows.xml
-	sed -i 's#key=\"/apps/metacity/general/num_workspaces\" comparison=\"gt\"##g' %{buildroot}/%{_datadir}/gnome-control-center/keybindings/50-compiz-navigation.xml
-	sed -i 's#key=\"/apps/metacity/general/num_workspaces\" comparison=\"gt\"##g' %{buildroot}/%{_datadir}/gnome-control-center/keybindings/50-compiz-windows.xml
 
 desktop-file-install --vendor="" \
 	--dir %{buildroot}%{_datadir}/applications \
@@ -239,7 +229,7 @@ rm -rf %{buildroot}
 %{_bindir}/compiz-gtk
 %{_bindir}/gtk-window-decorator
 %{_sysconfdir}/gconf/schemas/gwd.schemas
-%{_datadir}/gnome-control-center/keybindings/50-%{name}-*.xml
+#%{_datadir}/gnome-control-center/keybindings/50-%{name}-*.xml
 %{_datadir}/applications/compiz-gtk.desktop
 # split into gnome pkg ???
 %{_datadir}/xsessions/compiz-gnome.desktop
@@ -261,11 +251,13 @@ rm -rf %{buildroot}
 %files -n %libname
 %defattr(-,root,root)
 %{_libdir}/libdecoration.so.%{major}*
+%{_libdir}/libcompiz_core.so.*
 
 %files -n %libname_devel
 %defattr(-,root,root)
 %dir %{_datadir}/%{name}/xslt
 %{_includedir}/%{name}/*
+%{_libdir}/libcompiz_core.so
 %{_libdir}/libdecoration.so
 %{_libdir}/pkgconfig/%{name}*.pc
 %{_libdir}/pkgconfig/libdecoration.pc
