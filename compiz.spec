@@ -70,6 +70,7 @@ BuildRequires: glibmm2.4-devel
 BuildRequires: kdebase4-workspace-devel
 BuildRequires: libxslt-devel
 BuildRequires: pkgconfig(librsvg-2.0)
+BuildRequires: pkgconfig(gconf-2.0) 
 BuildRequires: libstartup-notification-1-devel
 BuildRequires: libwnck-devel
 
