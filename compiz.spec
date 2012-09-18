@@ -6,6 +6,9 @@
 %define libname %mklibname %{name} %major
 %define libname_devel %mklibname -d %{name}
 
+%define libcompizconfig %mklibname compizconfig %{major}
+%define libcompizconfig_devel %mklibname compizconfig -d
+
 %if %{git}
 %define srcname %{name}-%{git}.tar.xz
 %define distname %{name}-%{git}
@@ -17,13 +20,13 @@
 %endif
 
 Name: compiz
-Version: 0.9.7.8
+Version: 0.9.8.2
 Release: %release
 Summary: OpenGL composite manager for Xgl and AIGLX
 Group: System/X11
-License: GPLv2+,LGPLv2+,MIT
+License: GPLv2+ and LGPLv2+ and MIT
 URL: http://www.compiz.org/
-Source: http://cgit.compiz-fusion.org/compiz/core/snapshot/%{srcname}
+Source0: http://cgit.compiz-fusion.org/compiz/core/snapshot/%{srcname}
 Source1: compiz.defaults
 Source2: compiz-window-decorator
 Source3: kstylerc.xinit
@@ -33,6 +36,8 @@ Source11: compiz-gtk
 Source12: compiz-gtk.desktop
 Source13: compiz-gnome.desktop
 Source14: compiz-gnome.session
+
+Patch0: compiz-0.9.8.2-rosa-linking.patch
 
 # (cg) Using git to manage patches
 # To recreate the structure
@@ -71,8 +76,10 @@ BuildRequires: kdebase4-workspace-devel
 BuildRequires: libxslt-devel
 BuildRequires: pkgconfig(librsvg-2.0)
 BuildRequires: pkgconfig(gconf-2.0) 
-BuildRequires: libstartup-notification-1-devel
+BuildRequires: pkgconfig(libstartup-notification-1.0)
 BuildRequires: libwnck-devel
+BuildRequires: python-pyrex
+BuildRequires: desktop-file-utils
 
 Requires(post): GConf2
 Requires(preun): GConf2
@@ -128,11 +135,61 @@ This package provides shared libraries for compiz.
 %package -n %libname_devel
 Summary: Development files for compiz
 Group: Development/X11
-Provides:  %{name}-devel = %{version}-%{release}
-Obsoletes: %{name}-devel
+Provides:  %{name}-devel = %{EVRD}
+Obsoletes: %{name}-devel < %{EVRD}
 Requires: %{libname} = %{version}-%{release}
 %description -n %libname_devel
 This package provides development files for compiz.
+
+#----------------------------------------------------------------------------
+
+%package -n ccsm
+Summary: Compiz Config Settings Manager
+Group: System/X11
+BuildArch: noarch
+Provides: python-ccm = %{EVRD}
+
+%description -n ccsm
+Configuration tool for Compiz when used with the ccp configuration plugin.
+
+#----------------------------------------------------------------------------
+
+%package -n %{libcompizconfig}
+Summary: Backend configuration library from Compiz Fusion
+Group: System/X11
+Requires: compizconfig-backends
+
+%description -n %{libcompizconfig}
+Backend configuration library from Compiz Fusion.
+
+#----------------------------------------------------------------------------
+
+%package -n %{libcompizconfig_devel}
+Summary: Development files for libcompizconfig
+Group: Development/X11
+Provides: compizconfig-devel
+Requires: %{libcompizconfig} = %{version}
+
+%description -n %{libcompizconfig_devel}
+Development files for libcompizconfig.
+
+#----------------------------------------------------------------------------
+
+%package -n compizconfig-backends
+Summary: Backend modules for libcompizconfig
+Group: System/X11
+
+%description -n compizconfig-backends
+Backend modules for libcompizconfig.
+
+#----------------------------------------------------------------------------
+
+%package -n python-compizconfig
+Summary: Python bindings for libcompizconfig
+Group: System/X11
+
+%description -n python-compizconfig
+Python bindings for libcompizconfig.
 
 #----------------------------------------------------------------------------
 
@@ -154,8 +211,7 @@ export CFLAGS+=" -fno-strict-aliasing -Wno-error=deprecated-declarations" CXXFLA
 	-DCOMPIZ_BUILD_WITH_RPATH=OFF \
 	-DCOMPIZ_DISABLE_SCHEMAS_INSTALL=ON \
 	-DCOMPIZ_INSTALL_GCONF_SCHEMA_DIR=%{_sysconfdir}/gconf/schemas ..
-make -j2
-#%%make
+%make
 
 %install
 rm -rf %{buildroot}
@@ -172,6 +228,7 @@ install -m755 %{SOURCE2} %{buildroot}%{_bindir}/%{name}-window-decorator
 install -D -m644 %{SOURCE1} %{buildroot}%{_datadir}/compositing-wm/%{name}.defaults
 
 %find_lang %{name}
+%find_lang ccsm
 
 #fedora sources
 install %SOURCE11 %{buildroot}/%{_bindir}
@@ -194,8 +251,20 @@ find %{buildroot} -name '*.a' -exec rm -f {} ';'
 %define plugins annotate blur clone commands cube dbus decoration fade fs gconf glib gnomecompat ini inotify minimize move obs place png regex resize rotate scale screenshot svg switcher video water wobbly zoom
 %define schemas compiz-core %(for plugin in %{plugins}; do echo -n " compiz-$plugin"; done)
 
-%clean
-rm -rf %{buildroot}
+mv -f %{buildroot}%{_prefix}/lib/compizconfig %{buildroot}%{_libdir}/
+mv -f %{buildroot}%{_prefix}/lib/libcompizconfig_gsettings_backend.so %{buildroot}%{_libdir}/
+
+rm -f %{buildroot}%{py_puresitedir}/*.egg-info
+
+desktop-file-install \
+--vendor="" \
+--remove-category="Compiz" \
+--add-category="GTK" \
+--add-category="Settings" \
+--add-category="DesktopSettings" \
+--add-category="X-MandrivaLinux-CrossDesktop" \
+--dir %{buildroot}%{_datadir}/applications \
+%{buildroot}%{_datadir}/applications/%{name}.desktop
 
 #----------------------------------------------------------------------------
 
@@ -203,6 +272,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %{_bindir}/%{name}
 %{_bindir}/%{name}-window-decorator
+%{_bindir}/compiz-decorator
 %dir %{_libdir}/%{name}
 # why do a for loop if all the files go in the same pkg???
 %{_libdir}/%{name}/lib*.so
@@ -223,6 +293,9 @@ rm -rf %{buildroot}
 %dir %{_datadir}/%{name}/cube
 %dir %{_datadir}/%{name}/cube/images
 %{_datadir}/%{name}/cube/images/*.png
+%{_datadir}/%{name}/mag
+%{_datadir}/%{name}/showmouse
+%{_datadir}/%{name}/splash
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/compositing-wm/%{name}.defaults
 
@@ -266,3 +339,29 @@ rm -rf %{buildroot}
 %{_datadir}/cmake/Modules/*cmake
 %{_datadir}/%{name}/cmake
 %{_datadir}/%{name}/xslt/*.xslt
+%{_datadir}/cmake-*/FindCompiz.cmake
+%{_datadir}/cmake-*/FindOpenGLES2.cmake
+
+%files -n ccsm -f ccsm.lang
+%{_bindir}/ccsm
+%{_datadir}/ccsm
+%{py_puresitedir}/ccm
+%{_datadir}/applications/ccsm.desktop
+%{_iconsdir}/hicolor/*/apps/ccsm.*
+
+%files -n %{libcompizconfig}
+%{_libdir}/libcompizconfig.so.%{major}*
+
+%files -n %{libcompizconfig_devel}
+%{_libdir}/libcompizconfig.so
+%{_includedir}/compizconfig
+%{_libdir}/pkgconfig/libcompizconfig.pc
+%{_datadir}/cmake-*/FindCompizConfig.cmake
+
+%files -n compizconfig-backends
+%dir %{_libdir}/compizconfig
+%{_libdir}/compizconfig/backends
+%{_libdir}/libcompizconfig_gsettings_backend.so
+
+%files -n python-compizconfig
+%{py_platsitedir}/compizconfig*
