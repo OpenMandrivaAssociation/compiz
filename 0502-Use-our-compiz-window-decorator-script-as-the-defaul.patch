@@ -1,0 +1,11 @@
+--- compiz-0.9.8.2/plugins/decor/decor.xml.in.orig	2012-09-14 17:19:00.494001346 +0400
++++ compiz-0.9.8.2/plugins/decor/decor.xml.in	2012-09-14 17:20:00.334001187 +0400
+@@ -100,7 +100,7 @@
+ 	    <option name="command" type="string">
+ 		<_short>Command</_short>
+ 		<_long>Decorator command line that is executed if no decorator is already running.</_long>
+-		<default>exec \"${COMPIZ_BIN_PATH}compiz-decorator\"</default>
++		<default>exec \"compiz-window-decorator\"</default>
+ 	    </option>
+ 	    <option name="mipmap" type="bool">
+ 		<_short>Mipmap</_short>

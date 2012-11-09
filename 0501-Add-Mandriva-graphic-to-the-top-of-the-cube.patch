@@ -1,0 +1,10 @@
+--- compiz-0.9.5.92.1/plugins/cube/cube.xml.in~	2011-08-19 22:27:55.000000000 -0600
++++ compiz-0.9.5.92.1/plugins/cube/cube.xml.in	2011-11-02 10:46:53.984440842 -0600
+@@ -112,6 +112,7 @@
+ 			<_short>Skydome Image</_short>
+ 			<_long>Image to use as texture for the skydome</_long>
+ 			<hints>file;image;</hints>
++			<value>/usr/share/compositing-wm/mandriva-top.png</value>
+ 			</option>
+ 			<option name="skydome_animated" type="bool">
+ 			<_short>Animate Skydome</_short>
