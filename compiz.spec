@@ -1,5 +1,5 @@
 %define _disable_ld_no_undefined 1
-%define rel 1
+%define rel 3
 %define git 0
 
 %define major 0
@@ -8,6 +8,10 @@
 
 %define libcompizconfig %mklibname compizconfig %{major}
 %define libcompizconfig_devel %mklibname compizconfig -d
+
+%if %{_use_internal_dependency_generator}
+%define __noautoreq 'libgtk_window_decorator_(.*)'
+%endif
 
 %if %{git}
 %define srcname %{name}-%{git}.tar.xz
@@ -19,25 +23,25 @@
 %define release %{rel}
 %endif
 
-Name: compiz
-Version: 0.9.8.2
-Release: %release
-Summary: OpenGL composite manager for Xgl and AIGLX
-Group: System/X11
-License: GPLv2+ and LGPLv2+ and MIT
-URL: http://www.compiz.org/
-Source0: http://cgit.compiz-fusion.org/compiz/core/snapshot/%{srcname}
-Source1: compiz.defaults
-Source2: compiz-window-decorator
-Source3: kstylerc.xinit
+Name:	compiz
+Version:	0.9.8.2
+Release:	%{release}
+Summary:	OpenGL composite manager for Xgl and AIGLX
+Group:		System/X11
+License:	GPLv2+ and LGPLv2+ and MIT
+URL:		http://www.compiz.org/
+Source0:	http://cgit.compiz-fusion.org/compiz/core/snapshot/%{srcname}
+Source1:	compiz.defaults
+Source2:	compiz-window-decorator
+Source3:	kstylerc.xinit
 
 # fedora sources bumped by x10
-Source11: compiz-gtk
-Source12: compiz-gtk.desktop
-Source13: compiz-gnome.desktop
-Source14: compiz-gnome.session
+Source11:	compiz-gtk
+Source12:	compiz-gtk.desktop
+Source13:	compiz-gnome.desktop
+Source14:	compiz-gnome.session
 
-Patch0: compiz-0.9.8.2-rosa-linking.patch
+Patch0:		compiz-0.9.8.2-rosa-linking.patch
 
 # (cg) Using git to manage patches
 # To recreate the structure
@@ -67,28 +71,27 @@ Patch503: 0503-Do-not-put-window-decorations-on-KDE-screensaver.patch
 #Patch504: 0504-Also-check-for-tfp-in-server-extensions.patch
 
 # needed by autoreconf:
-BuildRequires: intltool
-BuildRequires: gettext
-BuildRequires: cmake
-BuildRequires: boost-devel
-BuildRequires: glibmm2.4-devel
-BuildRequires: kdebase4-workspace-devel
-BuildRequires: libxslt-devel
-BuildRequires: pkgconfig(librsvg-2.0)
-BuildRequires: pkgconfig(gconf-2.0) 
-BuildRequires: pkgconfig(libstartup-notification-1.0)
-BuildRequires: libwnck-devel
-BuildRequires: python-pyrex
-BuildRequires: desktop-file-utils
+BuildRequires:	intltool
+BuildRequires:	gettext
+BuildRequires:	cmake
+BuildRequires:	boost-devel
+BuildRequires:	glibmm2.4-devel
+BuildRequires:	kdebase4-workspace-devel
+BuildRequires:	libxslt-devel
+BuildRequires:	pkgconfig(librsvg-2.0)
+BuildRequires:	pkgconfig(gconf-2.0) 
+BuildRequires:	pkgconfig(libstartup-notification-1.0)
+BuildRequires:	libwnck-devel
+BuildRequires:	python-pyrex
+BuildRequires:	desktop-file-utils
 
 Requires(post): GConf2
 Requires(preun): GConf2
-Requires: %{libname} = %{version}-%{release}
-Requires: compositing-wm-common
-Provides: compositing-wm
-Requires: compiz-decorator
-Obsoletes: beryl-core
-%rename compiz-bcop
+Requires:	%{libname} = %{version}-%{release}
+Requires:	compositing-wm-common
+Provides:	compositing-wm
+Requires:	compiz-decorator
+%rename	compiz-bcop
 
 %description
 Compiz is an OpenGL composite manager for Xgl and AIGLX.
@@ -96,12 +99,10 @@ Compiz is an OpenGL composite manager for Xgl and AIGLX.
 #----------------------------------------------------------------------------
 
 %package decorator-gtk
-Summary: GTK window decorator for compiz
-Group: System/X11
-Provides: compiz-decorator
-Conflicts: %{name} < 0.3.6-4mdv2007.1
-Requires:  %{name} = %{version}-%{release}
-Obsoletes: heliodor
+Summary:	GTK window decorator for compiz
+Group:		System/X11
+Provides:	compiz-decorator
+Requires:	%{name} = %{version}-%{release}
 
 %description decorator-gtk
 This package provides a GTK window decorator for the compiz OpenGL
@@ -110,10 +111,10 @@ compositing manager.
 #----------------------------------------------------------------------------
 
 %package decorator-kde4
-Summary: KDE4 window decorator for compiz
-Group: System/X11
-Provides: compiz-decorator
-Requires:  %{name} = %{version}-%{release}
+Summary:	KDE4 window decorator for compiz
+Group:		System/X11
+Provides:	compiz-decorator
+Requires:	%{name} = %{version}-%{release}
 
 %description decorator-kde4
 This package provides a KDE4 window decorator for the compiz OpenGL
@@ -121,23 +122,23 @@ compositing manager.
 
 #----------------------------------------------------------------------------
 
-%package -n %libname
-Summary: Shared libraries for compiz
-Group: System/X11
-Conflicts: %{name} < 0.5.1
-Obsoletes: %mklibname beryl-core 0
+%package -n %{libname}
+Summary:	Shared libraries for compiz
+Group:		System/X11
+Conflicts:	%{name} < 0.5.1
 
-%description -n %libname
+%description -n %{libname}
 This package provides shared libraries for compiz.
 
 #----------------------------------------------------------------------------
 
-%package -n %libname_devel
-Summary: Development files for compiz
-Group: Development/X11
-Provides:  %{name}-devel = %{EVRD}
-Obsoletes: %{name}-devel < %{EVRD}
-Requires: %{libname} = %{version}-%{release}
+%package -n %{libname_devel}
+Summary:	Development files for compiz
+Group:		Development/X11
+Provides:	%{name}-devel = %{EVRD}
+Obsoletes:	%{name}-devel < %{EVRD}
+Requires:	%{libname} = %{version}-%{release}
+
 %description -n %libname_devel
 This package provides development files for compiz.
 
@@ -251,8 +252,10 @@ find %{buildroot} -name '*.a' -exec rm -f {} ';'
 %define plugins annotate blur clone commands cube dbus decoration fade fs gconf glib gnomecompat ini inotify minimize move obs place png regex resize rotate scale screenshot svg switcher video water wobbly zoom
 %define schemas compiz-core %(for plugin in %{plugins}; do echo -n " compiz-$plugin"; done)
 
+%ifarch x86_64
 mv -f %{buildroot}%{_prefix}/lib/compizconfig %{buildroot}%{_libdir}/
 mv -f %{buildroot}%{_prefix}/lib/libcompizconfig_gsettings_backend.so %{buildroot}%{_libdir}/
+%endif
 
 rm -f %{buildroot}%{py_puresitedir}/*.egg-info
 
@@ -269,7 +272,6 @@ desktop-file-install \
 #----------------------------------------------------------------------------
 
 %files -f %{name}.lang
-%defattr(-,root,root)
 %{_bindir}/%{name}
 %{_bindir}/%{name}-window-decorator
 %{_bindir}/compiz-decorator
@@ -300,7 +302,6 @@ desktop-file-install \
 %{_datadir}/compositing-wm/%{name}.defaults
 
 %files decorator-gtk
-%defattr(-,root,root)
 %{_bindir}/compiz-gtk
 %{_bindir}/gtk-window-decorator
 %{_sysconfdir}/gconf/schemas/gwd.schemas
@@ -317,19 +318,16 @@ desktop-file-install \
 %{_sysconfdir}/gconf/schemas/%{name}-gnomecompat.schemas
 
 %files decorator-kde4
-%defattr(-,root,root)
 %{_bindir}/kde4-window-decorator
 %{_libdir}/%{name}/libkde.so
 %{_datadir}/%{name}/kde.xml
 %{_sysconfdir}/gconf/schemas/%{name}-kde.schemas
 
-%files -n %libname
-%defattr(-,root,root)
+%files -n %{libname}
 %{_libdir}/libdecoration.so.%{major}*
 %{_libdir}/libcompiz_core.so.*
 
-%files -n %libname_devel
-%defattr(-,root,root)
+%files -n %{libname_devel}
 %dir %{_datadir}/%{name}/xslt
 %{_includedir}/%{name}/*
 %{_libdir}/libcompiz_core.so

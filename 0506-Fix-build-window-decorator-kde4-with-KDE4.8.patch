@@ -1,0 +1,18 @@
+diff --git a/kde/window-decorator-kde4/window.cpp b/kde/window-decorator-kde4/window.cpp
+index 17fa976..fa3254d 100644
+--- a/kde/window-decorator-kde4/window.cpp
++++ b/kde/window-decorator-kde4/window.cpp
+@@ -1043,10 +1043,10 @@ KWD::Window::updateBlurProperty (int topOffset,
+ {
+     Atom    atom = Atoms::compizWindowBlurDecor;
+     QRegion topQRegion, bottomQRegion, leftQRegion, rightQRegion;
+-    Region  topRegion = NULL;
+-    Region  bottomRegion = NULL;
+-    Region  leftRegion = NULL;
+-    Region  rightRegion = NULL;
++    ::Region  topRegion = NULL;
++    ::Region  bottomRegion = NULL;
++    ::Region  leftRegion = NULL;
++    ::Region  rightRegion = NULL;
+     int     size = 0;
+     int     w, h;

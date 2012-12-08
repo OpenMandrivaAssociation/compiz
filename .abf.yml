@@ -1,9 +1,2 @@
 sources:
-  "compiz-0.9.8.2.tar.bz2:"	930abc8e2faac7f7e4661efadf9a18aa74d036e1
-  "compiz.defaults:"	4f99a1d61fcba8b37e68403a5f5f6f12e3eadc90
-  "compiz-gnome.desktop:"	d1ff54c27bfc9175d612e303d03a747e957a7d5a
-  "compiz-gnome.session:"	854529db2638b0d3fcd0224eaba14eab1e8a83a9
-  "compiz-gtk:"	e9a05f66803c18b325b325f50e5a42746be7c398
-  "compiz-gtk.desktop:"	e93399c36388b1bd196ef5701fbaf3f2c5312e11
-  "compiz-window-decorator:"	531c96bb758913a7925fc882267314e0333a154b
-  "kstylerc.xinit:"	e9e19145d12daf0bad05ac1acd830693af909882
+  "compiz-0.9.8.2.tar.bz2": 930abc8e2faac7f7e4661efadf9a18aa74d036e1
