@@ -1,3 +1,4 @@
+%define debug_package %{nil}
 %define _disable_ld_no_undefined 1
 %define rel 3
 %define git 0
