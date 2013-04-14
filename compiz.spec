@@ -297,6 +297,7 @@ desktop-file-install \
 %dir %{_datadir}/%{name}/cube
 %dir %{_datadir}/%{name}/cube/images
 %{_datadir}/%{name}/cube/images/*.png
+%{_datadir}/%{name}/cubeaddon
 %{_datadir}/%{name}/mag
 %{_datadir}/%{name}/showmouse
 %{_datadir}/%{name}/splash
