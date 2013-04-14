@@ -24,7 +24,7 @@
 %endif
 
 Name:	compiz
-Version:	0.9.8.2
+Version:	0.9.9.0
 Release:	%{release}
 Summary:	OpenGL composite manager for Xgl and AIGLX
 Group:		System/X11
