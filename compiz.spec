@@ -84,6 +84,7 @@ BuildRequires:	pkgconfig(libstartup-notification-1.0)
 BuildRequires:	libwnck-devel
 BuildRequires:	python-pyrex
 BuildRequires:	desktop-file-utils
+BuildRequires:	metacity-devel
 
 Requires(post): GConf2
 Requires(preun): GConf2
