@@ -1,6 +1,6 @@
 %define debug_package %{nil}
 %define _disable_ld_no_undefined 1
-%define rel 3
+%define rel 4
 %define git 0
 
 %define major 0
@@ -31,6 +31,7 @@ Summary:	OpenGL composite manager for Xgl and AIGLX
 Group:		System/X11
 License:	GPLv2+ and LGPLv2+ and MIT
 URL:		http://www.compiz.org/
+# Current source lives at https://launchpad.net/compiz
 Source0:	http://cgit.compiz-fusion.org/compiz/core/snapshot/%{srcname}
 Source1:	compiz.defaults
 Source2:	compiz-window-decorator
@@ -83,6 +84,7 @@ BuildRequires:	libxslt-devel
 BuildRequires:	pkgconfig(librsvg-2.0)
 BuildRequires:	pkgconfig(gconf-2.0) 
 BuildRequires:	pkgconfig(libstartup-notification-1.0)
+BuildRequires:	pkgconfig(gl) pkgconfig(glu)
 BuildRequires:	libwnck-devel
 BuildRequires:	python-pyrex
 BuildRequires:	desktop-file-utils
