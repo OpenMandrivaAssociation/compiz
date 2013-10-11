@@ -1,6 +1,6 @@
 %define debug_package %{nil}
 %define _disable_ld_no_undefined 1
-%define rel 4
+%define rel 5
 %define git 0
 
 %define major 0
@@ -154,6 +154,7 @@ Summary: Compiz Config Settings Manager
 Group: System/X11
 BuildArch: noarch
 Provides: python-ccm = %{EVRD}
+Requires: python-compizconfig
 
 %description -n ccsm
 Configuration tool for Compiz when used with the ccp configuration plugin.
