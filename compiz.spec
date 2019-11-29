@@ -93,7 +93,7 @@ BuildRequires:	metacity-devel
 BuildRequires:  pkgconfig(ice)
 BuildRequires:  pkgconfig(sm)
 BuildRequires:  pkgconfig(libprotobuf-c)
-BuildReqiores:  pkgconfig(protobuf)
+BuildRequires:  pkgconfig(protobuf)
 BuildRequires:	pkgconfig(python)
 BuildRequires:	python-cython
 BuildRequires:	python-pkg-resources
