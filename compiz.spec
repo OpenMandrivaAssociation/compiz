@@ -89,6 +89,8 @@ BuildRequires:	pkgconfig(libwnck-3.0)
 BuildRequires:	python-pyrex
 BuildRequires:	desktop-file-utils
 BuildRequires:	metacity-devel
+BuildRequires:  pkgconfig(ice)
+BuildRequires:  pkgconfig(sm)
 
 Requires(post): GConf2
 Requires(preun): GConf2
