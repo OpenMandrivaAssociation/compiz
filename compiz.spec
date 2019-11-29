@@ -67,9 +67,9 @@ Source14:	compiz-gnome.session
 
 # Mandriva Patches
 # git format-patch --start-number 500 mdv-0.8.0-cherry-picks..mdv-0.8.0-patches
-Patch501: 0501-Add-Mandriva-graphic-to-the-top-of-the-cube.patch
-Patch502: 0502-Use-our-compiz-window-decorator-script-as-the-defaul.patch
-Patch503: 0503-Do-not-put-window-decorations-on-KDE-screensaver.patch
+#Patch501: 0501-Add-Mandriva-graphic-to-the-top-of-the-cube.patch
+#Patch502: 0502-Use-our-compiz-window-decorator-script-as-the-defaul.patch
+#Patch503: 0503-Do-not-put-window-decorations-on-KDE-screensaver.patch
 # Next to impossible to rediff
 #Patch504: 0504-Also-check-for-tfp-in-server-extensions.patch
 
