@@ -43,6 +43,7 @@ Source12:	compiz-gtk.desktop
 Source13:	compiz-gnome.desktop
 Source14:	compiz-gnome.session
 
+Patch100:		compiz-0.9.14.1-python-sitearch.patch
 #Patch0:		compiz-0.9.8.2-rosa-linking.patch
 #Patch1:		compiz-0.9.9.0-mga-boost-1.53.patch
 
