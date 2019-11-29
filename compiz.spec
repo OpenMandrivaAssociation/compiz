@@ -79,6 +79,7 @@ BuildRequires:	gettext
 BuildRequires:	cmake
 BuildRequires:	boost-devel
 BuildRequires:	glibmm2.4-devel
+BuildRequires:  xsltproc
 #BuildRequires:	kdebase4-workspace-devel
 BuildRequires:	libxslt-devel
 BuildRequires:	pkgconfig(librsvg-2.0)
