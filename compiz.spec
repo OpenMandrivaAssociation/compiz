@@ -226,6 +226,7 @@ Python bindings for libcompizconfig.
 export CFLAGS+=" -fno-strict-aliasing -Wno-error=deprecated-declarations" CXXFLAGS+=" -fno-strict-aliasing" FFLAGS+=" -fno-strict-aliasing"
 
 %cmake -DCOMPIZ_PACKAGING_ENABLED=ON \
+	-DCYTHON_BIN=/usr/bin/cython \
 	-DBUILD_GNOME_KEYBINDINGS=OFF \
 	-DCOMPIZ_BUILD_WITH_RPATH=OFF \
 	-DCOMPIZ_DISABLE_SCHEMAS_INSTALL=ON \
