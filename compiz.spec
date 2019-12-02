@@ -308,18 +308,18 @@ desktop-file-install \
 %{_libdir}/%{name}/lib*.so
 %exclude %{_libdir}/%{name}/libannotate.so
 %exclude %{_libdir}/%{name}/libgnomecompat.so
-%exclude %{_libdir}/%{name}/libkde.so
+#exclude #{_libdir}/%{name}/libkde.so
 # why do a for loop if all the files go in the same pkg???
 #{_sysconfdir}/gconf/schemas/%{name}-*.schemas
-%exclude %{_sysconfdir}/gconf/schemas/%{name}-annotate.schemas
-%exclude %{_sysconfdir}/gconf/schemas/%{name}-gnomecompat.schemas
-%exclude %{_sysconfdir}/gconf/schemas/%{name}-kde.schemas
+#exclude #{_sysconfdir}/gconf/schemas/%{name}-annotate.schemas
+#exclude #{_sysconfdir}/gconf/schemas/%{name}-gnomecompat.schemas
+#exclude #{_sysconfdir}/gconf/schemas/%{name}-kde.schemas
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/*.png
 %{_datadir}/%{name}/*.xml
-%exclude %{_datadir}/%{name}/annotate.xml
-%exclude %{_datadir}/%{name}/gnomecompat.xml
-%exclude %{_datadir}/%{name}/kde.xml
+#exclude #{_datadir}/%{name}/annotate.xml
+#exclude #{_datadir}/%{name}/gnomecompat.xml
+#exclude #{_datadir}/%{name}/kde.xml
 %dir %{_datadir}/%{name}/cube
 %dir %{_datadir}/%{name}/cube/images
 %{_datadir}/%{name}/cube/images/*.png
@@ -333,7 +333,7 @@ desktop-file-install \
 %files decorator-gtk
 %{_bindir}/compiz-gtk
 %{_bindir}/gtk-window-decorator
-%{_sysconfdir}/gconf/schemas/gwd.schemas
+#{_sysconfdir}/gconf/schemas/gwd.schemas
 #%{_datadir}/gnome-control-center/keybindings/50-%{name}-*.xml
 %{_datadir}/applications/compiz-gtk.desktop
 # split into gnome pkg ???
