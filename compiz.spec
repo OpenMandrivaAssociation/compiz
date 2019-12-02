@@ -131,18 +131,6 @@ compositing manager.
 
 #----------------------------------------------------------------------------
 
-%package decorator-kde4
-Summary:	KDE4 window decorator for compiz
-Group:		System/X11
-Provides:	compiz-decorator
-Requires:	%{name} = %{version}-%{release}
-
-%description decorator-kde4
-This package provides a KDE4 window decorator for the compiz OpenGL
-compositing manager.
-
-#----------------------------------------------------------------------------
-
 %package -n %{libname}
 Summary:	Shared libraries for compiz
 Group:		System/X11
@@ -329,6 +317,10 @@ desktop-file-install \
 %{_datadir}/%{name}/splash
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/compositing-wm/%{name}.defaults
+%{_datadir}/%{name}/colorfilter/*
+%{_datadir}/%{name}/notification/*
+%{_datadir}/%{name}/scale/images/*.png
+%{_datadir}/gnome-control-center/keybindings/50-compiz-*.xml
 
 %files decorator-gtk
 %{_bindir}/compiz-gtk
@@ -345,12 +337,6 @@ desktop-file-install \
 %{_datadir}/%{name}/gnomecompat.xml
 #{_sysconfdir}/gconf/schemas/%{name}-annotate.schemas
 #{_sysconfdir}/gconf/schemas/%{name}-gnomecompat.schemas
-
-%files decorator-kde4
-#{_bindir}/kde4-window-decorator
-#{_libdir}/%{name}/libkde.so
-#{_datadir}/%{name}/kde.xml
-#{_sysconfdir}/gconf/schemas/%{name}-kde.schemas
 
 %files -n %{libname}
 %{_libdir}/libdecoration.so.%{major}*
@@ -375,6 +361,7 @@ desktop-file-install \
 %{py_puresitedir}/ccm
 %{_datadir}/applications/ccsm.desktop
 %{_iconsdir}/hicolor/*/apps/ccsm.*
+%config(noreplace) %{_sysconfdir}/compizconfig/config.conf
 
 %files -n %{libcompizconfig}
 %{_libdir}/libcompizconfig.so.%{major}*
