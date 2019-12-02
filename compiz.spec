@@ -237,6 +237,9 @@ export CFLAGS+=" -fno-strict-aliasing -Wno-error=deprecated-declarations" CXXFLA
 	-DBUILD_GNOME_KEYBINDINGS=OFF \
 	-DCOMPIZ_BUILD_WITH_RPATH=OFF \
 	-DCOMPIZ_DISABLE_SCHEMAS_INSTALL=ON \
+	-DBUILD_GTK=On \
+    	-DBUILD_METACITY=On \
+    	-DBUILD_KDE4=Off \
 	-DCOMPIZ_INSTALL_GCONF_SCHEMA_DIR=%{_sysconfdir}/gconf/schemas ..
 	
 find -name flags.make | while read l; do sed -i 's|\ -Werror\ | |g' $l; done
@@ -310,7 +313,7 @@ desktop-file-install \
 %exclude %{_libdir}/%{name}/libgnomecompat.so
 %exclude %{_libdir}/%{name}/libkde.so
 # why do a for loop if all the files go in the same pkg???
-%{_sysconfdir}/gconf/schemas/%{name}-*.schemas
+#{_sysconfdir}/gconf/schemas/%{name}-*.schemas
 %exclude %{_sysconfdir}/gconf/schemas/%{name}-annotate.schemas
 %exclude %{_sysconfdir}/gconf/schemas/%{name}-gnomecompat.schemas
 %exclude %{_sysconfdir}/gconf/schemas/%{name}-kde.schemas
@@ -343,14 +346,14 @@ desktop-file-install \
 %{_libdir}/%{name}/libgnomecompat.so
 %{_datadir}/%{name}/annotate.xml
 %{_datadir}/%{name}/gnomecompat.xml
-%{_sysconfdir}/gconf/schemas/%{name}-annotate.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-gnomecompat.schemas
+#{_sysconfdir}/gconf/schemas/%{name}-annotate.schemas
+#{_sysconfdir}/gconf/schemas/%{name}-gnomecompat.schemas
 
 %files decorator-kde4
 %{_bindir}/kde4-window-decorator
-%{_libdir}/%{name}/libkde.so
-%{_datadir}/%{name}/kde.xml
-%{_sysconfdir}/gconf/schemas/%{name}-kde.schemas
+#{_libdir}/%{name}/libkde.so
+#{_datadir}/%{name}/kde.xml
+#{_sysconfdir}/gconf/schemas/%{name}-kde.schemas
 
 %files -n %{libname}
 %{_libdir}/libdecoration.so.%{major}*
