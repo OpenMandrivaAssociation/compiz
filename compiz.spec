@@ -221,6 +221,9 @@ Python bindings for libcompizconfig.
 %apply_patches
 
 %build
+export CC=gcc
+export CXX=g++
+
 %if %{git}
 # no idea if this is still valid 2011-11-02
   # This is a CVS snapshot, so we need to generate makefiles.
