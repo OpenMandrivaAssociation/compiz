@@ -237,9 +237,6 @@ export CFLAGS+=" -fno-strict-aliasing -Wno-error=deprecated-declarations" CXXFLA
 	-DBUILD_GNOME_KEYBINDINGS=OFF \
 	-DCOMPIZ_BUILD_WITH_RPATH=OFF \
 	-DCOMPIZ_DISABLE_SCHEMAS_INSTALL=ON \
-	-DBUILD_GTK=On \
-    	-DBUILD_METACITY=On \
-    	-DBUILD_KDE4=Off \
 	-DCOMPIZ_INSTALL_GCONF_SCHEMA_DIR=%{_sysconfdir}/gconf/schemas ..
 	
 find -name flags.make | while read l; do sed -i 's|\ -Werror\ | |g' $l; done
