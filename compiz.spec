@@ -347,7 +347,7 @@ desktop-file-install \
 #{_sysconfdir}/gconf/schemas/%{name}-gnomecompat.schemas
 
 %files decorator-kde4
-%{_bindir}/kde4-window-decorator
+#{_bindir}/kde4-window-decorator
 #{_libdir}/%{name}/libkde.so
 #{_datadir}/%{name}/kde.xml
 #{_sysconfdir}/gconf/schemas/%{name}-kde.schemas
