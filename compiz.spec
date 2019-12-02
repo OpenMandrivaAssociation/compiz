@@ -1,6 +1,6 @@
 %define debug_package %{nil}
 %define _disable_ld_no_undefined 1
-%define rel 5
+%define rel 1
 %define git 0
 
 %define major 0
@@ -19,20 +19,20 @@
 %define distname %{name}-%{git}
 %define release 0.%{git}.%{rel}
 %else
-%define srcname %{name}-%{version}.tar.bz2
+%define srcname %{name}-%{version}.tar.xz
 %define distname %{name}-%{version}
 %define release %{rel}
 %endif
 
 Name:	compiz
-Version:	0.9.9.0
+Version:	0.9.14.1
 Release:	%{release}
 Summary:	OpenGL composite manager for Xgl and AIGLX
 Group:		System/X11
 License:	GPLv2+ and LGPLv2+ and MIT
 URL:		http://www.compiz.org/
 # Current source lives at https://launchpad.net/compiz
-Source0:	http://cgit.compiz-fusion.org/compiz/core/snapshot/%{srcname}
+Source0:	https://launchpad.net/compiz/0.9.14/%{version}/+download/%{name}-%{version}.tar.xz
 Source1:	compiz.defaults
 Source2:	compiz-window-decorator
 Source3:	kstylerc.xinit
@@ -43,8 +43,7 @@ Source12:	compiz-gtk.desktop
 Source13:	compiz-gnome.desktop
 Source14:	compiz-gnome.session
 
-Patch0:		compiz-0.9.8.2-rosa-linking.patch
-Patch1:		compiz-0.9.9.0-mga-boost-1.53.patch
+Patch100:		compiz-0.9.14.1-python-sitearch.patch
 
 # (cg) Using git to manage patches
 # To recreate the structure
@@ -67,9 +66,10 @@ Patch1:		compiz-0.9.9.0-mga-boost-1.53.patch
 
 # Mandriva Patches
 # git format-patch --start-number 500 mdv-0.8.0-cherry-picks..mdv-0.8.0-patches
-Patch501: 0501-Add-Mandriva-graphic-to-the-top-of-the-cube.patch
-Patch502: 0502-Use-our-compiz-window-decorator-script-as-the-defaul.patch
-Patch503: 0503-Do-not-put-window-decorations-on-KDE-screensaver.patch
+# bring back this patch in future, need rework it from Mandriva to OpenMandriva (angry)
+#Patch501: 0501-Add-Mandriva-graphic-to-the-top-of-the-cube.patch
+#Patch502: 0502-Use-our-compiz-window-decorator-script-as-the-defaul.patch
+#Patch503: 0503-Do-not-put-window-decorations-on-KDE-screensaver.patch
 # Next to impossible to rediff
 #Patch504: 0504-Also-check-for-tfp-in-server-extensions.patch
 
@@ -79,16 +79,29 @@ BuildRequires:	gettext
 BuildRequires:	cmake
 BuildRequires:	boost-devel
 BuildRequires:	glibmm2.4-devel
-BuildRequires:	kdebase4-workspace-devel
+BuildRequires:  xsltproc
 BuildRequires:	libxslt-devel
 BuildRequires:	pkgconfig(librsvg-2.0)
 BuildRequires:	pkgconfig(gconf-2.0) 
 BuildRequires:	pkgconfig(libstartup-notification-1.0)
 BuildRequires:	pkgconfig(gl) pkgconfig(glu)
-BuildRequires:	libwnck-devel
+BuildRequires:	pkgconfig(libwnck-3.0)
+BuildRequires:  pkgconfig(libnotify)
+BuildRequires:  pkgconfig(libjpeg)
+BuildRequires:  pkgconfig(libglvnd)
+BuildRequires:  pkgconfig(glesv2)	
 BuildRequires:	python-pyrex
 BuildRequires:	desktop-file-utils
 BuildRequires:	metacity-devel
+BuildRequires:  pkgconfig(ice)
+BuildRequires:  pkgconfig(sm)
+BuildRequires:  pkgconfig(libprotobuf-c)
+BuildRequires:  pkgconfig(protobuf)
+BuildRequires:	pkgconfig(python)
+BuildRequires:	python-cython
+BuildRequires:  python3dist(cython)
+BuildRequires:  python3egg(cython)	
+BuildRequires:	python-pkg-resources
 
 Requires(post): GConf2
 Requires(preun): GConf2
@@ -111,18 +124,6 @@ Requires:	%{name} = %{version}-%{release}
 
 %description decorator-gtk
 This package provides a GTK window decorator for the compiz OpenGL
-compositing manager.
-
-#----------------------------------------------------------------------------
-
-%package decorator-kde4
-Summary:	KDE4 window decorator for compiz
-Group:		System/X11
-Provides:	compiz-decorator
-Requires:	%{name} = %{version}-%{release}
-
-%description decorator-kde4
-This package provides a KDE4 window decorator for the compiz OpenGL
 compositing manager.
 
 #----------------------------------------------------------------------------
@@ -205,6 +206,10 @@ Python bindings for libcompizconfig.
 %apply_patches
 
 %build
+# GCC is needed or we see in Clang: "error: no matching function for call to 'scandir'"
+export CC=gcc
+export CXX=g++
+
 %if %{git}
 # no idea if this is still valid 2011-11-02
   # This is a CVS snapshot, so we need to generate makefiles.
@@ -214,15 +219,21 @@ Python bindings for libcompizconfig.
 export CFLAGS+=" -fno-strict-aliasing -Wno-error=deprecated-declarations" CXXFLAGS+=" -fno-strict-aliasing" FFLAGS+=" -fno-strict-aliasing"
 
 %cmake -DCOMPIZ_PACKAGING_ENABLED=ON \
+	-DCYTHON_BIN=/usr/bin/cython \
 	-DBUILD_GNOME_KEYBINDINGS=OFF \
 	-DCOMPIZ_BUILD_WITH_RPATH=OFF \
 	-DCOMPIZ_DISABLE_SCHEMAS_INSTALL=ON \
 	-DCOMPIZ_INSTALL_GCONF_SCHEMA_DIR=%{_sysconfdir}/gconf/schemas ..
-%make
+	
+# Needed for fix build on new Clang and GCC version (angry)
+# error: unknown warning option '-Wno-subobject-linkage' [-Werror,-Wunknown-warning-option]
+find -name flags.make | while read l; do sed -i 's|\ -Werror\ | |g' $l; done
+
+%make_build
 
 %install
 rm -rf %{buildroot}
-%makeinstall_std -C build
+%make_install -C build
 pushd build
 # This should work, but is buggy upstream:
 # make DESTDIR=%{buildroot} findcompiz_install
@@ -258,10 +269,10 @@ find %{buildroot} -name '*.a' -exec rm -f {} ';'
 %define plugins annotate blur clone commands cube dbus decoration fade fs gconf glib gnomecompat ini inotify minimize move obs place png regex resize rotate scale screenshot svg switcher video water wobbly zoom
 %define schemas compiz-core %(for plugin in %{plugins}; do echo -n " compiz-$plugin"; done)
 
-%ifarch x86_64
-mv -f %{buildroot}%{_prefix}/lib/compizconfig %{buildroot}%{_libdir}/
-mv -f %{buildroot}%{_prefix}/lib/libcompizconfig_gsettings_backend.so %{buildroot}%{_libdir}/
-%endif
+#ifarch x86_64
+#mv -f %{buildroot}%{_prefix}/lib/compizconfig %{buildroot}%{_libdir}/
+#mv -f %{buildroot}%{_prefix}/lib/libcompizconfig_gsettings_backend.so %{buildroot}%{_libdir}/
+#endif
 
 rm -f %{buildroot}%{py_puresitedir}/*.egg-info
 
@@ -286,18 +297,18 @@ desktop-file-install \
 %{_libdir}/%{name}/lib*.so
 %exclude %{_libdir}/%{name}/libannotate.so
 %exclude %{_libdir}/%{name}/libgnomecompat.so
-%exclude %{_libdir}/%{name}/libkde.so
+#exclude #{_libdir}/%{name}/libkde.so
 # why do a for loop if all the files go in the same pkg???
-%{_sysconfdir}/gconf/schemas/%{name}-*.schemas
-%exclude %{_sysconfdir}/gconf/schemas/%{name}-annotate.schemas
-%exclude %{_sysconfdir}/gconf/schemas/%{name}-gnomecompat.schemas
-%exclude %{_sysconfdir}/gconf/schemas/%{name}-kde.schemas
+#{_sysconfdir}/gconf/schemas/%{name}-*.schemas
+#exclude #{_sysconfdir}/gconf/schemas/%{name}-annotate.schemas
+#exclude #{_sysconfdir}/gconf/schemas/%{name}-gnomecompat.schemas
+#exclude #{_sysconfdir}/gconf/schemas/%{name}-kde.schemas
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/*.png
 %{_datadir}/%{name}/*.xml
-%exclude %{_datadir}/%{name}/annotate.xml
-%exclude %{_datadir}/%{name}/gnomecompat.xml
-%exclude %{_datadir}/%{name}/kde.xml
+#exclude #{_datadir}/%{name}/annotate.xml
+#exclude #{_datadir}/%{name}/gnomecompat.xml
+#exclude #{_datadir}/%{name}/kde.xml
 %dir %{_datadir}/%{name}/cube
 %dir %{_datadir}/%{name}/cube/images
 %{_datadir}/%{name}/cube/images/*.png
@@ -307,11 +318,15 @@ desktop-file-install \
 %{_datadir}/%{name}/splash
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/compositing-wm/%{name}.defaults
+%{_datadir}/%{name}/colorfilter/*
+%{_datadir}/%{name}/notification/*
+%{_datadir}/%{name}/scale/images/*.png
+%{_datadir}/gnome-control-center/keybindings/50-compiz-*.xml
 
 %files decorator-gtk
 %{_bindir}/compiz-gtk
 %{_bindir}/gtk-window-decorator
-%{_sysconfdir}/gconf/schemas/gwd.schemas
+#{_sysconfdir}/gconf/schemas/gwd.schemas
 #%{_datadir}/gnome-control-center/keybindings/50-%{name}-*.xml
 %{_datadir}/applications/compiz-gtk.desktop
 # split into gnome pkg ???
@@ -321,14 +336,8 @@ desktop-file-install \
 %{_libdir}/%{name}/libgnomecompat.so
 %{_datadir}/%{name}/annotate.xml
 %{_datadir}/%{name}/gnomecompat.xml
-%{_sysconfdir}/gconf/schemas/%{name}-annotate.schemas
-%{_sysconfdir}/gconf/schemas/%{name}-gnomecompat.schemas
-
-%files decorator-kde4
-%{_bindir}/kde4-window-decorator
-%{_libdir}/%{name}/libkde.so
-%{_datadir}/%{name}/kde.xml
-%{_sysconfdir}/gconf/schemas/%{name}-kde.schemas
+#{_sysconfdir}/gconf/schemas/%{name}-annotate.schemas
+#{_sysconfdir}/gconf/schemas/%{name}-gnomecompat.schemas
 
 %files -n %{libname}
 %{_libdir}/libdecoration.so.%{major}*
@@ -353,6 +362,7 @@ desktop-file-install \
 %{py_puresitedir}/ccm
 %{_datadir}/applications/ccsm.desktop
 %{_iconsdir}/hicolor/*/apps/ccsm.*
+%config(noreplace) %{_sysconfdir}/compizconfig/config.conf
 
 %files -n %{libcompizconfig}
 %{_libdir}/libcompizconfig.so.%{major}*
