@@ -32,7 +32,7 @@ Group:		System/X11
 License:	GPLv2+ and LGPLv2+ and MIT
 URL:		http://www.compiz.org/
 # Current source lives at https://launchpad.net/compiz
-Source0:	http://cgit.compiz-fusion.org/compiz/core/snapshot/%{srcname}
+Source0:	https://launchpad.net/compiz/0.9.14/%{version}/+download/%{name}-%{version}.tar.xz
 Source1:	compiz.defaults
 Source2:	compiz-window-decorator
 Source3:	kstylerc.xinit
@@ -44,9 +44,6 @@ Source13:	compiz-gnome.desktop
 Source14:	compiz-gnome.session
 
 Patch100:		compiz-0.9.14.1-python-sitearch.patch
-#Patch101:		compiz-0.9.14.0-alt-ascii-to-utf8.patch
-#Patch0:		compiz-0.9.8.2-rosa-linking.patch
-#Patch1:		compiz-0.9.9.0-mga-boost-1.53.patch
 
 # (cg) Using git to manage patches
 # To recreate the structure
@@ -69,6 +66,7 @@ Patch100:		compiz-0.9.14.1-python-sitearch.patch
 
 # Mandriva Patches
 # git format-patch --start-number 500 mdv-0.8.0-cherry-picks..mdv-0.8.0-patches
+# bring back this patch in future, need rework it from Mandriva to OpenMandriva (angry)
 #Patch501: 0501-Add-Mandriva-graphic-to-the-top-of-the-cube.patch
 #Patch502: 0502-Use-our-compiz-window-decorator-script-as-the-defaul.patch
 #Patch503: 0503-Do-not-put-window-decorations-on-KDE-screensaver.patch
@@ -82,7 +80,6 @@ BuildRequires:	cmake
 BuildRequires:	boost-devel
 BuildRequires:	glibmm2.4-devel
 BuildRequires:  xsltproc
-#BuildRequires:	kdebase4-workspace-devel
 BuildRequires:	libxslt-devel
 BuildRequires:	pkgconfig(librsvg-2.0)
 BuildRequires:	pkgconfig(gconf-2.0) 
@@ -209,6 +206,7 @@ Python bindings for libcompizconfig.
 %apply_patches
 
 %build
+# GCC is needed or we see in Clang: "error: no matching function for call to 'scandir'"
 export CC=gcc
 export CXX=g++
 
@@ -227,12 +225,15 @@ export CFLAGS+=" -fno-strict-aliasing -Wno-error=deprecated-declarations" CXXFLA
 	-DCOMPIZ_DISABLE_SCHEMAS_INSTALL=ON \
 	-DCOMPIZ_INSTALL_GCONF_SCHEMA_DIR=%{_sysconfdir}/gconf/schemas ..
 	
+# Needed for fix build on new Clang and GCC version (angry)
+# error: unknown warning option '-Wno-subobject-linkage' [-Werror,-Wunknown-warning-option]
 find -name flags.make | while read l; do sed -i 's|\ -Werror\ | |g' $l; done
-%make
+
+%make_build
 
 %install
 rm -rf %{buildroot}
-%makeinstall_std -C build
+%make_install -C build
 pushd build
 # This should work, but is buggy upstream:
 # make DESTDIR=%{buildroot} findcompiz_install
