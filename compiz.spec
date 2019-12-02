@@ -280,10 +280,10 @@ find %{buildroot} -name '*.a' -exec rm -f {} ';'
 %define plugins annotate blur clone commands cube dbus decoration fade fs gconf glib gnomecompat ini inotify minimize move obs place png regex resize rotate scale screenshot svg switcher video water wobbly zoom
 %define schemas compiz-core %(for plugin in %{plugins}; do echo -n " compiz-$plugin"; done)
 
-%ifarch x86_64
-mv -f %{buildroot}%{_prefix}/lib/compizconfig %{buildroot}%{_libdir}/
-mv -f %{buildroot}%{_prefix}/lib/libcompizconfig_gsettings_backend.so %{buildroot}%{_libdir}/
-%endif
+#ifarch x86_64
+#mv -f %{buildroot}%{_prefix}/lib/compizconfig %{buildroot}%{_libdir}/
+#mv -f %{buildroot}%{_prefix}/lib/libcompizconfig_gsettings_backend.so %{buildroot}%{_libdir}/
+#endif
 
 rm -f %{buildroot}%{py_puresitedir}/*.egg-info
 
