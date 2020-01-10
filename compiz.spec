@@ -203,7 +203,7 @@ Python bindings for libcompizconfig.
 
 %prep
 %setup -qn %{distname}
-%apply_patches
+%autopatch -p1
 
 %build
 # GCC is needed or we see in Clang: "error: no matching function for call to 'scandir'"
