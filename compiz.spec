@@ -100,7 +100,6 @@ BuildRequires:  pkgconfig(protobuf)
 BuildRequires:	pkgconfig(python)
 BuildRequires:	python-cython
 BuildRequires:  python3dist(cython)
-BuildRequires:  python3egg(cython)	
 BuildRequires:	python-pkg-resources
 
 Requires(post): GConf2
