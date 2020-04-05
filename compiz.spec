@@ -31,8 +31,9 @@ Summary:	OpenGL composite manager for Xgl and AIGLX
 Group:		System/X11
 License:	GPLv2+ and LGPLv2+ and MIT
 URL:		http://www.compiz.org/
+Source0:	compiz-0.9.14.1-master-11022020.tar.gz
 # Current source lives at https://launchpad.net/compiz
-Source0:	https://launchpad.net/compiz/0.9.14/%{version}/+download/%{name}-%{version}.tar.xz
+#Source0:	https://launchpad.net/compiz/0.9.14/%{version}/+download/%{name}-%{version}.tar.xz
 Source1:	compiz.defaults
 Source2:	compiz-window-decorator
 Source3:	kstylerc.xinit
@@ -201,7 +202,7 @@ Python bindings for libcompizconfig.
 #----------------------------------------------------------------------------
 
 %prep
-%setup -qn %{distname}
+%setup -qn compiz-0.9.14.1-master-11022020
 %autopatch -p1
 
 %build
