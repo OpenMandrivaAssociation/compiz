@@ -201,19 +201,13 @@ Python bindings for libcompizconfig.
 #----------------------------------------------------------------------------
 
 %prep
-%setup -qn %{distname}
+%setup -qn %{name}-%{version}
 %autopatch -p1
 
 %build
 # GCC is needed or we see in Clang: "error: no matching function for call to 'scandir'"
 export CC=gcc
 export CXX=g++
-
-%if %{git}
-# no idea if this is still valid 2011-11-02
-  # This is a CVS snapshot, so we need to generate makefiles.
-  sh autogen.sh -V
-%endif
 
 export CFLAGS+=" -fno-strict-aliasing -Wno-error=deprecated-declarations" CXXFLAGS+=" -fno-strict-aliasing" FFLAGS+=" -fno-strict-aliasing"
 
