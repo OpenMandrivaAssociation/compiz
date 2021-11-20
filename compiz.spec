@@ -211,8 +211,8 @@ Python bindings for libcompizconfig.
 
 %build
 # GCC is needed or we see in Clang: "error: no matching function for call to 'scandir'"
-export CC=gcc
-export CXX=g++
+#export CC=gcc
+#export CXX=g++
 
 export CFLAGS+=" -fno-strict-aliasing -Wno-error=deprecated-declarations" CXXFLAGS+=" -fno-strict-aliasing" FFLAGS+=" -fno-strict-aliasing"
 
