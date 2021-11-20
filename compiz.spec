@@ -1,7 +1,7 @@
 %define debug_package %{nil}
 %define _disable_ld_no_undefined 1
-%define rel 2
-%define git 0
+%define rel 1
+%define git 20210501
 
 %define major 0
 %define libname %mklibname %{name} %major
@@ -26,7 +26,7 @@
 
 Name:	compiz
 Version:	0.9.14.1
-Release:	2
+Release:	0.%{git}.%{rel}
 Summary:	OpenGL composite manager for Xgl and AIGLX
 Group:		System/X11
 License:	GPLv2+ and LGPLv2+ and MIT
