@@ -89,7 +89,8 @@ BuildRequires:	pkgconfig(libwnck-3.0)
 BuildRequires:  pkgconfig(libnotify)
 BuildRequires:  pkgconfig(libjpeg)
 BuildRequires:  pkgconfig(libglvnd)
-BuildRequires:  pkgconfig(glesv2)	
+BuildRequires:  pkgconfig(glesv2)
+BuildRequires:	pkgconfig(glu)
 BuildRequires:	python-pyrex
 BuildRequires:	desktop-file-utils
 BuildRequires:	metacity-devel
