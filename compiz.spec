@@ -43,7 +43,7 @@ Source12:	compiz-gtk.desktop
 Source13:	compiz-gnome.desktop
 Source14:	compiz-gnome.session
 
-Patch100:		compiz-0.9.14.1-python-sitearch.patch
+#Patch100:		compiz-0.9.14.1-python-sitearch.patch
 
 # (cg) Using git to manage patches
 # To recreate the structure
