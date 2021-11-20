@@ -84,13 +84,17 @@ BuildRequires:	libxslt-devel
 BuildRequires:	pkgconfig(librsvg-2.0)
 BuildRequires:	pkgconfig(gconf-2.0) 
 BuildRequires:	pkgconfig(libstartup-notification-1.0)
-BuildRequires:	pkgconfig(gl) pkgconfig(glu)
 BuildRequires:	pkgconfig(libwnck-3.0)
 BuildRequires:  pkgconfig(libnotify)
 BuildRequires:  pkgconfig(libjpeg)
+BuildRequires:	pkgconfig(libdrm)
+BuildRequires:	pkgconfig(dri)
 BuildRequires:  pkgconfig(libglvnd)
 BuildRequires:  pkgconfig(glesv2)
+BuildRequires:	pkgconfig(gl)
 BuildRequires:	pkgconfig(glu)
+BuildRequires:	egl-devel
+BuildRequires:	mesa-common-devel
 BuildRequires:	python-pyrex
 BuildRequires:	desktop-file-utils
 BuildRequires:	metacity-devel
