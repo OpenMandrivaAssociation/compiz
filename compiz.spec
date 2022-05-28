@@ -221,6 +221,8 @@ export CFLAGS+=" -fno-strict-aliasing -Wno-error=deprecated-declarations" CXXFLA
 	-DBUILD_GNOME_KEYBINDINGS=OFF \
 	-DCOMPIZ_BUILD_WITH_RPATH=OFF \
 	-DCOMPIZ_DISABLE_SCHEMAS_INSTALL=ON \
+	-DCOMPIZ_WERROR=Off \
+        -DCOMPIZ_DEFAULT_PLUGINS="composite,opengl,decor,resize,place,move,compiztoolbox,staticswitcher,regex,animation,ccp" \
 	-DCOMPIZ_INSTALL_GCONF_SCHEMA_DIR=%{_sysconfdir}/gconf/schemas ..
 	
 # Needed for fix build on new Clang and GCC version (angry)
