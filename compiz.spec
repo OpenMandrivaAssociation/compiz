@@ -277,7 +277,7 @@ find %{buildroot} -name '*.a' -exec rm -f {} ';'
 #mv -f %{buildroot}%{_prefix}/lib/libcompizconfig_gsettings_backend.so %{buildroot}%{_libdir}/
 #endif
 
-rm -f %{buildroot}%{py_puresitedir}/*.egg-info
+#rm -f %{buildroot}%{py_puresitedir}/*.egg-info
 
 desktop-file-install \
 --vendor="" \
