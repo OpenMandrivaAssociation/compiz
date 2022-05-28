@@ -101,8 +101,8 @@ BuildRequires:	desktop-file-utils
 BuildRequires:	metacity-devel
 BuildRequires:  pkgconfig(ice)
 BuildRequires:  pkgconfig(sm)
-BuildRequires:  pkgconfig(libprotobuf-c)
-BuildRequires:  pkgconfig(protobuf)
+#BuildRequires:  pkgconfig(libprotobuf-c)
+#BuildRequires:  pkgconfig(protobuf)
 BuildRequires:	pkgconfig(python)
 BuildRequires:	python-cython
 BuildRequires:  python3dist(cython)
