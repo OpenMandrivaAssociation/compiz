@@ -225,6 +225,7 @@ export CFLAGS+=" -fno-strict-aliasing -Wno-error=deprecated-declarations" CXXFLA
 	-DCOMPIZ_WERROR=Off \
         -DCOMPIZ_DEFAULT_PLUGINS="composite,opengl,decor,resize,place,move,compiztoolbox,staticswitcher,regex,animation,ccp" \
 	-DCOMPIZ_DISABLE_PLUGIN_DBUS=ON \
+	-DOpenGL_GL_PREFERENCE=LEGACY \
 	-DCOMPIZ_INSTALL_GCONF_SCHEMA_DIR=%{_sysconfdir}/gconf/schemas ..
 	
 # Needed for fix build on new Clang and GCC version (angry)
