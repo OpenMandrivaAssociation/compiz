@@ -78,6 +78,7 @@ BuildRequires:	intltool
 BuildRequires:	gettext
 BuildRequires:	cmake
 BuildRequires:	boost-devel
+BuildRequires:  lcov
 BuildRequires:	glibmm2.4-devel
 BuildRequires:  xsltproc
 BuildRequires:	libxslt-devel
