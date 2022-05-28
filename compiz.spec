@@ -1,7 +1,7 @@
 %define debug_package %{nil}
 %define _disable_ld_no_undefined 1
 %define rel 1
-%define git 20210501
+%define git 20211217
 
 %define major 0
 %define libname %mklibname %{name} %major
