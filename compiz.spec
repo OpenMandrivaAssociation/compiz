@@ -363,6 +363,7 @@ desktop-file-install \
 %{_bindir}/ccsm
 %{_datadir}/ccsm
 %{py_puresitedir}/ccm
+%{python_sitelib}/ccsm-%{version}-py*.*.egg-info
 %{_datadir}/applications/ccsm.desktop
 %{_iconsdir}/hicolor/*/apps/ccsm.*
 %config(noreplace) %{_sysconfdir}/compizconfig/config.conf
