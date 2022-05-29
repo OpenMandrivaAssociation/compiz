@@ -1,7 +1,7 @@
 %define debug_package %{nil}
 %define _disable_ld_no_undefined 1
-%define rel 2
-%define git 0
+%define rel 1
+%define git 20211217
 
 %define major 0
 %define libname %mklibname %{name} %major
@@ -26,7 +26,7 @@
 
 Name:	compiz
 Version:	0.9.14.1
-Release:	2
+Release:	0.%{git}.%{rel}
 Summary:	OpenGL composite manager for Xgl and AIGLX
 Group:		System/X11
 License:	GPLv2+ and LGPLv2+ and MIT
@@ -43,7 +43,7 @@ Source12:	compiz-gtk.desktop
 Source13:	compiz-gnome.desktop
 Source14:	compiz-gnome.session
 
-Patch100:		compiz-0.9.14.1-python-sitearch.patch
+#Patch100:		compiz-0.9.14.1-python-sitearch.patch
 
 # (cg) Using git to manage patches
 # To recreate the structure
@@ -78,25 +78,31 @@ BuildRequires:	intltool
 BuildRequires:	gettext
 BuildRequires:	cmake
 BuildRequires:	boost-devel
+BuildRequires:  lcov
 BuildRequires:	glibmm2.4-devel
 BuildRequires:  xsltproc
 BuildRequires:	libxslt-devel
 BuildRequires:	pkgconfig(librsvg-2.0)
 BuildRequires:	pkgconfig(gconf-2.0) 
 BuildRequires:	pkgconfig(libstartup-notification-1.0)
-BuildRequires:	pkgconfig(gl) pkgconfig(glu)
 BuildRequires:	pkgconfig(libwnck-3.0)
 BuildRequires:  pkgconfig(libnotify)
 BuildRequires:  pkgconfig(libjpeg)
+BuildRequires:	pkgconfig(libdrm)
+BuildRequires:	pkgconfig(dri)
 BuildRequires:  pkgconfig(libglvnd)
-BuildRequires:  pkgconfig(glesv2)	
+BuildRequires:  pkgconfig(glesv2)
+BuildRequires:	pkgconfig(gl)
+BuildRequires:	pkgconfig(glu)
+BuildRequires:	egl-devel
+BuildRequires:	mesa-common-devel
 BuildRequires:	python-pyrex
 BuildRequires:	desktop-file-utils
 BuildRequires:	metacity-devel
 BuildRequires:  pkgconfig(ice)
 BuildRequires:  pkgconfig(sm)
-BuildRequires:  pkgconfig(libprotobuf-c)
-BuildRequires:  pkgconfig(protobuf)
+#BuildRequires:  pkgconfig(libprotobuf-c)
+#BuildRequires:  pkgconfig(protobuf)
 BuildRequires:	pkgconfig(python)
 BuildRequires:	python-cython
 BuildRequires:  python3dist(cython)
@@ -201,19 +207,13 @@ Python bindings for libcompizconfig.
 #----------------------------------------------------------------------------
 
 %prep
-%setup -qn %{distname}
+%setup -qn %{name}-%{version}
 %autopatch -p1
 
 %build
 # GCC is needed or we see in Clang: "error: no matching function for call to 'scandir'"
 export CC=gcc
 export CXX=g++
-
-%if %{git}
-# no idea if this is still valid 2011-11-02
-  # This is a CVS snapshot, so we need to generate makefiles.
-  sh autogen.sh -V
-%endif
 
 export CFLAGS+=" -fno-strict-aliasing -Wno-error=deprecated-declarations" CXXFLAGS+=" -fno-strict-aliasing" FFLAGS+=" -fno-strict-aliasing"
 
@@ -222,6 +222,10 @@ export CFLAGS+=" -fno-strict-aliasing -Wno-error=deprecated-declarations" CXXFLA
 	-DBUILD_GNOME_KEYBINDINGS=OFF \
 	-DCOMPIZ_BUILD_WITH_RPATH=OFF \
 	-DCOMPIZ_DISABLE_SCHEMAS_INSTALL=ON \
+	-DCOMPIZ_WERROR=Off \
+        -DCOMPIZ_DEFAULT_PLUGINS="composite,opengl,decor,resize,place,move,compiztoolbox,staticswitcher,regex,animation,ccp" \
+	-DCOMPIZ_DISABLE_PLUGIN_DBUS=ON \
+	-DOpenGL_GL_PREFERENCE=LEGACY \
 	-DCOMPIZ_INSTALL_GCONF_SCHEMA_DIR=%{_sysconfdir}/gconf/schemas ..
 	
 # Needed for fix build on new Clang and GCC version (angry)
@@ -273,7 +277,7 @@ find %{buildroot} -name '*.a' -exec rm -f {} ';'
 #mv -f %{buildroot}%{_prefix}/lib/libcompizconfig_gsettings_backend.so %{buildroot}%{_libdir}/
 #endif
 
-rm -f %{buildroot}%{py_puresitedir}/*.egg-info
+#rm -f %{buildroot}%{py_puresitedir}/*.egg-info
 
 desktop-file-install \
 --vendor="" \
@@ -359,6 +363,7 @@ desktop-file-install \
 %{_bindir}/ccsm
 %{_datadir}/ccsm
 %{py_puresitedir}/ccm
+%{python_sitelib}/ccsm-%{version}-py*.*.egg-info
 %{_datadir}/applications/ccsm.desktop
 %{_iconsdir}/hicolor/*/apps/ccsm.*
 %config(noreplace) %{_sysconfdir}/compizconfig/config.conf
