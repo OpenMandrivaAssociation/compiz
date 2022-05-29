@@ -81,7 +81,7 @@ BuildRequires:	boost-devel
 BuildRequires:  lcov
 BuildRequires:	glibmm2.4-devel
 BuildRequires:  xsltproc
-BuildRequires:	libxslt-devel
+BuildRequires:	pkgconfig(libxslt)
 BuildRequires:	pkgconfig(librsvg-2.0)
 BuildRequires:	pkgconfig(gconf-2.0) 
 BuildRequires:	pkgconfig(libstartup-notification-1.0)
@@ -101,6 +101,13 @@ BuildRequires:	desktop-file-utils
 BuildRequires:	metacity-devel
 BuildRequires:  pkgconfig(ice)
 BuildRequires:  pkgconfig(sm)
+# As of git from 20211217 no longer compile with protobuf.
+# /builddir/build/BUILD/compiz-0.9.14.1/build/compizconfig/libcompizconfig/src/compizconfig.pb.cc:40:127: 
+# error: 'constinit' variable 'metadata::_PluginInfo_Dependencies_default_instance_' does not have a constant initializer
+# 40 | PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 
+# PluginInfo_DependenciesDefaultTypeInternal _PluginInfo_Dependencies_default_instance_;                                                                                                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# /builddir/build/BUILD/compiz-0.9.14.1/build/compizconfig/libcompizconfig/src/compizconfig.pb.cc:40:127: error: 
+# 'metadata::PluginInfo_DependenciesDefaultTypeInternal{metadata::PluginInfo_DependenciesDefaultTypeInternal::<unnamed union>
 #BuildRequires:  pkgconfig(libprotobuf-c)
 #BuildRequires:  pkgconfig(protobuf)
 BuildRequires:	pkgconfig(python)
