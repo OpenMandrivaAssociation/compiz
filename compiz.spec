@@ -26,7 +26,7 @@
 
 Name:	compiz
 Version:	0.9.14.1
-Release:	0.%{git}.%{rel}
+Release:	2.%{git}.%{rel}
 Summary:	OpenGL composite manager for Xgl and AIGLX
 Group:		System/X11
 License:	GPLv2+ and LGPLv2+ and MIT
