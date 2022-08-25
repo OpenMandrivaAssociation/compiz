@@ -108,8 +108,8 @@ BuildRequires:  pkgconfig(sm)
 # PluginInfo_DependenciesDefaultTypeInternal _PluginInfo_Dependencies_default_instance_;                                                                                                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # /builddir/build/BUILD/compiz-0.9.14.1/build/compizconfig/libcompizconfig/src/compizconfig.pb.cc:40:127: error: 
 # 'metadata::PluginInfo_DependenciesDefaultTypeInternal{metadata::PluginInfo_DependenciesDefaultTypeInternal::<unnamed union>
-#BuildRequires:  pkgconfig(libprotobuf-c)
-#BuildRequires:  pkgconfig(protobuf)
+BuildRequires:  pkgconfig(libprotobuf-c)
+BuildRequires:  pkgconfig(protobuf)
 BuildRequires:	pkgconfig(python)
 BuildRequires:	python-cython
 BuildRequires:  python3dist(cython)
