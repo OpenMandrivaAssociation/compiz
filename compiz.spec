@@ -25,8 +25,8 @@
 %endif
 
 Name:	compiz
-Version:	0.9.14.1
-Release:	2.%{git}.%{rel}
+Version:	0.9.14.2
+Release:	1
 Summary:	OpenGL composite manager for Xgl and AIGLX
 Group:		System/X11
 License:	GPLv2+ and LGPLv2+ and MIT
@@ -108,8 +108,8 @@ BuildRequires:  pkgconfig(sm)
 # PluginInfo_DependenciesDefaultTypeInternal _PluginInfo_Dependencies_default_instance_;                                                                                                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # /builddir/build/BUILD/compiz-0.9.14.1/build/compizconfig/libcompizconfig/src/compizconfig.pb.cc:40:127: error: 
 # 'metadata::PluginInfo_DependenciesDefaultTypeInternal{metadata::PluginInfo_DependenciesDefaultTypeInternal::<unnamed union>
-#BuildRequires:  pkgconfig(libprotobuf-c)
-#BuildRequires:  pkgconfig(protobuf)
+BuildRequires:  pkgconfig(libprotobuf-c)
+BuildRequires:  pkgconfig(protobuf)
 BuildRequires:	pkgconfig(python)
 BuildRequires:	python-cython
 BuildRequires:  python3dist(cython)
