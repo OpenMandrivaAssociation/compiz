@@ -302,6 +302,7 @@ desktop-file-install \
 
 %files -f %{name}.lang
 %{_bindir}/%{name}
+%{_bindir}/%{name}_autopilot_acceptance_tests
 %{_bindir}/%{name}-window-decorator
 %{_bindir}/compiz-decorator
 %dir %{_libdir}/%{name}
