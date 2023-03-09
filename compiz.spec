@@ -26,11 +26,12 @@
 
 Name:	compiz
 Version:	0.9.14.2
-Release:	1
+Release:	2
 Summary:	OpenGL composite manager for Xgl and AIGLX
 Group:		System/X11
 License:	GPLv2+ and LGPLv2+ and MIT
 URL:		http://www.compiz.org/
+Patch0:		compiz-0.9.14.2-compile.patch
 # Current source lives at https://launchpad.net/compiz
 Source0:	https://launchpad.net/compiz/0.9.14/%{version}/+download/%{name}-%{version}.tar.xz
 Source1:	compiz.defaults
@@ -110,6 +111,7 @@ BuildRequires:  pkgconfig(sm)
 # 'metadata::PluginInfo_DependenciesDefaultTypeInternal{metadata::PluginInfo_DependenciesDefaultTypeInternal::<unnamed union>
 BuildRequires:  pkgconfig(libprotobuf-c)
 BuildRequires:  pkgconfig(protobuf)
+BuildRequires:	cmake(absl)
 BuildRequires:	pkgconfig(python)
 BuildRequires:	python-cython
 BuildRequires:  python3dist(cython)

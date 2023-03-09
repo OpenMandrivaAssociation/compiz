@@ -1,0 +1,74 @@
+diff -up compiz-0.9.14.2/cmake/CompizCommon.cmake.omv~ compiz-0.9.14.2/cmake/CompizCommon.cmake
+--- compiz-0.9.14.2/cmake/CompizCommon.cmake.omv~	2023-03-09 02:08:13.621944672 +0100
++++ compiz-0.9.14.2/cmake/CompizCommon.cmake	2023-03-09 02:08:19.928992192 +0100
+@@ -54,7 +54,7 @@ set (
+ 
+ # Almost everything is a shared library now, so almost everything needs -fPIC
+ set (COMMON_FLAGS "-fPIC -Wall")
+-set (COMMON_CXX_FLAGS "-std=c++11")
++set (COMMON_CXX_FLAGS "-std=c++17")
+ 
+ option (COMPIZ_SUBOBJECT_LINKAGE_WARNINGS "Warn about subobject linkage" OFF)
+ if (NOT COMPIZ_SUBOBJECT_LINKAGE_WARNINGS)
+diff -up compiz-0.9.14.2/compizconfig/libcompizconfig/CMakeLists.txt.omv~ compiz-0.9.14.2/compizconfig/libcompizconfig/CMakeLists.txt
+diff -up compiz-0.9.14.2/compizconfig/libcompizconfig/config/CMakeLists.txt.omv~ compiz-0.9.14.2/compizconfig/libcompizconfig/config/CMakeLists.txt
+diff -up compiz-0.9.14.2/compizconfig/libcompizconfig/src/CMakeLists.txt.omv~ compiz-0.9.14.2/compizconfig/libcompizconfig/src/CMakeLists.txt
+--- compiz-0.9.14.2/compizconfig/libcompizconfig/src/CMakeLists.txt.omv~	2023-03-09 02:13:42.563507811 +0100
++++ compiz-0.9.14.2/compizconfig/libcompizconfig/src/CMakeLists.txt	2023-03-09 02:16:36.957917912 +0100
+@@ -90,7 +90,7 @@ link_directories (
+ 
+ target_link_libraries (
+     compizconfig
+-    ${LIBCOMPIZCONFIG_LIBRARIES}
++    ${LIBCOMPIZCONFIG_LIBRARIES} absl_hash absl_log_internal_check_op absl_log_internal_message absl_log_internal_nullguard absl_raw_logging_internal absl_spinlock_wait absl_strings_internal absl_strings absl_synchronization
+     m
+     pthread
+     dl
+diff -up compiz-0.9.14.2/compizconfig/mocks/libcompizconfig/CMakeLists.txt.omv~ compiz-0.9.14.2/compizconfig/mocks/libcompizconfig/CMakeLists.txt
+--- compiz-0.9.14.2/compizconfig/mocks/libcompizconfig/CMakeLists.txt.omv~	2023-03-09 02:16:56.625078491 +0100
++++ compiz-0.9.14.2/compizconfig/mocks/libcompizconfig/CMakeLists.txt	2023-03-09 02:18:47.761990750 +0100
+@@ -82,6 +82,7 @@ target_link_libraries (compizconfig_ccs_
+ 		       compizconfig)
+ 
+ target_link_libraries (compizconfig_ccs_text_file_mock
++			absl_hash absl_log_internal_check_op absl_log_internal_message absl_log_internal_nullguard absl_raw_logging_internal absl_spinlock_wait absl_strings_internal absl_strings absl_synchronization compizconfig
+                        ${GTEST_BOTH_LIBRARIES}
+                        ${GMOCK_LIBRARY}
+                        ${GMOCK_MAIN_LIBRARY})
+diff -up compiz-0.9.14.2/src/CMakeLists.txt.omv~ compiz-0.9.14.2/src/CMakeLists.txt
+diff -up compiz-0.9.14.2/src/point/tests/CMakeLists.txt.omv~ compiz-0.9.14.2/src/point/tests/CMakeLists.txt
+--- compiz-0.9.14.2/src/point/tests/CMakeLists.txt.omv~	2023-03-09 02:00:49.774867343 +0100
++++ compiz-0.9.14.2/src/point/tests/CMakeLists.txt	2023-03-09 02:01:30.542121438 +0100
+@@ -3,6 +3,8 @@ include_directories(${CMAKE_CURRENT_SOUR
+ add_library (compiz_point_test
+              ${CMAKE_CURRENT_SOURCE_DIR}/test-point.cpp)
+ 
++target_link_libraries (compiz_point_test compiz_point ${GTEST_BOTH_LIBRARIES})
++
+ add_executable (compiz_test_point
+                 ${CMAKE_CURRENT_SOURCE_DIR}/point/src/test-point.cpp)
+ 
+diff -up compiz-0.9.14.2/src/rect/tests/CMakeLists.txt.omv~ compiz-0.9.14.2/src/rect/tests/CMakeLists.txt
+--- compiz-0.9.14.2/src/rect/tests/CMakeLists.txt.omv~	2023-03-09 02:01:50.566248911 +0100
++++ compiz-0.9.14.2/src/rect/tests/CMakeLists.txt	2023-03-09 02:02:09.467370766 +0100
+@@ -3,6 +3,8 @@ include_directories(${CMAKE_CURRENT_SOUR
+ add_library (compiz_rect_test
+              ${CMAKE_CURRENT_SOURCE_DIR}/test-rect.cpp)
+ 
++target_link_libraries (compiz_rect_test compiz_rect ${GTEST_BOTH_LIBRARIES})
++
+ add_executable (compiz_test_rect
+                 ${CMAKE_CURRENT_SOURCE_DIR}/rect/src/test-rect.cpp)
+ 
+diff -up compiz-0.9.14.2/src/timer/tests/CMakeLists.txt.omv~ compiz-0.9.14.2/src/timer/tests/CMakeLists.txt
+--- compiz-0.9.14.2/src/timer/tests/CMakeLists.txt.omv~	2023-03-09 02:30:54.731081358 +0100
++++ compiz-0.9.14.2/src/timer/tests/CMakeLists.txt	2023-03-09 02:31:27.861361817 +0100
+@@ -3,6 +3,8 @@ include_directories(${CMAKE_CURRENT_SOUR
+ add_library (compiz_timer_test
+              ${CMAKE_CURRENT_SOURCE_DIR}/test-timer.cpp)
+ 
++target_link_libraries(compiz_timer_test compiz_timer ${GTEST_BOTH_LIBRARIES})
++
+ add_executable (compiz_timer_callbacks
+                 ${CMAKE_CURRENT_SOURCE_DIR}/callbacks/src/test-timer-callbacks.cpp)
+ 
