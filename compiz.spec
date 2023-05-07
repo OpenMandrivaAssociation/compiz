@@ -1,6 +1,5 @@
 %define debug_package %{nil}
 %define _disable_ld_no_undefined 1
-%define rel 1
 %define git 20211217
 
 %define major 0
@@ -17,16 +16,14 @@
 %if %{git}
 %define srcname %{name}-%{git}.tar.xz
 %define distname %{name}-%{git}
-%define release 0.%{git}.%{rel}
 %else
 %define srcname %{name}-%{version}.tar.xz
 %define distname %{name}-%{version}
-%define release %{rel}
 %endif
 
 Name:	compiz
 Version:	0.9.14.2
-Release:	3
+Release:	4
 Summary:	OpenGL composite manager for Xgl and AIGLX
 Group:		System/X11
 License:	GPLv2+ and LGPLv2+ and MIT
@@ -119,7 +116,7 @@ BuildRequires:	python-pkg-resources
 
 Requires(post): GConf2
 Requires(preun): GConf2
-Requires:	%{libname} = %{version}-%{release}
+Requires:	%{libname} = %{EVRD}
 Requires:	compositing-wm-common
 Provides:	compositing-wm
 Requires:	compiz-decorator
@@ -134,7 +131,7 @@ Compiz is an OpenGL composite manager for Xgl and AIGLX.
 Summary:	GTK window decorator for compiz
 Group:		System/X11
 Provides:	compiz-decorator
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name} = %{EVRD}
 
 %description decorator-gtk
 This package provides a GTK window decorator for the compiz OpenGL
@@ -157,7 +154,7 @@ Summary:	Development files for compiz
 Group:		Development/X11
 Provides:	%{name}-devel = %{EVRD}
 Obsoletes:	%{name}-devel < %{EVRD}
-Requires:	%{libname} = %{version}-%{release}
+Requires:	%{libname} = %{EVRD}
 
 %description -n %libname_devel
 This package provides development files for compiz.
