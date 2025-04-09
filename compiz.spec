@@ -23,7 +23,7 @@
 
 Name:	compiz
 Version:	0.9.14.2
-Release:	5
+Release:	6
 Summary:	OpenGL composite manager for Xgl and AIGLX
 Group:		System/X11
 License:	GPLv2+ and LGPLv2+ and MIT
@@ -217,6 +217,7 @@ Python bindings for libcompizconfig.
 %autopatch -p1
 
 %build
+export CXXFLAGS="%{optflags} -std=c++17"
 # GCC is needed or we see in Clang: "error: no matching function for call to 'scandir'"
 export CC=gcc
 export CXX=g++
