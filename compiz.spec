@@ -73,6 +73,7 @@ Source14:	compiz-gnome.session
 #Patch504: 0504-Also-check-for-tfp-in-server-extensions.patch
 
 # needed by autoreconf:
+BuildRequires:	make
 BuildRequires:	intltool
 BuildRequires:	gettext
 BuildRequires:	cmake
