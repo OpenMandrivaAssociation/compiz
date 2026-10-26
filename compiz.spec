@@ -218,12 +218,14 @@ Python bindings for libcompizconfig.
 %autopatch -p1
 
 %build
-export CXXFLAGS="%{optflags} -std=c++17"
+# protobuf pulls a current abseil, which needs std::partial_ordering.
+export CXXFLAGS="%{optflags} -std=gnu++20"
 # GCC is needed or we see in Clang: "error: no matching function for call to 'scandir'"
 export CC=gcc
 export CXX=g++
 
-export CFLAGS+=" -fno-strict-aliasing -Wno-error=deprecated-declarations" CXXFLAGS+=" -fno-strict-aliasing" FFLAGS+=" -fno-strict-aliasing"
+# gcc 15 defaults to C23, where an empty parameter list means (void).
+export CFLAGS+=" -fno-strict-aliasing -Wno-error=deprecated-declarations -std=gnu17 -Wno-incompatible-pointer-types" CXXFLAGS+=" -fno-strict-aliasing" FFLAGS+=" -fno-strict-aliasing"
 
 %cmake -DCOMPIZ_PACKAGING_ENABLED=ON \
 	-DCYTHON_BIN=/usr/bin/cython \
