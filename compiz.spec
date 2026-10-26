@@ -114,7 +114,6 @@ BuildRequires:	cmake(absl)
 BuildRequires:	pkgconfig(python)
 BuildRequires:	python-cython
 BuildRequires:  python3dist(cython)
-BuildRequires:	python-pkg-resources
 
 Requires(post): GConf2
 Requires(preun): GConf2
