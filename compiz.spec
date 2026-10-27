@@ -23,13 +23,15 @@
 
 Name:	compiz
 Version:	0.9.14.2
-Release:	8
+Release:	9
 Summary:	OpenGL composite manager for Xgl and AIGLX
 Group:		System/X11
 License:	GPLv2+ and LGPLv2+ and MIT
 URL:		https://www.compiz.org/
 Patch0:		compiz-0.9.14.2-compile.patch
-Patch1:         protobuf.patch
+Patch1:		protobuf.patch
+# Parallel intltool-merge runs corrupt one shared cache and emit NULs.
+Patch2:		compiz-0.9.14.2-intltool-cache.patch
 # Current source lives at https://launchpad.net/compiz
 Source0:	https://launchpad.net/compiz/0.9.14/%{version}/+download/%{name}-%{version}.tar.xz
 Source1:	compiz.defaults

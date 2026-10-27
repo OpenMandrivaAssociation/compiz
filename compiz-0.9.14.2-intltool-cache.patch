@@ -1,0 +1,20 @@
+--- a/cmake/CompizCommon.cmake
++++ b/cmake/CompizCommon.cmake
+@@ -533,7 +533,7 @@
+ 	    OUTPUT ${_dst}
+ 	    COMMAND ${INTLTOOL_MERGE_EXECUTABLE}
+ 		    -c
+-		    ${CMAKE_BINARY_DIR}/.intltool-merge-cache
++		    ${_dst}.intltool-cache
+ 		    ${_additional_arg}
+ 		    ${_src}
+ 		    ${_dst}
+@@ -560,7 +560,7 @@
+ 	add_custom_command (
+ 	    OUTPUT ${_dst}
+ 	    COMMAND ${INTLTOOL_MERGE_EXECUTABLE} -d -u -c
+-		    ${CMAKE_BINARY_DIR}/.intltool-merge-cache
++		    ${_dst}.intltool-cache
+ 		    ${COMPIZ_I18N_DIR}
+ 		    ${_src}
+ 		    ${_dst}
